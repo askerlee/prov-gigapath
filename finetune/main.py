@@ -6,7 +6,7 @@ import numpy as np
 from training import train
 from params import get_finetune_params
 from task_configs.utils import load_task_config
-from utils import seed_torch, get_exp_code, get_splits, get_loader, save_obj
+from utils import seed_torch, get_exp_code, get_splits, get_loader
 from datasets.slide_datatset import SlideDataset
 
 

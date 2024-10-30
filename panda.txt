@@ -1,0 +1,1654 @@
+Data directory set to data/GigaPath_PANDA_embeddings/h5_files
+2024-10-19 17:56:52.353554: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-19 17:56:52.364680: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-10-19 17:56:52.377111: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-10-19 17:56:52.381022: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-10-19 17:56:52.390268: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-19 17:56:53.010222: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Namespace(task_cfg_path='finetune/task_configs/panda.yaml', exp_name='run_epoch-5_blr-0.002_wd-0.05_ld-0.95_feat-11', pat_strat=False, dataset_csv='dataset_csv/PANDA/PANDA.csv', split_dir='', pre_split_dir='dataset_csv/PANDA/', root_path='data/GigaPath_PANDA_embeddings/h5_files', tile_size=256, max_wsi_size=250000, model_arch='gigapath_slide_enc12l768d', input_dim=1536, latent_dim=768, feat_layer='11', pretrained='hf_hub:prov-gigapath/prov-gigapath', freeze=False, global_pool=False, seed=0, epochs=5, warmup_epochs=1, batch_size=16, lr=None, blr=0.002, min_lr=1e-06, lr_scheduler='cosine', gc=8, folds=1, optim='adamw', optim_wd=0.05, layer_decay=0.95, dropout=0.1, drop_path_rate=0.0, val_r=0.1, model_select='last_epoch', save_dir='outputs/PANDA', num_workers=10, report_to='tensorboard', fp16=True, weighted_sample=False)
+Loading task configuration from: finetune/task_configs/panda.yaml
+{'name': 'panda', 'setting': 'multi_class', 'label_dict': {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5}, 'max_tiles': 1000000, 'shuffle_tiles': True, 'add_metrics': ['qwk']}
+Experiment code: eval_pretrained_panda
+Setting save directory: outputs/PANDA/panda/run_epoch-5_blr-0.002_wd-0.05_ld-0.95_feat-11/eval_pretrained_panda
+base lr: 2.00e-03
+actual lr: 1.00e-03
+accumulate grad iterations: 8
+effective batch size: 128
+Setting split directory: dataset_csv/PANDA/
+Dataset has been initialized!
+Dataset has been initialized!
+Dataset has been initialized!
+dilated_ratio:  [1, 2, 4, 8, 16]
+segment_length:  [1024, 4870, 23170, 110217, 524288]
+Number of trainable LongNet parameters:  85148160
+Global Pooling: False
+slide_encoder.pth:   0%|                             | 0.00/345M [00:00<?, ?B/s]slide_encoder.pth:   6%|█▎                   | 21.0M/345M [00:00<00:01, 184MB/s]slide_encoder.pth:  15%|███▏                 | 52.4M/345M [00:00<00:01, 210MB/s]slide_encoder.pth:  24%|█████                | 83.9M/345M [00:00<00:01, 230MB/s]slide_encoder.pth:  33%|███████▎              | 115M/345M [00:00<00:00, 231MB/s]slide_encoder.pth:  43%|█████████▎            | 147M/345M [00:00<00:00, 231MB/s]slide_encoder.pth:  52%|███████████▎          | 178M/345M [00:00<00:00, 234MB/s]slide_encoder.pth:  61%|█████████████▎        | 210M/345M [00:00<00:00, 237MB/s]slide_encoder.pth:  70%|███████████████▎      | 241M/345M [00:01<00:00, 236MB/s]slide_encoder.pth:  79%|█████████████████▎    | 273M/345M [00:01<00:00, 233MB/s]slide_encoder.pth:  88%|███████████████████▎  | 304M/345M [00:01<00:00, 234MB/s]slide_encoder.pth:  97%|█████████████████████▎| 336M/345M [00:01<00:00, 224MB/s]slide_encoder.pth: 100%|██████████████████████| 345M/345M [00:01<00:00, 228MB/s]
+/data/shaohua/prov-gigapath/gigapath/slide_encoder.py:237: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(local_path, map_location="cpu")["model"]
+[92m Successfully Loaded Pretrained GigaPath model from hf_hub:prov-gigapath/prov-gigapath [00m
+/data/shaohua/prov-gigapath/finetune/training.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  fp16_scaler = torch.cuda.amp.GradScaler()
+Using fp16 training
+Training on 7647 samples
+Validating on 954 samples
+Testing on 954 samples
+Training starts!
+Epoch: 0
+/data/shaohua/prov-gigapath/finetune/training.py:125: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+Epoch: 0, Batch: 19, Loss: 1.8639, LR: 0.0000, Time: 0.4605 sec/it, Seq len: 897.0, Slide ID: 2b8b2114b8fac07416addd3d440e0350
+Epoch: 0, Batch: 39, Loss: 1.8127, LR: 0.0000, Time: 0.4200 sec/it, Seq len: 885.6, Slide ID: c04e3f99d8842fed006ee780528e3241
+Epoch: 0, Batch: 59, Loss: 1.7480, LR: 0.0001, Time: 0.4274 sec/it, Seq len: 912.0, Slide ID: 8af21cee20c50ca357ddc9e145584c15
+Epoch: 0, Batch: 79, Loss: 1.7149, LR: 0.0001, Time: 0.4271 sec/it, Seq len: 927.8, Slide ID: 61345c737bad7df617c23577e7bb2349
+Epoch: 0, Batch: 99, Loss: 1.6626, LR: 0.0001, Time: 0.4186 sec/it, Seq len: 916.4, Slide ID: 2659c8793ae036bf6e6b1d05a080329d
+Epoch: 0, Batch: 119, Loss: 1.6207, LR: 0.0001, Time: 0.4231 sec/it, Seq len: 929.5, Slide ID: 94f40cc47de223f60b575e508378ca9f
+Epoch: 0, Batch: 139, Loss: 1.5556, LR: 0.0001, Time: 0.4170 sec/it, Seq len: 920.5, Slide ID: 7ac8dad154070e9759a7165d721045f9
+Epoch: 0, Batch: 159, Loss: 1.5025, LR: 0.0002, Time: 0.4141 sec/it, Seq len: 915.0, Slide ID: 2f5c2f001402c02682217050f718d375
+Epoch: 0, Batch: 179, Loss: 1.4423, LR: 0.0002, Time: 0.4137 sec/it, Seq len: 914.9, Slide ID: 82d263e53a729615b6dae1d57c67573e
+Epoch: 0, Batch: 199, Loss: 1.3870, LR: 0.0002, Time: 0.4148 sec/it, Seq len: 919.1, Slide ID: 145ae6f948b36cb450a7eeb9cbac4cfa
+Epoch: 0, Batch: 219, Loss: 1.3482, LR: 0.0002, Time: 0.4165 sec/it, Seq len: 924.0, Slide ID: e5875827ce9f2f526f46eefff35ab893
+Epoch: 0, Batch: 239, Loss: 1.3022, LR: 0.0002, Time: 0.4158 sec/it, Seq len: 924.6, Slide ID: 71f11949b427eac5591d44419969e616
+Epoch: 0, Batch: 259, Loss: 1.2558, LR: 0.0003, Time: 0.4148 sec/it, Seq len: 923.8, Slide ID: 065762b2ae186afcf91bbedc81142ef4
+Epoch: 0, Batch: 279, Loss: 1.2149, LR: 0.0003, Time: 0.4176 sec/it, Seq len: 929.9, Slide ID: 65b59d73dd788168afab76694d39529c
+Epoch: 0, Batch: 299, Loss: 1.1912, LR: 0.0003, Time: 0.4183 sec/it, Seq len: 932.5, Slide ID: 24bfb2f82ae5941e2fdcf4f75cfad2a6
+Epoch: 0, Batch: 319, Loss: 1.1657, LR: 0.0003, Time: 0.4174 sec/it, Seq len: 931.0, Slide ID: 7d0638e2cf13708c2047178ab83ba894
+Epoch: 0, Batch: 339, Loss: 1.1393, LR: 0.0004, Time: 0.4184 sec/it, Seq len: 933.4, Slide ID: 2c657f6c839abdd8fd4a6dc72dabc6ca
+Epoch: 0, Batch: 359, Loss: 1.1165, LR: 0.0004, Time: 0.4168 sec/it, Seq len: 929.6, Slide ID: 4f8506ad3366270f12cd7a31641495cb
+Epoch: 0, Batch: 379, Loss: 1.0943, LR: 0.0004, Time: 0.4152 sec/it, Seq len: 927.3, Slide ID: 8d6d8329cd0bbf6d0356b300f83d6b6a
+Epoch: 0, Batch: 399, Loss: 1.0752, LR: 0.0004, Time: 0.4161 sec/it, Seq len: 928.7, Slide ID: e3a820d374f2edeaaa719da212253d51
+Epoch: 0, Batch: 419, Loss: 1.0575, LR: 0.0004, Time: 0.4168 sec/it, Seq len: 930.8, Slide ID: 57ac237fd7804341517927ced4353c71
+Epoch: 0, Batch: 439, Loss: 1.0398, LR: 0.0005, Time: 0.4173 sec/it, Seq len: 931.2, Slide ID: d6e2813cc756a36cfee90e87cc0b0d06
+Epoch: 0, Batch: 459, Loss: 1.0187, LR: 0.0005, Time: 0.4178 sec/it, Seq len: 932.5, Slide ID: 6db274a56e9de1e7a876bb1b53aa8eed
+Epoch: 0, Loss: 0.0908
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 0, Loss: 0.7031, AUROC: 0.9350, ACC: 0.7180, BACC: 0.6613, qwk: 0.9156
+Epoch: 1
+/data/shaohua/prov-gigapath/finetune/training.py:125: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+Epoch: 1, Batch: 19, Loss: 0.7129, LR: 0.0005, Time: 0.4921 sec/it, Seq len: 1033.7, Slide ID: 54126c6e72a07999bc079390f3af679b
+Epoch: 1, Batch: 39, Loss: 0.6450, LR: 0.0005, Time: 0.4669 sec/it, Seq len: 1010.5, Slide ID: 76555861e947185a4e4db0bc8ddf5462
+Epoch: 1, Batch: 59, Loss: 0.6334, LR: 0.0005, Time: 0.4476 sec/it, Seq len: 980.7, Slide ID: 3c8b636f1d0af8f8e4d5cfa2479b4069
+Epoch: 1, Batch: 79, Loss: 0.6453, LR: 0.0005, Time: 0.4488 sec/it, Seq len: 991.0, Slide ID: b49cf4744ad7bde55eb848c822b457fd
+Epoch: 1, Batch: 99, Loss: 0.6466, LR: 0.0005, Time: 0.4308 sec/it, Seq len: 954.2, Slide ID: 673c469c5864d8d50afe935a7bdc1935
+Epoch: 1, Batch: 119, Loss: 0.6406, LR: 0.0005, Time: 0.4278 sec/it, Seq len: 948.0, Slide ID: d2a97eb750bf080454727f8b67a69d92
+Epoch: 1, Batch: 139, Loss: 0.6301, LR: 0.0005, Time: 0.4234 sec/it, Seq len: 939.5, Slide ID: ab9737067730d88528e4f08a6ca140eb
+Epoch: 1, Batch: 159, Loss: 0.6214, LR: 0.0005, Time: 0.4155 sec/it, Seq len: 924.5, Slide ID: 1eab1d74f5c90e353ce5f4440b502bc3
+Epoch: 1, Batch: 179, Loss: 0.6176, LR: 0.0005, Time: 0.4164 sec/it, Seq len: 926.0, Slide ID: d02c1da03b5ef4fb5ea6b793a3c1fc79
+Epoch: 1, Batch: 199, Loss: 0.6189, LR: 0.0005, Time: 0.4201 sec/it, Seq len: 932.2, Slide ID: 8d2d81395c6a14a4683d92b7db8bf18b
+Epoch: 1, Batch: 219, Loss: 0.6181, LR: 0.0005, Time: 0.4182 sec/it, Seq len: 928.2, Slide ID: 40c4b095b9c36b452a0de20e95f04969
+Epoch: 1, Batch: 239, Loss: 0.6141, LR: 0.0005, Time: 0.4193 sec/it, Seq len: 932.7, Slide ID: fb61f2df28791cf878406496100a8c95
+Epoch: 1, Batch: 259, Loss: 0.6165, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 926.9, Slide ID: 746223e2679f7697dc6b6aad326a01df
+Epoch: 1, Batch: 279, Loss: 0.6182, LR: 0.0005, Time: 0.4154 sec/it, Seq len: 925.7, Slide ID: dfe7fbb735eb6236b19003fa50ac45d1
+Epoch: 1, Batch: 299, Loss: 0.6118, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 924.6, Slide ID: 35f629e359399d425289242b698b3f66
+Epoch: 1, Batch: 319, Loss: 0.6079, LR: 0.0005, Time: 0.4138 sec/it, Seq len: 922.2, Slide ID: b9be346a547053539266d97872b5c7ab
+Epoch: 1, Batch: 339, Loss: 0.6039, LR: 0.0005, Time: 0.4132 sec/it, Seq len: 921.5, Slide ID: 8b36508994d132ac03c5effd255b6eaf
+Epoch: 1, Batch: 359, Loss: 0.6003, LR: 0.0005, Time: 0.4135 sec/it, Seq len: 922.2, Slide ID: 7269db31c46c18a2c42711373b7ac592
+Epoch: 1, Batch: 379, Loss: 0.5971, LR: 0.0005, Time: 0.4125 sec/it, Seq len: 921.4, Slide ID: af71c423997e01b837567d16bcced649
+Epoch: 1, Batch: 399, Loss: 0.5954, LR: 0.0005, Time: 0.4116 sec/it, Seq len: 919.3, Slide ID: aaef504823a0043ebc6063bc805baa38
+Epoch: 1, Batch: 419, Loss: 0.5947, LR: 0.0005, Time: 0.4126 sec/it, Seq len: 922.5, Slide ID: bf3467b7d71484452bc834d55ecc88c0
+Epoch: 1, Batch: 439, Loss: 0.5895, LR: 0.0005, Time: 0.4119 sec/it, Seq len: 920.5, Slide ID: 21c61eab96e1f16d7caf28a6645c22fa
+Epoch: 1, Batch: 459, Loss: 0.5901, LR: 0.0004, Time: 0.4125 sec/it, Seq len: 922.2, Slide ID: df3d9c53189dd95a5888480835d341a9
+Epoch: 1, Loss: 0.0557
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 1, Loss: 0.6069, AUROC: 0.9520, ACC: 0.7505, BACC: 0.6909, qwk: 0.9186
+Epoch: 2
+/data/shaohua/prov-gigapath/finetune/training.py:125: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+Epoch: 2, Batch: 19, Loss: 0.5046, LR: 0.0004, Time: 0.4730 sec/it, Seq len: 995.5, Slide ID: f327a26eac60aff04d28d21df275b52e
+Epoch: 2, Batch: 39, Loss: 0.4621, LR: 0.0004, Time: 0.4320 sec/it, Seq len: 941.0, Slide ID: ba3bb9804f760a2f417cb680d4598573
+Epoch: 2, Batch: 59, Loss: 0.4533, LR: 0.0004, Time: 0.4271 sec/it, Seq len: 943.7, Slide ID: 251e12eeb15fcbbd0a39cd7928c74345
+Epoch: 2, Batch: 79, Loss: 0.4563, LR: 0.0004, Time: 0.4362 sec/it, Seq len: 965.3, Slide ID: b75dff02d2f6c823b0a475ce346be0fb
+Epoch: 2, Batch: 99, Loss: 0.4711, LR: 0.0004, Time: 0.4288 sec/it, Seq len: 950.1, Slide ID: 9c37ba42f856303b343aa8b26989cdcb
+Epoch: 2, Batch: 119, Loss: 0.4713, LR: 0.0004, Time: 0.4258 sec/it, Seq len: 944.8, Slide ID: e8b5dc4dc51b355c689b8bed7d8cc7c1
+Epoch: 2, Batch: 139, Loss: 0.4895, LR: 0.0004, Time: 0.4193 sec/it, Seq len: 933.4, Slide ID: 150fa2f94a0066c9e5d2a604f90a5b82
+Epoch: 2, Batch: 159, Loss: 0.4880, LR: 0.0004, Time: 0.4166 sec/it, Seq len: 927.5, Slide ID: a57fce3a0a40fcdd2683b9c24739dd7f
+Epoch: 2, Batch: 179, Loss: 0.4845, LR: 0.0004, Time: 0.4179 sec/it, Seq len: 930.0, Slide ID: 3a624ae0d560c6d61d4143a5f90bd801
+Epoch: 2, Batch: 199, Loss: 0.4796, LR: 0.0004, Time: 0.4150 sec/it, Seq len: 923.7, Slide ID: edcf77f422b243fc13c1050ddfb264b7
+Epoch: 2, Batch: 219, Loss: 0.4798, LR: 0.0004, Time: 0.4170 sec/it, Seq len: 927.3, Slide ID: 37bcf02187f518f188dc8d97038f3e84
+Epoch: 2, Batch: 239, Loss: 0.4731, LR: 0.0004, Time: 0.4182 sec/it, Seq len: 928.9, Slide ID: 944993e4e26b18e41b3693a4095cbf77
+Epoch: 2, Batch: 259, Loss: 0.4707, LR: 0.0003, Time: 0.4169 sec/it, Seq len: 926.2, Slide ID: d27cfb2b30e4b435f0d0e38997050988
+Epoch: 2, Batch: 279, Loss: 0.4662, LR: 0.0003, Time: 0.4194 sec/it, Seq len: 932.4, Slide ID: 9817b2ffd97c44aba650bb86f4ab1b27
+Epoch: 2, Batch: 299, Loss: 0.4647, LR: 0.0003, Time: 0.4173 sec/it, Seq len: 928.4, Slide ID: 3b56a9aa8513f7510315549ac025c54c
+Epoch: 2, Batch: 319, Loss: 0.4662, LR: 0.0003, Time: 0.4145 sec/it, Seq len: 923.4, Slide ID: 7a40364bb1370598575caac647f1635f
+Epoch: 2, Batch: 339, Loss: 0.4692, LR: 0.0003, Time: 0.4114 sec/it, Seq len: 917.6, Slide ID: 4020266ddfa512a56569cabefdf652dd
+Epoch: 2, Batch: 359, Loss: 0.4676, LR: 0.0003, Time: 0.4128 sec/it, Seq len: 920.4, Slide ID: aa8ee3fd85494e92cc6595f97d42dc6a
+Epoch: 2, Batch: 379, Loss: 0.4641, LR: 0.0003, Time: 0.4141 sec/it, Seq len: 923.3, Slide ID: 373c3e3962c89a016c118cd3b4dac926
+Epoch: 2, Batch: 399, Loss: 0.4653, LR: 0.0003, Time: 0.4145 sec/it, Seq len: 924.4, Slide ID: 418e1cef9d164228667371028ca7071c
+Epoch: 2, Batch: 419, Loss: 0.4626, LR: 0.0003, Time: 0.4172 sec/it, Seq len: 930.0, Slide ID: 82dd91dc60d7a36257237f229df31b70
+Epoch: 2, Batch: 439, Loss: 0.4629, LR: 0.0003, Time: 0.4164 sec/it, Seq len: 927.8, Slide ID: c8c464afaf408f2aecdf7744071b52af
+Epoch: 2, Batch: 459, Loss: 0.4623, LR: 0.0003, Time: 0.4159 sec/it, Seq len: 926.9, Slide ID: 773e080a5857ba8c0669c435af2f1095
+Epoch: 2, Loss: 0.0189
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 2, Loss: 0.5927, AUROC: 0.9591, ACC: 0.7799, BACC: 0.7208, qwk: 0.9414
+Epoch: 3
+/data/shaohua/prov-gigapath/finetune/training.py:125: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+Epoch: 3, Batch: 19, Loss: 0.3929, LR: 0.0003, Time: 0.4885 sec/it, Seq len: 1026.2, Slide ID: e2a6089e7ab388ec71e7b25fa46969e0
+Epoch: 3, Batch: 39, Loss: 0.4189, LR: 0.0002, Time: 0.4581 sec/it, Seq len: 992.0, Slide ID: 589ce42577588f51fa6d8de876b55dbc
+Epoch: 3, Batch: 59, Loss: 0.3882, LR: 0.0002, Time: 0.4578 sec/it, Seq len: 1001.0, Slide ID: cdf16b2ead8765e75813e2071d14965e
+Epoch: 3, Batch: 79, Loss: 0.3880, LR: 0.0002, Time: 0.4494 sec/it, Seq len: 986.9, Slide ID: 4444987df780434b2dba8306b086fd64
+Epoch: 3, Batch: 99, Loss: 0.3851, LR: 0.0002, Time: 0.4448 sec/it, Seq len: 979.5, Slide ID: 2f4f8ac22786b2606a4e307d9cb116e0
+Epoch: 3, Batch: 119, Loss: 0.3826, LR: 0.0002, Time: 0.4358 sec/it, Seq len: 963.9, Slide ID: f3273751f723042683d45d00d3880c8c
+Epoch: 3, Batch: 139, Loss: 0.3734, LR: 0.0002, Time: 0.4339 sec/it, Seq len: 961.4, Slide ID: f9c0aa4cd5ad8ff43fcd67fd626964b0
+Epoch: 3, Batch: 159, Loss: 0.3641, LR: 0.0002, Time: 0.4339 sec/it, Seq len: 960.7, Slide ID: ffaf4de97335595fb711d3985523106a
+Epoch: 3, Batch: 179, Loss: 0.3613, LR: 0.0002, Time: 0.4280 sec/it, Seq len: 949.8, Slide ID: 8ff2a1df0aa706eb728a63c4724c0e87
+Epoch: 3, Batch: 199, Loss: 0.3594, LR: 0.0002, Time: 0.4287 sec/it, Seq len: 949.8, Slide ID: f8bfe4f06fbff1742696513467bc7ef4
+Epoch: 3, Batch: 219, Loss: 0.3551, LR: 0.0002, Time: 0.4247 sec/it, Seq len: 942.7, Slide ID: cf385dd3211d78cdcfa8c90c2bab5b37
+Epoch: 3, Batch: 239, Loss: 0.3539, LR: 0.0002, Time: 0.4249 sec/it, Seq len: 942.9, Slide ID: bde972923c4b9cee7d3e2a0661f21583
+Epoch: 3, Batch: 259, Loss: 0.3511, LR: 0.0002, Time: 0.4219 sec/it, Seq len: 937.5, Slide ID: 45de9b11fe9e7be0cfa1501034111d11
+Epoch: 3, Batch: 279, Loss: 0.3473, LR: 0.0001, Time: 0.4228 sec/it, Seq len: 938.5, Slide ID: 45910500e405b732fd6c0d50c921e3f4
+Epoch: 3, Batch: 299, Loss: 0.3440, LR: 0.0001, Time: 0.4225 sec/it, Seq len: 939.0, Slide ID: 7d67b112699b40dba45702d5c93cdc18
+Epoch: 3, Batch: 319, Loss: 0.3431, LR: 0.0001, Time: 0.4208 sec/it, Seq len: 935.4, Slide ID: 462d4231224f8acdc85dc9449f803a2d
+Epoch: 3, Batch: 339, Loss: 0.3436, LR: 0.0001, Time: 0.4182 sec/it, Seq len: 929.8, Slide ID: 03ca7f8d8c993d3959daf10ef57f4489
+Epoch: 3, Batch: 359, Loss: 0.3437, LR: 0.0001, Time: 0.4164 sec/it, Seq len: 926.6, Slide ID: 074d9f9ceede2e4fad8aec367a335a77
+Epoch: 3, Batch: 379, Loss: 0.3390, LR: 0.0001, Time: 0.4169 sec/it, Seq len: 927.7, Slide ID: 31fd11d1920dede9f0fa0dcb35baa34e
+Epoch: 3, Batch: 399, Loss: 0.3369, LR: 0.0001, Time: 0.4171 sec/it, Seq len: 927.8, Slide ID: 61ebefee1266d2cfcc7c0d23cc66062a
+Epoch: 3, Batch: 419, Loss: 0.3344, LR: 0.0001, Time: 0.4173 sec/it, Seq len: 928.8, Slide ID: e1ef8bc2099822e6b6872bbbf8b601ff
+Epoch: 3, Batch: 439, Loss: 0.3321, LR: 0.0001, Time: 0.4162 sec/it, Seq len: 926.9, Slide ID: 7a30bf7084d9236f6ecd0474f45fe1cf
+Epoch: 3, Batch: 459, Loss: 0.3326, LR: 0.0001, Time: 0.4169 sec/it, Seq len: 928.7, Slide ID: 4cbde67c6d4feb90b93497fa08b413f7
+Epoch: 3, Loss: 0.0220
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 3, Loss: 0.5601, AUROC: 0.9634, ACC: 0.8124, BACC: 0.7589, qwk: 0.9475
+Epoch: 4
+/data/shaohua/prov-gigapath/finetune/training.py:125: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+Epoch: 4, Batch: 19, Loss: 0.2212, LR: 0.0001, Time: 0.4214 sec/it, Seq len: 877.9, Slide ID: cbf05dbfcf24b4fc7dded902c1ac37e3
+Epoch: 4, Batch: 39, Loss: 0.2108, LR: 0.0001, Time: 0.4160 sec/it, Seq len: 896.2, Slide ID: 35f629e359399d425289242b698b3f66
+Epoch: 4, Batch: 59, Loss: 0.2027, LR: 0.0001, Time: 0.4101 sec/it, Seq len: 895.6, Slide ID: 91ddec6cba7af9cfefc2ba5317d5f87b
+Epoch: 4, Batch: 79, Loss: 0.1993, LR: 0.0001, Time: 0.4072 sec/it, Seq len: 896.1, Slide ID: ba42e3610dee7ac11740da6709ca5161
+Epoch: 4, Batch: 99, Loss: 0.1965, LR: 0.0000, Time: 0.4150 sec/it, Seq len: 915.8, Slide ID: 7b5b2d7f86f7725b0ea4f0ed3b4807de
+Epoch: 4, Batch: 119, Loss: 0.1971, LR: 0.0000, Time: 0.4110 sec/it, Seq len: 910.4, Slide ID: 87a463cb0b4da2f78e25cd0986475367
+Epoch: 4, Batch: 139, Loss: 0.1928, LR: 0.0000, Time: 0.4102 sec/it, Seq len: 909.7, Slide ID: caaf2645fd3ea43541dad8081e351689
+Epoch: 4, Batch: 159, Loss: 0.1891, LR: 0.0000, Time: 0.4097 sec/it, Seq len: 910.2, Slide ID: 04201ee15d33abe4b032317792cf1040
+Epoch: 4, Batch: 179, Loss: 0.1828, LR: 0.0000, Time: 0.4104 sec/it, Seq len: 914.0, Slide ID: a3abbe79d581ceec56f3be32f1fd145e
+Epoch: 4, Batch: 199, Loss: 0.1765, LR: 0.0000, Time: 0.4095 sec/it, Seq len: 913.6, Slide ID: 146fdf9cb391b6199413967a26ee3305
+Epoch: 4, Batch: 219, Loss: 0.1738, LR: 0.0000, Time: 0.4093 sec/it, Seq len: 913.9, Slide ID: 5123de8a47c1584b66fea313adb4e2d3
+Epoch: 4, Batch: 239, Loss: 0.1760, LR: 0.0000, Time: 0.4119 sec/it, Seq len: 920.0, Slide ID: df1d13f0a3ef304032c1c34ff18a8d52
+Epoch: 4, Batch: 259, Loss: 0.1810, LR: 0.0000, Time: 0.4121 sec/it, Seq len: 919.8, Slide ID: e702bc96a10e3ff51dca2e8eef71e4af
+Epoch: 4, Batch: 279, Loss: 0.1811, LR: 0.0000, Time: 0.4157 sec/it, Seq len: 926.0, Slide ID: 7e26b6fec976755158177577cf4c9183
+Epoch: 4, Batch: 299, Loss: 0.1803, LR: 0.0000, Time: 0.4158 sec/it, Seq len: 926.2, Slide ID: 00a26aaa82c959624d90dfb69fcf259c
+Epoch: 4, Batch: 319, Loss: 0.1757, LR: 0.0000, Time: 0.4148 sec/it, Seq len: 924.2, Slide ID: c4cba053efafeac85ec882e30ac6e498
+Epoch: 4, Batch: 339, Loss: 0.1747, LR: 0.0000, Time: 0.4136 sec/it, Seq len: 921.4, Slide ID: cdd5b7d07b98f61d3668207531b4de07
+Epoch: 4, Batch: 359, Loss: 0.1729, LR: 0.0000, Time: 0.4149 sec/it, Seq len: 924.1, Slide ID: c7b5025d6ca0352a9feb0b83f3ecf231
+Epoch: 4, Batch: 379, Loss: 0.1728, LR: 0.0000, Time: 0.4138 sec/it, Seq len: 921.5, Slide ID: 99ecaa4a61fc527057721723247a099b
+Epoch: 4, Batch: 399, Loss: 0.1700, LR: 0.0000, Time: 0.4155 sec/it, Seq len: 924.3, Slide ID: aaee8c7e09fa4b50c160acd7e3302cfd
+Epoch: 4, Batch: 419, Loss: 0.1690, LR: 0.0000, Time: 0.4155 sec/it, Seq len: 924.3, Slide ID: cd40065527f49b4473f05e0db148d04a
+Epoch: 4, Batch: 439, Loss: 0.1687, LR: 0.0000, Time: 0.4167 sec/it, Seq len: 926.5, Slide ID: c8c464afaf408f2aecdf7744071b52af
+Epoch: 4, Batch: 459, Loss: 0.1690, LR: 0.0000, Time: 0.4169 sec/it, Seq len: 928.1, Slide ID: c484a9ae47f9d99bbeb8f249cbdf4b88
+Epoch: 4, Loss: 0.0075
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 4, Loss: 0.6131, AUROC: 0.9663, ACC: 0.8040, BACC: 0.7590, qwk: 0.9503
+/data/shaohua/prov-gigapath/finetune/training.py:89: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(os.path.join(args.save_dir, 'fold_' + str(fold), "checkpoint.pt")))
+/data/shaohua/prov-gigapath/finetune/training.py:181: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+Epoch: 4, Loss: 0.5063, AUROC: 0.9723, ACC: 0.8344, BACC: 0.7973, qwk: 0.9555
+val_loss: 0.6131 +- 0.0000
+val_bacc: 0.7590 +- 0.0000
+val_acc: 0.8040 +- 0.0000
+val_macro_auroc: 0.9663 +- 0.0000
+val_macro_auprc: 0.8242 +- 0.0000
+val_qwk: 0.9503 +- 0.0000
+val_0_auroc: 0.9974 +- 0.0000
+val_1_auroc: 0.9784 +- 0.0000
+val_2_auroc: 0.9443 +- 0.0000
+val_3_auroc: 0.9270 +- 0.0000
+val_4_auroc: 0.9669 +- 0.0000
+val_5_auroc: 0.9837 +- 0.0000
+val_0_auprc: 0.9937 +- 0.0000
+val_1_auprc: 0.9255 +- 0.0000
+val_2_auprc: 0.6609 +- 0.0000
+val_3_auprc: 0.6749 +- 0.0000
+val_4_auprc: 0.7899 +- 0.0000
+val_5_auprc: 0.9005 +- 0.0000
+test_loss: 0.5063 +- 0.0000
+test_bacc: 0.7973 +- 0.0000
+test_acc: 0.8344 +- 0.0000
+test_macro_auroc: 0.9723 +- 0.0000
+test_macro_auprc: 0.8473 +- 0.0000
+test_qwk: 0.9555 +- 0.0000
+test_0_auroc: 0.9973 +- 0.0000
+test_1_auroc: 0.9855 +- 0.0000
+test_2_auroc: 0.9559 +- 0.0000
+test_3_auroc: 0.9439 +- 0.0000
+test_4_auroc: 0.9661 +- 0.0000
+test_5_auroc: 0.9852 +- 0.0000
+test_0_auprc: 0.9875 +- 0.0000
+test_1_auprc: 0.9503 +- 0.0000
+test_2_auprc: 0.7536 +- 0.0000
+test_3_auprc: 0.6930 +- 0.0000
+test_4_auprc: 0.7853 +- 0.0000
+test_5_auprc: 0.9141 +- 0.0000
+Results saved in: outputs/PANDA/panda/run_epoch-5_blr-0.002_wd-0.05_ld-0.95_feat-11/eval_pretrained_panda/summary.csv
+Done!
+Data directory set to data/GigaPath_PANDA_embeddings/h5_files
+2024-10-19 18:36:39.394929: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-19 18:36:39.406003: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-10-19 18:36:39.418388: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-10-19 18:36:39.422350: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-10-19 18:36:39.431736: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-19 18:36:40.051385: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Namespace(task_cfg_path='finetune/task_configs/panda.yaml', exp_name='run_epoch-50_blr-0.002_wd-0.05_ld-0.95_feat-11', pat_strat=False, dataset_csv='dataset_csv/PANDA/PANDA.csv', split_dir='', pre_split_dir='dataset_csv/PANDA/', root_path='data/GigaPath_PANDA_embeddings/h5_files', tile_size=256, max_wsi_size=250000, model_arch='gigapath_slide_enc12l768d', input_dim=1536, latent_dim=768, feat_layer='11', pretrained='hf_hub:prov-gigapath/prov-gigapath', freeze=False, global_pool=False, seed=0, epochs=50, warmup_epochs=1, batch_size=16, lr=None, blr=0.002, min_lr=1e-06, lr_scheduler='cosine', gc=8, folds=1, optim='adamw', optim_wd=0.05, layer_decay=0.95, dropout=0.1, drop_path_rate=0.0, val_r=0.1, model_select='last_epoch', save_dir='outputs/PANDA', num_workers=10, report_to='tensorboard', fp16=True, weighted_sample=False)
+Loading task configuration from: finetune/task_configs/panda.yaml
+{'name': 'panda', 'setting': 'multi_class', 'label_dict': {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5}, 'max_tiles': 1000000, 'shuffle_tiles': True, 'add_metrics': ['qwk']}
+Experiment code: eval_pretrained_panda
+Setting save directory: outputs/PANDA/panda/run_epoch-50_blr-0.002_wd-0.05_ld-0.95_feat-11/eval_pretrained_panda
+base lr: 2.00e-03
+actual lr: 1.00e-03
+accumulate grad iterations: 8
+effective batch size: 128
+Setting split directory: dataset_csv/PANDA/
+Dataset has been initialized!
+Dataset has been initialized!
+Dataset has been initialized!
+dilated_ratio:  [1, 2, 4, 8, 16]
+segment_length:  [1024, 4870, 23170, 110217, 524288]
+Number of trainable LongNet parameters:  85148160
+Global Pooling: False
+slide_encoder.pth:   0%|                             | 0.00/345M [00:00<?, ?B/s]slide_encoder.pth:   9%|█▉                   | 31.5M/345M [00:00<00:01, 230MB/s]slide_encoder.pth:  18%|███▊                 | 62.9M/345M [00:00<00:01, 244MB/s]slide_encoder.pth:  27%|█████▋               | 94.4M/345M [00:00<00:01, 249MB/s]slide_encoder.pth:  36%|████████              | 126M/345M [00:00<00:00, 246MB/s]slide_encoder.pth:  46%|██████████            | 157M/345M [00:00<00:00, 246MB/s]slide_encoder.pth:  55%|████████████          | 189M/345M [00:00<00:00, 245MB/s]slide_encoder.pth:  64%|██████████████        | 220M/345M [00:00<00:00, 246MB/s]slide_encoder.pth:  73%|████████████████      | 252M/345M [00:01<00:00, 248MB/s]slide_encoder.pth:  82%|██████████████████    | 283M/345M [00:01<00:00, 247MB/s]slide_encoder.pth:  91%|████████████████████  | 315M/345M [00:01<00:00, 244MB/s]slide_encoder.pth: 100%|██████████████████████| 345M/345M [00:01<00:00, 244MB/s]slide_encoder.pth: 100%|██████████████████████| 345M/345M [00:01<00:00, 244MB/s]
+/data/shaohua/prov-gigapath/gigapath/slide_encoder.py:237: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(local_path, map_location="cpu")["model"]
+[92m Successfully Loaded Pretrained GigaPath model from hf_hub:prov-gigapath/prov-gigapath [00m
+/data/shaohua/prov-gigapath/finetune/training.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  fp16_scaler = torch.cuda.amp.GradScaler()
+Using fp16 training
+Training on 7647 samples
+Validating on 954 samples
+Testing on 954 samples
+Training starts!
+Epoch: 0
+Traceback (most recent call last):
+  File "/data/shaohua/prov-gigapath/finetune/main.py", line 81, in <module>
+    val_records, test_records = train((train_loader, val_loader, test_loader), fold, args)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/shaohua/prov-gigapath/finetune/training.py", line 71, in train
+    train_records = train_one_epoch(train_loader, model, fp16_scaler, optimizer, loss_fn, i, args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/shaohua/prov-gigapath/finetune/training.py", line 125, in train_one_epoch
+    with torch.amp.autocast(device='cuda', dtype=torch.float16 if args.fp16 else torch.float32):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: autocast.__init__() got an unexpected keyword argument 'device'
+Data directory set to data/GigaPath_PANDA_embeddings/h5_files
+2024-10-19 18:50:22.197222: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-19 18:50:22.208112: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-10-19 18:50:22.220314: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-10-19 18:50:22.224085: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-10-19 18:50:22.233036: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-19 18:50:22.834162: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Namespace(task_cfg_path='finetune/task_configs/panda.yaml', exp_name='run_epoch-50_blr-0.002_wd-0.05_ld-0.95_feat-11', pat_strat=False, dataset_csv='dataset_csv/PANDA/PANDA.csv', split_dir='', pre_split_dir='dataset_csv/PANDA/', root_path='data/GigaPath_PANDA_embeddings/h5_files', tile_size=256, max_wsi_size=250000, model_arch='gigapath_slide_enc12l768d', input_dim=1536, latent_dim=768, feat_layer='11', pretrained='hf_hub:prov-gigapath/prov-gigapath', freeze=False, global_pool=False, seed=0, epochs=50, warmup_epochs=1, batch_size=16, lr=None, blr=0.002, min_lr=1e-06, lr_scheduler='cosine', gc=8, folds=1, optim='adamw', optim_wd=0.05, layer_decay=0.95, dropout=0.1, drop_path_rate=0.0, val_r=0.1, model_select='last_epoch', save_dir='outputs/PANDA', num_workers=10, report_to='tensorboard', fp16=True, weighted_sample=False)
+Loading task configuration from: finetune/task_configs/panda.yaml
+{'name': 'panda', 'setting': 'multi_class', 'label_dict': {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5}, 'max_tiles': 1000000, 'shuffle_tiles': True, 'add_metrics': ['qwk']}
+Experiment code: eval_pretrained_panda
+Setting save directory: outputs/PANDA/panda/run_epoch-50_blr-0.002_wd-0.05_ld-0.95_feat-11/eval_pretrained_panda
+base lr: 2.00e-03
+actual lr: 1.00e-03
+accumulate grad iterations: 8
+effective batch size: 128
+Setting split directory: dataset_csv/PANDA/
+Dataset has been initialized!
+Dataset has been initialized!
+Dataset has been initialized!
+dilated_ratio:  [1, 2, 4, 8, 16]
+segment_length:  [1024, 4870, 23170, 110217, 524288]
+Number of trainable LongNet parameters:  85148160
+Global Pooling: False
+slide_encoder.pth:   0%|                             | 0.00/345M [00:00<?, ?B/s]slide_encoder.pth:   3%|▋                    | 10.5M/345M [00:00<00:03, 104MB/s]slide_encoder.pth:   9%|█▉                   | 31.5M/345M [00:00<00:02, 144MB/s]slide_encoder.pth:  18%|███▊                 | 62.9M/345M [00:00<00:01, 194MB/s]slide_encoder.pth:  27%|█████▋               | 94.4M/345M [00:00<00:01, 213MB/s]slide_encoder.pth:  33%|███████▎              | 115M/345M [00:00<00:01, 209MB/s]slide_encoder.pth:  43%|█████████▎            | 147M/345M [00:00<00:00, 202MB/s]slide_encoder.pth:  49%|██████████▋           | 168M/345M [00:00<00:00, 198MB/s]slide_encoder.pth:  58%|████████████▋         | 199M/345M [00:00<00:00, 212MB/s]slide_encoder.pth:  67%|██████████████▋       | 231M/345M [00:01<00:00, 214MB/s]slide_encoder.pth:  76%|████████████████▋     | 262M/345M [00:01<00:00, 219MB/s]slide_encoder.pth:  85%|██████████████████▋   | 294M/345M [00:01<00:00, 231MB/s]slide_encoder.pth:  94%|████████████████████▋ | 325M/345M [00:01<00:00, 239MB/s]slide_encoder.pth: 100%|██████████████████████| 345M/345M [00:01<00:00, 215MB/s]
+/data/shaohua/prov-gigapath/gigapath/slide_encoder.py:237: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(local_path, map_location="cpu")["model"]
+[92m Successfully Loaded Pretrained GigaPath model from hf_hub:prov-gigapath/prov-gigapath [00m
+/data/shaohua/prov-gigapath/finetune/training.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  fp16_scaler = torch.cuda.amp.GradScaler()
+Using fp16 training
+Training on 7647 samples
+Validating on 954 samples
+Testing on 954 samples
+Training starts!
+Epoch: 0
+Epoch: 0, Batch: 19, Loss: 1.8639, LR: 0.0000, Time: 0.4569 sec/it, Seq len: 897.0, Slide ID: 2b8b2114b8fac07416addd3d440e0350
+Epoch: 0, Batch: 39, Loss: 1.8127, LR: 0.0000, Time: 0.4152 sec/it, Seq len: 885.6, Slide ID: c04e3f99d8842fed006ee780528e3241
+Epoch: 0, Batch: 59, Loss: 1.7480, LR: 0.0001, Time: 0.4234 sec/it, Seq len: 912.0, Slide ID: 8af21cee20c50ca357ddc9e145584c15
+Epoch: 0, Batch: 79, Loss: 1.7149, LR: 0.0001, Time: 0.4232 sec/it, Seq len: 927.8, Slide ID: 61345c737bad7df617c23577e7bb2349
+Epoch: 0, Batch: 99, Loss: 1.6626, LR: 0.0001, Time: 0.4149 sec/it, Seq len: 916.4, Slide ID: 2659c8793ae036bf6e6b1d05a080329d
+Epoch: 0, Batch: 119, Loss: 1.6207, LR: 0.0001, Time: 0.4198 sec/it, Seq len: 929.5, Slide ID: 94f40cc47de223f60b575e508378ca9f
+Epoch: 0, Batch: 139, Loss: 1.5556, LR: 0.0001, Time: 0.4139 sec/it, Seq len: 920.5, Slide ID: 7ac8dad154070e9759a7165d721045f9
+Epoch: 0, Batch: 159, Loss: 1.5025, LR: 0.0002, Time: 0.4112 sec/it, Seq len: 915.0, Slide ID: 2f5c2f001402c02682217050f718d375
+Epoch: 0, Batch: 179, Loss: 1.4423, LR: 0.0002, Time: 0.4112 sec/it, Seq len: 914.9, Slide ID: 82d263e53a729615b6dae1d57c67573e
+Epoch: 0, Batch: 199, Loss: 1.3870, LR: 0.0002, Time: 0.4123 sec/it, Seq len: 919.1, Slide ID: 145ae6f948b36cb450a7eeb9cbac4cfa
+Epoch: 0, Batch: 219, Loss: 1.3482, LR: 0.0002, Time: 0.4141 sec/it, Seq len: 924.0, Slide ID: e5875827ce9f2f526f46eefff35ab893
+Epoch: 0, Batch: 239, Loss: 1.3022, LR: 0.0002, Time: 0.4135 sec/it, Seq len: 924.6, Slide ID: 71f11949b427eac5591d44419969e616
+Epoch: 0, Batch: 259, Loss: 1.2558, LR: 0.0003, Time: 0.4126 sec/it, Seq len: 923.8, Slide ID: 065762b2ae186afcf91bbedc81142ef4
+Epoch: 0, Batch: 279, Loss: 1.2149, LR: 0.0003, Time: 0.4155 sec/it, Seq len: 929.9, Slide ID: 65b59d73dd788168afab76694d39529c
+Epoch: 0, Batch: 299, Loss: 1.1910, LR: 0.0003, Time: 0.4163 sec/it, Seq len: 932.5, Slide ID: 24bfb2f82ae5941e2fdcf4f75cfad2a6
+Epoch: 0, Batch: 319, Loss: 1.1656, LR: 0.0003, Time: 0.4154 sec/it, Seq len: 931.0, Slide ID: 7d0638e2cf13708c2047178ab83ba894
+Epoch: 0, Batch: 339, Loss: 1.1391, LR: 0.0004, Time: 0.4165 sec/it, Seq len: 933.4, Slide ID: 2c657f6c839abdd8fd4a6dc72dabc6ca
+Epoch: 0, Batch: 359, Loss: 1.1162, LR: 0.0004, Time: 0.4149 sec/it, Seq len: 929.6, Slide ID: 4f8506ad3366270f12cd7a31641495cb
+Epoch: 0, Batch: 379, Loss: 1.0941, LR: 0.0004, Time: 0.4134 sec/it, Seq len: 927.3, Slide ID: 8d6d8329cd0bbf6d0356b300f83d6b6a
+Epoch: 0, Batch: 399, Loss: 1.0750, LR: 0.0004, Time: 0.4144 sec/it, Seq len: 928.7, Slide ID: e3a820d374f2edeaaa719da212253d51
+Epoch: 0, Batch: 419, Loss: 1.0573, LR: 0.0004, Time: 0.4151 sec/it, Seq len: 930.8, Slide ID: 57ac237fd7804341517927ced4353c71
+Epoch: 0, Batch: 439, Loss: 1.0396, LR: 0.0005, Time: 0.4156 sec/it, Seq len: 931.2, Slide ID: d6e2813cc756a36cfee90e87cc0b0d06
+Epoch: 0, Batch: 459, Loss: 1.0186, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 932.5, Slide ID: 6db274a56e9de1e7a876bb1b53aa8eed
+Epoch: 0, Loss: 0.0910
+Epoch: 0, Loss: 0.7040, AUROC: 0.9349, ACC: 0.7159, BACC: 0.6585, qwk: 0.9154
+Epoch: 1
+Epoch: 1, Batch: 19, Loss: 0.7135, LR: 0.0005, Time: 0.4920 sec/it, Seq len: 1033.7, Slide ID: 54126c6e72a07999bc079390f3af679b
+Epoch: 1, Batch: 39, Loss: 0.6456, LR: 0.0005, Time: 0.4674 sec/it, Seq len: 1010.5, Slide ID: 76555861e947185a4e4db0bc8ddf5462
+Epoch: 1, Batch: 59, Loss: 0.6337, LR: 0.0005, Time: 0.4473 sec/it, Seq len: 980.7, Slide ID: 3c8b636f1d0af8f8e4d5cfa2479b4069
+Epoch: 1, Batch: 79, Loss: 0.6459, LR: 0.0005, Time: 0.4489 sec/it, Seq len: 991.0, Slide ID: b49cf4744ad7bde55eb848c822b457fd
+Epoch: 1, Batch: 99, Loss: 0.6472, LR: 0.0005, Time: 0.4309 sec/it, Seq len: 954.2, Slide ID: 673c469c5864d8d50afe935a7bdc1935
+Epoch: 1, Batch: 119, Loss: 0.6415, LR: 0.0005, Time: 0.4282 sec/it, Seq len: 948.0, Slide ID: d2a97eb750bf080454727f8b67a69d92
+Epoch: 1, Batch: 139, Loss: 0.6311, LR: 0.0005, Time: 0.4237 sec/it, Seq len: 939.5, Slide ID: ab9737067730d88528e4f08a6ca140eb
+Epoch: 1, Batch: 159, Loss: 0.6224, LR: 0.0005, Time: 0.4159 sec/it, Seq len: 924.5, Slide ID: 1eab1d74f5c90e353ce5f4440b502bc3
+Epoch: 1, Batch: 179, Loss: 0.6185, LR: 0.0005, Time: 0.4168 sec/it, Seq len: 926.0, Slide ID: d02c1da03b5ef4fb5ea6b793a3c1fc79
+Epoch: 1, Batch: 199, Loss: 0.6201, LR: 0.0005, Time: 0.4204 sec/it, Seq len: 932.2, Slide ID: 8d2d81395c6a14a4683d92b7db8bf18b
+Epoch: 1, Batch: 219, Loss: 0.6192, LR: 0.0005, Time: 0.4185 sec/it, Seq len: 928.2, Slide ID: 40c4b095b9c36b452a0de20e95f04969
+Epoch: 1, Batch: 239, Loss: 0.6152, LR: 0.0005, Time: 0.4195 sec/it, Seq len: 932.7, Slide ID: fb61f2df28791cf878406496100a8c95
+Epoch: 1, Batch: 259, Loss: 0.6178, LR: 0.0005, Time: 0.4163 sec/it, Seq len: 926.9, Slide ID: 746223e2679f7697dc6b6aad326a01df
+Epoch: 1, Batch: 279, Loss: 0.6199, LR: 0.0005, Time: 0.4155 sec/it, Seq len: 925.7, Slide ID: dfe7fbb735eb6236b19003fa50ac45d1
+Epoch: 1, Batch: 299, Loss: 0.6134, LR: 0.0005, Time: 0.4152 sec/it, Seq len: 924.6, Slide ID: 35f629e359399d425289242b698b3f66
+Epoch: 1, Batch: 319, Loss: 0.6093, LR: 0.0005, Time: 0.4138 sec/it, Seq len: 922.2, Slide ID: b9be346a547053539266d97872b5c7ab
+Epoch: 1, Batch: 339, Loss: 0.6055, LR: 0.0005, Time: 0.4133 sec/it, Seq len: 921.5, Slide ID: 8b36508994d132ac03c5effd255b6eaf
+Epoch: 1, Batch: 359, Loss: 0.6015, LR: 0.0005, Time: 0.4135 sec/it, Seq len: 922.2, Slide ID: 7269db31c46c18a2c42711373b7ac592
+Epoch: 1, Batch: 379, Loss: 0.5982, LR: 0.0005, Time: 0.4125 sec/it, Seq len: 921.4, Slide ID: af71c423997e01b837567d16bcced649
+Epoch: 1, Batch: 399, Loss: 0.5965, LR: 0.0005, Time: 0.4116 sec/it, Seq len: 919.3, Slide ID: aaef504823a0043ebc6063bc805baa38
+Epoch: 1, Batch: 419, Loss: 0.5964, LR: 0.0005, Time: 0.4127 sec/it, Seq len: 922.5, Slide ID: bf3467b7d71484452bc834d55ecc88c0
+Epoch: 1, Batch: 439, Loss: 0.5921, LR: 0.0005, Time: 0.4119 sec/it, Seq len: 920.5, Slide ID: 21c61eab96e1f16d7caf28a6645c22fa
+Epoch: 1, Batch: 459, Loss: 0.5950, LR: 0.0005, Time: 0.4125 sec/it, Seq len: 922.2, Slide ID: df3d9c53189dd95a5888480835d341a9
+Epoch: 1, Loss: 0.0649
+Epoch: 1, Loss: 0.6811, AUROC: 0.9463, ACC: 0.7117, BACC: 0.6695, qwk: 0.9064
+Epoch: 2
+Epoch: 2, Batch: 19, Loss: 0.5591, LR: 0.0005, Time: 0.4706 sec/it, Seq len: 995.5, Slide ID: f327a26eac60aff04d28d21df275b52e
+Epoch: 2, Batch: 39, Loss: 0.5133, LR: 0.0005, Time: 0.4302 sec/it, Seq len: 941.0, Slide ID: ba3bb9804f760a2f417cb680d4598573
+Epoch: 2, Batch: 59, Loss: 0.4990, LR: 0.0005, Time: 0.4258 sec/it, Seq len: 943.7, Slide ID: 251e12eeb15fcbbd0a39cd7928c74345
+Epoch: 2, Batch: 79, Loss: 0.4910, LR: 0.0005, Time: 0.4355 sec/it, Seq len: 965.3, Slide ID: b75dff02d2f6c823b0a475ce346be0fb
+Epoch: 2, Batch: 99, Loss: 0.5095, LR: 0.0005, Time: 0.4280 sec/it, Seq len: 950.1, Slide ID: 9c37ba42f856303b343aa8b26989cdcb
+Epoch: 2, Batch: 119, Loss: 0.4987, LR: 0.0005, Time: 0.4250 sec/it, Seq len: 944.8, Slide ID: e8b5dc4dc51b355c689b8bed7d8cc7c1
+Epoch: 2, Batch: 139, Loss: 0.5141, LR: 0.0005, Time: 0.4187 sec/it, Seq len: 933.4, Slide ID: 150fa2f94a0066c9e5d2a604f90a5b82
+Epoch: 2, Batch: 159, Loss: 0.5076, LR: 0.0005, Time: 0.4160 sec/it, Seq len: 927.5, Slide ID: a57fce3a0a40fcdd2683b9c24739dd7f
+Epoch: 2, Batch: 179, Loss: 0.5044, LR: 0.0005, Time: 0.4173 sec/it, Seq len: 930.0, Slide ID: 3a624ae0d560c6d61d4143a5f90bd801
+Epoch: 2, Batch: 199, Loss: 0.5008, LR: 0.0005, Time: 0.4146 sec/it, Seq len: 923.7, Slide ID: edcf77f422b243fc13c1050ddfb264b7
+Epoch: 2, Batch: 219, Loss: 0.5019, LR: 0.0005, Time: 0.4166 sec/it, Seq len: 927.3, Slide ID: 37bcf02187f518f188dc8d97038f3e84
+Epoch: 2, Batch: 239, Loss: 0.4964, LR: 0.0005, Time: 0.4176 sec/it, Seq len: 928.9, Slide ID: 944993e4e26b18e41b3693a4095cbf77
+Epoch: 2, Batch: 259, Loss: 0.4971, LR: 0.0005, Time: 0.4165 sec/it, Seq len: 926.2, Slide ID: d27cfb2b30e4b435f0d0e38997050988
+Epoch: 2, Batch: 279, Loss: 0.4958, LR: 0.0005, Time: 0.4190 sec/it, Seq len: 932.4, Slide ID: 9817b2ffd97c44aba650bb86f4ab1b27
+Epoch: 2, Batch: 299, Loss: 0.4986, LR: 0.0005, Time: 0.4169 sec/it, Seq len: 928.4, Slide ID: 3b56a9aa8513f7510315549ac025c54c
+Epoch: 2, Batch: 319, Loss: 0.5000, LR: 0.0005, Time: 0.4141 sec/it, Seq len: 923.4, Slide ID: 7a40364bb1370598575caac647f1635f
+Epoch: 2, Batch: 339, Loss: 0.5026, LR: 0.0005, Time: 0.4110 sec/it, Seq len: 917.6, Slide ID: 4020266ddfa512a56569cabefdf652dd
+Epoch: 2, Batch: 359, Loss: 0.5013, LR: 0.0005, Time: 0.4124 sec/it, Seq len: 920.4, Slide ID: aa8ee3fd85494e92cc6595f97d42dc6a
+Epoch: 2, Batch: 379, Loss: 0.4988, LR: 0.0005, Time: 0.4137 sec/it, Seq len: 923.3, Slide ID: 373c3e3962c89a016c118cd3b4dac926
+Epoch: 2, Batch: 399, Loss: 0.5026, LR: 0.0005, Time: 0.4141 sec/it, Seq len: 924.4, Slide ID: 418e1cef9d164228667371028ca7071c
+Epoch: 2, Batch: 419, Loss: 0.4991, LR: 0.0005, Time: 0.4169 sec/it, Seq len: 930.0, Slide ID: 82dd91dc60d7a36257237f229df31b70
+Epoch: 2, Batch: 439, Loss: 0.4981, LR: 0.0005, Time: 0.4162 sec/it, Seq len: 927.8, Slide ID: c8c464afaf408f2aecdf7744071b52af
+Epoch: 2, Batch: 459, Loss: 0.4986, LR: 0.0005, Time: 0.4157 sec/it, Seq len: 926.9, Slide ID: 773e080a5857ba8c0669c435af2f1095
+Epoch: 2, Loss: 0.0320
+Epoch: 2, Loss: 0.6326, AUROC: 0.9523, ACC: 0.7589, BACC: 0.6836, qwk: 0.9225
+Epoch: 3
+Epoch: 3, Batch: 19, Loss: 0.4270, LR: 0.0005, Time: 0.4871 sec/it, Seq len: 1026.2, Slide ID: e2a6089e7ab388ec71e7b25fa46969e0
+Epoch: 3, Batch: 39, Loss: 0.4297, LR: 0.0005, Time: 0.4571 sec/it, Seq len: 992.0, Slide ID: 589ce42577588f51fa6d8de876b55dbc
+Epoch: 3, Batch: 59, Loss: 0.4155, LR: 0.0005, Time: 0.4567 sec/it, Seq len: 1001.0, Slide ID: cdf16b2ead8765e75813e2071d14965e
+Epoch: 3, Batch: 79, Loss: 0.4089, LR: 0.0005, Time: 0.4485 sec/it, Seq len: 986.9, Slide ID: 4444987df780434b2dba8306b086fd64
+Epoch: 3, Batch: 99, Loss: 0.4136, LR: 0.0005, Time: 0.4442 sec/it, Seq len: 979.5, Slide ID: 2f4f8ac22786b2606a4e307d9cb116e0
+Epoch: 3, Batch: 119, Loss: 0.4083, LR: 0.0005, Time: 0.4354 sec/it, Seq len: 963.9, Slide ID: f3273751f723042683d45d00d3880c8c
+Epoch: 3, Batch: 139, Loss: 0.3948, LR: 0.0005, Time: 0.4336 sec/it, Seq len: 961.4, Slide ID: f9c0aa4cd5ad8ff43fcd67fd626964b0
+Epoch: 3, Batch: 159, Loss: 0.3880, LR: 0.0005, Time: 0.4336 sec/it, Seq len: 960.7, Slide ID: ffaf4de97335595fb711d3985523106a
+Epoch: 3, Batch: 179, Loss: 0.4019, LR: 0.0005, Time: 0.4279 sec/it, Seq len: 949.8, Slide ID: 8ff2a1df0aa706eb728a63c4724c0e87
+Epoch: 3, Batch: 199, Loss: 0.4098, LR: 0.0005, Time: 0.4286 sec/it, Seq len: 949.8, Slide ID: f8bfe4f06fbff1742696513467bc7ef4
+Epoch: 3, Batch: 219, Loss: 0.4206, LR: 0.0005, Time: 0.4244 sec/it, Seq len: 942.7, Slide ID: cf385dd3211d78cdcfa8c90c2bab5b37
+Epoch: 3, Batch: 239, Loss: 0.4214, LR: 0.0005, Time: 0.4247 sec/it, Seq len: 942.9, Slide ID: bde972923c4b9cee7d3e2a0661f21583
+Epoch: 3, Batch: 259, Loss: 0.4228, LR: 0.0005, Time: 0.4216 sec/it, Seq len: 937.5, Slide ID: 45de9b11fe9e7be0cfa1501034111d11
+Epoch: 3, Batch: 279, Loss: 0.4243, LR: 0.0005, Time: 0.4226 sec/it, Seq len: 938.5, Slide ID: 45910500e405b732fd6c0d50c921e3f4
+Epoch: 3, Batch: 299, Loss: 0.4183, LR: 0.0005, Time: 0.4224 sec/it, Seq len: 939.0, Slide ID: 7d67b112699b40dba45702d5c93cdc18
+Epoch: 3, Batch: 319, Loss: 0.4201, LR: 0.0005, Time: 0.4207 sec/it, Seq len: 935.4, Slide ID: 462d4231224f8acdc85dc9449f803a2d
+Epoch: 3, Batch: 339, Loss: 0.4202, LR: 0.0005, Time: 0.4180 sec/it, Seq len: 929.8, Slide ID: 03ca7f8d8c993d3959daf10ef57f4489
+Epoch: 3, Batch: 359, Loss: 0.4208, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 926.6, Slide ID: 074d9f9ceede2e4fad8aec367a335a77
+Epoch: 3, Batch: 379, Loss: 0.4206, LR: 0.0005, Time: 0.4166 sec/it, Seq len: 927.7, Slide ID: 31fd11d1920dede9f0fa0dcb35baa34e
+Epoch: 3, Batch: 399, Loss: 0.4188, LR: 0.0005, Time: 0.4169 sec/it, Seq len: 927.8, Slide ID: 61ebefee1266d2cfcc7c0d23cc66062a
+Epoch: 3, Batch: 419, Loss: 0.4186, LR: 0.0005, Time: 0.4171 sec/it, Seq len: 928.8, Slide ID: e1ef8bc2099822e6b6872bbbf8b601ff
+Epoch: 3, Batch: 439, Loss: 0.4183, LR: 0.0005, Time: 0.4160 sec/it, Seq len: 926.9, Slide ID: 7a30bf7084d9236f6ecd0474f45fe1cf
+Epoch: 3, Batch: 459, Loss: 0.4197, LR: 0.0005, Time: 0.4167 sec/it, Seq len: 928.7, Slide ID: 4cbde67c6d4feb90b93497fa08b413f7
+Epoch: 3, Loss: 0.0565
+Epoch: 3, Loss: 0.5362, AUROC: 0.9607, ACC: 0.8008, BACC: 0.7373, qwk: 0.9440
+Epoch: 4
+Epoch: 4, Batch: 19, Loss: 0.3585, LR: 0.0005, Time: 0.4201 sec/it, Seq len: 877.9, Slide ID: cbf05dbfcf24b4fc7dded902c1ac37e3
+Epoch: 4, Batch: 39, Loss: 0.3428, LR: 0.0005, Time: 0.4143 sec/it, Seq len: 896.2, Slide ID: 35f629e359399d425289242b698b3f66
+Epoch: 4, Batch: 59, Loss: 0.3387, LR: 0.0005, Time: 0.4086 sec/it, Seq len: 895.6, Slide ID: 91ddec6cba7af9cfefc2ba5317d5f87b
+Epoch: 4, Batch: 79, Loss: 0.3369, LR: 0.0005, Time: 0.4060 sec/it, Seq len: 896.1, Slide ID: ba42e3610dee7ac11740da6709ca5161
+Epoch: 4, Batch: 99, Loss: 0.3424, LR: 0.0005, Time: 0.4141 sec/it, Seq len: 915.8, Slide ID: 7b5b2d7f86f7725b0ea4f0ed3b4807de
+Epoch: 4, Batch: 119, Loss: 0.3380, LR: 0.0005, Time: 0.4103 sec/it, Seq len: 910.4, Slide ID: 87a463cb0b4da2f78e25cd0986475367
+Epoch: 4, Batch: 139, Loss: 0.3442, LR: 0.0005, Time: 0.4096 sec/it, Seq len: 909.7, Slide ID: caaf2645fd3ea43541dad8081e351689
+Epoch: 4, Batch: 159, Loss: 0.3470, LR: 0.0005, Time: 0.4091 sec/it, Seq len: 910.2, Slide ID: 04201ee15d33abe4b032317792cf1040
+Epoch: 4, Batch: 179, Loss: 0.3528, LR: 0.0005, Time: 0.4098 sec/it, Seq len: 914.0, Slide ID: a3abbe79d581ceec56f3be32f1fd145e
+Epoch: 4, Batch: 199, Loss: 0.3495, LR: 0.0005, Time: 0.4091 sec/it, Seq len: 913.6, Slide ID: 146fdf9cb391b6199413967a26ee3305
+Epoch: 4, Batch: 219, Loss: 0.3501, LR: 0.0005, Time: 0.4088 sec/it, Seq len: 913.9, Slide ID: 5123de8a47c1584b66fea313adb4e2d3
+Epoch: 4, Batch: 239, Loss: 0.3535, LR: 0.0005, Time: 0.4115 sec/it, Seq len: 920.0, Slide ID: df1d13f0a3ef304032c1c34ff18a8d52
+Epoch: 4, Batch: 259, Loss: 0.3641, LR: 0.0005, Time: 0.4117 sec/it, Seq len: 919.8, Slide ID: e702bc96a10e3ff51dca2e8eef71e4af
+Epoch: 4, Batch: 279, Loss: 0.3711, LR: 0.0005, Time: 0.4153 sec/it, Seq len: 926.0, Slide ID: 7e26b6fec976755158177577cf4c9183
+Epoch: 4, Batch: 299, Loss: 0.3757, LR: 0.0005, Time: 0.4153 sec/it, Seq len: 926.2, Slide ID: 00a26aaa82c959624d90dfb69fcf259c
+Epoch: 4, Batch: 319, Loss: 0.3778, LR: 0.0005, Time: 0.4143 sec/it, Seq len: 924.2, Slide ID: c4cba053efafeac85ec882e30ac6e498
+Epoch: 4, Batch: 339, Loss: 0.3778, LR: 0.0005, Time: 0.4132 sec/it, Seq len: 921.4, Slide ID: cdd5b7d07b98f61d3668207531b4de07
+Epoch: 4, Batch: 359, Loss: 0.3774, LR: 0.0005, Time: 0.4144 sec/it, Seq len: 924.1, Slide ID: c7b5025d6ca0352a9feb0b83f3ecf231
+Epoch: 4, Batch: 379, Loss: 0.3799, LR: 0.0005, Time: 0.4132 sec/it, Seq len: 921.5, Slide ID: 99ecaa4a61fc527057721723247a099b
+Epoch: 4, Batch: 399, Loss: 0.3802, LR: 0.0005, Time: 0.4149 sec/it, Seq len: 924.3, Slide ID: aaee8c7e09fa4b50c160acd7e3302cfd
+Epoch: 4, Batch: 419, Loss: 0.3775, LR: 0.0005, Time: 0.4149 sec/it, Seq len: 924.3, Slide ID: cd40065527f49b4473f05e0db148d04a
+Epoch: 4, Batch: 439, Loss: 0.3754, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 926.5, Slide ID: c8c464afaf408f2aecdf7744071b52af
+Epoch: 4, Batch: 459, Loss: 0.3766, LR: 0.0005, Time: 0.4163 sec/it, Seq len: 928.1, Slide ID: c484a9ae47f9d99bbeb8f249cbdf4b88
+Epoch: 4, Loss: 0.0207
+Epoch: 4, Loss: 0.6288, AUROC: 0.9547, ACC: 0.7694, BACC: 0.7338, qwk: 0.9415
+Epoch: 5
+Epoch: 5, Batch: 19, Loss: 0.3017, LR: 0.0005, Time: 0.5016 sec/it, Seq len: 1023.8, Slide ID: f079a9a9d4c30cbdc55917df9f5f6541
+Epoch: 5, Batch: 39, Loss: 0.3314, LR: 0.0005, Time: 0.4383 sec/it, Seq len: 939.7, Slide ID: f3276b69be32b65b65d890154839fdc1
+Epoch: 5, Batch: 59, Loss: 0.3240, LR: 0.0005, Time: 0.4386 sec/it, Seq len: 954.7, Slide ID: 8f264374ed3fa427615c1650218e7f21
+Epoch: 5, Batch: 79, Loss: 0.3166, LR: 0.0005, Time: 0.4252 sec/it, Seq len: 932.9, Slide ID: 6dd17a51485e289e4373d5129cf3cc6c
+Epoch: 5, Batch: 99, Loss: 0.3359, LR: 0.0005, Time: 0.4225 sec/it, Seq len: 929.6, Slide ID: 6ef357192c2530ee54e1bd38a3231e00
+Epoch: 5, Batch: 119, Loss: 0.3372, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 918.3, Slide ID: 3a9d5791b0cc64ff0dae5dd26e6006ab
+Epoch: 5, Batch: 139, Loss: 0.3422, LR: 0.0005, Time: 0.4219 sec/it, Seq len: 931.1, Slide ID: 9d71b6e91cbc9477bc21247c3c13fb4d
+Epoch: 5, Batch: 159, Loss: 0.3415, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 918.9, Slide ID: ffc70bf605de30aaa936533397a29d9c
+Epoch: 5, Batch: 179, Loss: 0.3372, LR: 0.0005, Time: 0.4111 sec/it, Seq len: 912.2, Slide ID: 6a523275e30b19c0390655b278716b58
+Epoch: 5, Batch: 199, Loss: 0.3335, LR: 0.0005, Time: 0.4152 sec/it, Seq len: 921.2, Slide ID: 9469e763e512e05eca69e2e28b6f4ef7
+Epoch: 5, Batch: 219, Loss: 0.3299, LR: 0.0005, Time: 0.4189 sec/it, Seq len: 930.0, Slide ID: 4f7748b6eb69e97cb9c7d4c00cf3a1d3
+Epoch: 5, Batch: 239, Loss: 0.3262, LR: 0.0005, Time: 0.4182 sec/it, Seq len: 929.2, Slide ID: c5bc1e0b75ef839ab9ea078324f0f272
+Epoch: 5, Batch: 259, Loss: 0.3228, LR: 0.0005, Time: 0.4189 sec/it, Seq len: 931.2, Slide ID: 4b52b93ed731f336f444a24e1bf2dca2
+Epoch: 5, Batch: 279, Loss: 0.3166, LR: 0.0005, Time: 0.4181 sec/it, Seq len: 930.7, Slide ID: 74c2ad4cf2820e6ede00c6c4fb3e4ab2
+Epoch: 5, Batch: 299, Loss: 0.3137, LR: 0.0005, Time: 0.4187 sec/it, Seq len: 932.7, Slide ID: 18675435ced259b2f843fd3022c1e725
+Epoch: 5, Batch: 319, Loss: 0.3180, LR: 0.0005, Time: 0.4205 sec/it, Seq len: 935.5, Slide ID: f6b6d03d15615dd9affb3b3c77347747
+Epoch: 5, Batch: 339, Loss: 0.3163, LR: 0.0005, Time: 0.4186 sec/it, Seq len: 931.3, Slide ID: 530d4ae320630f972f49d861a4724fb1
+Epoch: 5, Batch: 359, Loss: 0.3182, LR: 0.0005, Time: 0.4183 sec/it, Seq len: 931.6, Slide ID: 1d7d62aa2c349f831a43aa023412bd1c
+Epoch: 5, Batch: 379, Loss: 0.3181, LR: 0.0005, Time: 0.4182 sec/it, Seq len: 931.0, Slide ID: 2905dd802e34908ca5fc64e3d08af1b6
+Epoch: 5, Batch: 399, Loss: 0.3169, LR: 0.0005, Time: 0.4175 sec/it, Seq len: 930.1, Slide ID: 7ad575414ac3516485d5ed13602aa8b8
+Epoch: 5, Batch: 419, Loss: 0.3176, LR: 0.0005, Time: 0.4202 sec/it, Seq len: 936.8, Slide ID: 0a90f3a47f1d9bccee4f6ab1a716839f
+Epoch: 5, Batch: 439, Loss: 0.3196, LR: 0.0005, Time: 0.4196 sec/it, Seq len: 934.8, Slide ID: 4b4d285f54bf258327be795dba6ad9e7
+Epoch: 5, Batch: 459, Loss: 0.3264, LR: 0.0005, Time: 0.4193 sec/it, Seq len: 934.5, Slide ID: dacdcb2643b7fb7038e1f41cb31b4932
+Epoch: 5, Loss: 0.0867
+Epoch: 5, Loss: 0.6365, AUROC: 0.9562, ACC: 0.7516, BACC: 0.7241, qwk: 0.9381
+Epoch: 6
+Epoch: 6, Batch: 19, Loss: 0.3950, LR: 0.0005, Time: 0.4472 sec/it, Seq len: 928.8, Slide ID: 7f68f25905c0dea4a017fb78e1c61b21
+Epoch: 6, Batch: 39, Loss: 0.3495, LR: 0.0005, Time: 0.4193 sec/it, Seq len: 909.3, Slide ID: 7f2957d2c7e3d8aaa8a74f8191b22a33
+Epoch: 6, Batch: 59, Loss: 0.3467, LR: 0.0005, Time: 0.4167 sec/it, Seq len: 911.8, Slide ID: 49764620319a820dfd2e6738861b1aa0
+Epoch: 6, Batch: 79, Loss: 0.3343, LR: 0.0005, Time: 0.4036 sec/it, Seq len: 889.8, Slide ID: ee61886bdebe2748009da564edb587cc
+Epoch: 6, Batch: 99, Loss: 0.3099, LR: 0.0005, Time: 0.3993 sec/it, Seq len: 884.9, Slide ID: fc841358b1ae7c119b6224d0076046f4
+Epoch: 6, Batch: 119, Loss: 0.2915, LR: 0.0005, Time: 0.4060 sec/it, Seq len: 900.0, Slide ID: b06049ce3ec82f00aebdc4e368edc90f
+Epoch: 6, Batch: 139, Loss: 0.2858, LR: 0.0005, Time: 0.4041 sec/it, Seq len: 895.7, Slide ID: 2c17d73eaffa2997a47e75019abadae5
+Epoch: 6, Batch: 159, Loss: 0.2903, LR: 0.0005, Time: 0.4076 sec/it, Seq len: 905.8, Slide ID: c9bcd1d4867a43cec02af7f3b555709f
+Epoch: 6, Batch: 179, Loss: 0.2822, LR: 0.0005, Time: 0.4067 sec/it, Seq len: 904.7, Slide ID: 96fe9eb038ba77992ff6fd1b16ae9427
+Epoch: 6, Batch: 199, Loss: 0.2880, LR: 0.0005, Time: 0.4047 sec/it, Seq len: 900.8, Slide ID: 69a4552b4624ba6c770a637769fb5d4f
+Epoch: 6, Batch: 219, Loss: 0.2806, LR: 0.0005, Time: 0.4037 sec/it, Seq len: 899.8, Slide ID: 402e98804850c7e2ba7fc6d4f7e9ba99
+Epoch: 6, Batch: 239, Loss: 0.2825, LR: 0.0005, Time: 0.4040 sec/it, Seq len: 899.6, Slide ID: 340517b590a8d20a3c8a13c8d3df4099
+Epoch: 6, Batch: 259, Loss: 0.2743, LR: 0.0005, Time: 0.4033 sec/it, Seq len: 898.2, Slide ID: 3ccec5ef9dcb8b71c538f0e893f1d563
+Epoch: 6, Batch: 279, Loss: 0.2700, LR: 0.0005, Time: 0.4048 sec/it, Seq len: 901.5, Slide ID: 4313f4ba54009133d60474a50f5286ac
+Epoch: 6, Batch: 299, Loss: 0.2721, LR: 0.0005, Time: 0.4054 sec/it, Seq len: 904.2, Slide ID: a9001c117730dcb698f2186402a5c697
+Epoch: 6, Batch: 319, Loss: 0.2713, LR: 0.0005, Time: 0.4087 sec/it, Seq len: 911.9, Slide ID: dff54f797769512965d5e494c0339a3b
+Epoch: 6, Batch: 339, Loss: 0.2704, LR: 0.0005, Time: 0.4128 sec/it, Seq len: 921.4, Slide ID: 721c5739be68d229d30b8a616886a17f
+Epoch: 6, Batch: 359, Loss: 0.2675, LR: 0.0005, Time: 0.4144 sec/it, Seq len: 924.1, Slide ID: 9144106abaaa37336cad2f4ef72d3fdc
+Epoch: 6, Batch: 379, Loss: 0.2670, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 926.0, Slide ID: 51ad0c34db40ecea345bd236745f03be
+Epoch: 6, Batch: 399, Loss: 0.2676, LR: 0.0005, Time: 0.4159 sec/it, Seq len: 928.0, Slide ID: 08b04f43997889865568c2c0d7bba8ab
+Epoch: 6, Batch: 419, Loss: 0.2668, LR: 0.0005, Time: 0.4170 sec/it, Seq len: 930.9, Slide ID: 2b4d629c0b0a02ddfb05cc41c0c8dc65
+Epoch: 6, Batch: 439, Loss: 0.2647, LR: 0.0005, Time: 0.4155 sec/it, Seq len: 927.9, Slide ID: fd3c8b1c5a38cfffb52d1d5729a10809
+Epoch: 6, Batch: 459, Loss: 0.2659, LR: 0.0005, Time: 0.4156 sec/it, Seq len: 928.4, Slide ID: 33704cffb452193742ff3ddb420ea9e5
+Epoch: 6, Loss: 0.0204
+Epoch: 6, Loss: 0.6465, AUROC: 0.9604, ACC: 0.7925, BACC: 0.7457, qwk: 0.9408
+Epoch: 7
+Epoch: 7, Batch: 19, Loss: 0.1933, LR: 0.0005, Time: 0.4650 sec/it, Seq len: 974.2, Slide ID: bf2c8f063896d5f3ca2a0f2b4d70f825
+Epoch: 7, Batch: 39, Loss: 0.2023, LR: 0.0005, Time: 0.4377 sec/it, Seq len: 946.8, Slide ID: 3dab3238ef15a3c5b3d43e0b777073a5
+Epoch: 7, Batch: 59, Loss: 0.2396, LR: 0.0005, Time: 0.4338 sec/it, Seq len: 952.2, Slide ID: b4714bdc3d893bc158efe750a60d6de6
+Epoch: 7, Batch: 79, Loss: 0.2508, LR: 0.0005, Time: 0.4337 sec/it, Seq len: 960.3, Slide ID: a8d547b83d523669de401e539503ab03
+Epoch: 7, Batch: 99, Loss: 0.2543, LR: 0.0005, Time: 0.4464 sec/it, Seq len: 988.7, Slide ID: 087fd9ebfe6fa82728be6c7eabe1d4e4
+Epoch: 7, Batch: 119, Loss: 0.2594, LR: 0.0005, Time: 0.4375 sec/it, Seq len: 971.5, Slide ID: bca92627fd1a1e37630c13079cb10b4f
+Epoch: 7, Batch: 139, Loss: 0.2558, LR: 0.0005, Time: 0.4355 sec/it, Seq len: 967.1, Slide ID: 4cc466d486f1c68f746711866425db74
+Epoch: 7, Batch: 159, Loss: 0.2646, LR: 0.0005, Time: 0.4329 sec/it, Seq len: 961.2, Slide ID: e9b23d50388ce76955b95f482e892f5b
+Epoch: 7, Batch: 179, Loss: 0.2646, LR: 0.0005, Time: 0.4304 sec/it, Seq len: 955.8, Slide ID: f0a73ffe7d71950702ebd0ef7efa86cb
+Epoch: 7, Batch: 199, Loss: 0.2638, LR: 0.0005, Time: 0.4290 sec/it, Seq len: 952.2, Slide ID: ebd6034772ec8ea179c5a1802c6b886e
+Epoch: 7, Batch: 219, Loss: 0.2586, LR: 0.0005, Time: 0.4274 sec/it, Seq len: 948.8, Slide ID: f7a72aee39b9551a4027fd7db0ef8d7e
+Epoch: 7, Batch: 239, Loss: 0.2549, LR: 0.0005, Time: 0.4266 sec/it, Seq len: 946.7, Slide ID: 6d1a11077fe4183a4109d649cf319923
+Epoch: 7, Batch: 259, Loss: 0.2499, LR: 0.0005, Time: 0.4241 sec/it, Seq len: 941.8, Slide ID: 74322183fb32bc720347884f80985c40
+Epoch: 7, Batch: 279, Loss: 0.2420, LR: 0.0005, Time: 0.4237 sec/it, Seq len: 940.8, Slide ID: e62a7175ca466fb365631d124972c0a8
+Epoch: 7, Batch: 299, Loss: 0.2433, LR: 0.0005, Time: 0.4202 sec/it, Seq len: 934.2, Slide ID: 468a129567112962f29931a4f8131587
+Epoch: 7, Batch: 319, Loss: 0.2390, LR: 0.0005, Time: 0.4174 sec/it, Seq len: 929.2, Slide ID: 30379b51a55f270ba254de56f795af5f
+Epoch: 7, Batch: 339, Loss: 0.2393, LR: 0.0005, Time: 0.4158 sec/it, Seq len: 926.7, Slide ID: b8affdee909004e05802b957c7d6e61c
+Epoch: 7, Batch: 359, Loss: 0.2375, LR: 0.0005, Time: 0.4154 sec/it, Seq len: 926.4, Slide ID: 603ae4e9d3655f21702d565d880f626c
+Epoch: 7, Batch: 379, Loss: 0.2342, LR: 0.0005, Time: 0.4154 sec/it, Seq len: 926.5, Slide ID: 1b86a85640e5832e6b27d89c8f99adf9
+Epoch: 7, Batch: 399, Loss: 0.2351, LR: 0.0005, Time: 0.4146 sec/it, Seq len: 924.3, Slide ID: ef928aed9549e5dea8d67c57fb79e45f
+Epoch: 7, Batch: 419, Loss: 0.2333, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 925.1, Slide ID: ec3f8f4e374dd25c308d7c4081c720a4
+Epoch: 7, Batch: 439, Loss: 0.2326, LR: 0.0005, Time: 0.4153 sec/it, Seq len: 925.0, Slide ID: a76cb105593aaea1617759e233fb226e
+Epoch: 7, Batch: 459, Loss: 0.2323, LR: 0.0005, Time: 0.4145 sec/it, Seq len: 923.8, Slide ID: 796470003451ea8980c4298b8413cb90
+Epoch: 7, Loss: 0.0121
+Epoch: 7, Loss: 0.7518, AUROC: 0.9572, ACC: 0.7788, BACC: 0.7114, qwk: 0.9341
+Epoch: 8
+Epoch: 8, Batch: 19, Loss: 0.1545, LR: 0.0005, Time: 0.4691 sec/it, Seq len: 983.7, Slide ID: ffcd99c47e57ad2934dc6bbf5edf6675
+Epoch: 8, Batch: 39, Loss: 0.1337, LR: 0.0005, Time: 0.4426 sec/it, Seq len: 968.2, Slide ID: 34bbbf1788a8c12eefb14f8b8ef71e79
+Epoch: 8, Batch: 59, Loss: 0.1325, LR: 0.0005, Time: 0.4217 sec/it, Seq len: 931.8, Slide ID: a639966cd3a4bf121202b3dd166c935e
+Epoch: 8, Batch: 79, Loss: 0.1376, LR: 0.0005, Time: 0.4121 sec/it, Seq len: 914.3, Slide ID: dd5c1496860cb32e24113cba850fe172
+Epoch: 8, Batch: 99, Loss: 0.1386, LR: 0.0005, Time: 0.4147 sec/it, Seq len: 924.0, Slide ID: 39b20d5c2588bafb42c5d6915de11b6b
+Epoch: 8, Batch: 119, Loss: 0.1361, LR: 0.0005, Time: 0.4089 sec/it, Seq len: 911.6, Slide ID: fc69f56c44de0538a4de4b5d1cab53aa
+Epoch: 8, Batch: 139, Loss: 0.1319, LR: 0.0005, Time: 0.4144 sec/it, Seq len: 924.7, Slide ID: 21ae1b71e4e2007a2893cbcd00c28631
+Epoch: 8, Batch: 159, Loss: 0.1302, LR: 0.0005, Time: 0.4105 sec/it, Seq len: 917.9, Slide ID: 4b4d285f54bf258327be795dba6ad9e7
+Epoch: 8, Batch: 179, Loss: 0.1353, LR: 0.0005, Time: 0.4104 sec/it, Seq len: 917.4, Slide ID: be7a589fc7d001393041a9a2fc9c9c5d
+Epoch: 8, Batch: 199, Loss: 0.1427, LR: 0.0005, Time: 0.4116 sec/it, Seq len: 917.7, Slide ID: 45a7e6d72747faea42960c2f8d8b87ad
+Epoch: 8, Batch: 219, Loss: 0.1475, LR: 0.0005, Time: 0.4154 sec/it, Seq len: 926.8, Slide ID: 6f56626692cd29912c0eac773b21dcbf
+Epoch: 8, Batch: 239, Loss: 0.1497, LR: 0.0005, Time: 0.4141 sec/it, Seq len: 923.4, Slide ID: d649e2e797bbcf9678e13cdb008ace71
+Epoch: 8, Batch: 259, Loss: 0.1507, LR: 0.0005, Time: 0.4157 sec/it, Seq len: 927.0, Slide ID: 785b6f565b34da9587a5fc441edbd49b
+Epoch: 8, Batch: 279, Loss: 0.1512, LR: 0.0005, Time: 0.4146 sec/it, Seq len: 924.5, Slide ID: 025a65c53cd655151b9ff1b9518aa27e
+Epoch: 8, Batch: 299, Loss: 0.1557, LR: 0.0005, Time: 0.4125 sec/it, Seq len: 920.1, Slide ID: 757b7b672e19cfa1350f8477f4b5d66e
+Epoch: 8, Batch: 319, Loss: 0.1592, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 925.6, Slide ID: ade269705aa33afafa0e6af6d20db6df
+Epoch: 8, Batch: 339, Loss: 0.1643, LR: 0.0005, Time: 0.4156 sec/it, Seq len: 926.5, Slide ID: 3a58bfbbb6c7828c3bb1d4ddce641d46
+Epoch: 8, Batch: 359, Loss: 0.1708, LR: 0.0005, Time: 0.4158 sec/it, Seq len: 927.1, Slide ID: a2c484cd17f6001e7a0dae4f2f57039b
+Epoch: 8, Batch: 379, Loss: 0.1765, LR: 0.0005, Time: 0.4149 sec/it, Seq len: 925.6, Slide ID: 6f8bf6cfb0c020fdfef1ddb79a250464
+Epoch: 8, Batch: 399, Loss: 0.1806, LR: 0.0005, Time: 0.4156 sec/it, Seq len: 926.6, Slide ID: 32fcd30edb849c78bb61c64a00a0ac79
+Epoch: 8, Batch: 419, Loss: 0.1810, LR: 0.0005, Time: 0.4147 sec/it, Seq len: 925.7, Slide ID: b0f2cb16755d46186dbcd813ce76ea05
+Epoch: 8, Batch: 439, Loss: 0.1818, LR: 0.0005, Time: 0.4134 sec/it, Seq len: 923.0, Slide ID: 1e751c3e6fd07ca73ff1eb2814c5335d
+Epoch: 8, Batch: 459, Loss: 0.1844, LR: 0.0005, Time: 0.4139 sec/it, Seq len: 924.2, Slide ID: 2ff57a1bdcf1e23c8a7ee5b37e4c3aba
+Epoch: 8, Loss: 0.0137
+Epoch: 8, Loss: 0.6892, AUROC: 0.9608, ACC: 0.7788, BACC: 0.7206, qwk: 0.9395
+Epoch: 9
+Epoch: 9, Batch: 19, Loss: 0.1271, LR: 0.0005, Time: 0.4578 sec/it, Seq len: 955.8, Slide ID: 61b70ccd7da821f89bae917b204242a5
+Epoch: 9, Batch: 39, Loss: 0.1355, LR: 0.0005, Time: 0.4476 sec/it, Seq len: 969.1, Slide ID: 04e31b936f51091d43cb805a30084533
+Epoch: 9, Batch: 59, Loss: 0.1346, LR: 0.0005, Time: 0.4335 sec/it, Seq len: 955.1, Slide ID: c66e1872348e07fc4f01feeb5eecb7f8
+Epoch: 9, Batch: 79, Loss: 0.1287, LR: 0.0005, Time: 0.4163 sec/it, Seq len: 925.1, Slide ID: f52d96b6efd32aa558588dd2e8fe1dfd
+Epoch: 9, Batch: 99, Loss: 0.1211, LR: 0.0005, Time: 0.4167 sec/it, Seq len: 923.5, Slide ID: a03e7ddadc046c8eaa40c95e416ad0a8
+Epoch: 9, Batch: 119, Loss: 0.1219, LR: 0.0005, Time: 0.4187 sec/it, Seq len: 928.9, Slide ID: d0e4a4827c5ce9d7cc92f05e25674b71
+Epoch: 9, Batch: 139, Loss: 0.1224, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 923.6, Slide ID: e69f5703fc72f2b99a2cd8eef05a11e8
+Epoch: 9, Batch: 159, Loss: 0.1225, LR: 0.0005, Time: 0.4136 sec/it, Seq len: 921.5, Slide ID: 84b003f61775364863391f586bba7c6a
+Epoch: 9, Batch: 179, Loss: 0.1286, LR: 0.0005, Time: 0.4160 sec/it, Seq len: 925.9, Slide ID: 7b5c303bc727db87d76486bc15084adf
+Epoch: 9, Batch: 199, Loss: 0.1272, LR: 0.0005, Time: 0.4162 sec/it, Seq len: 925.2, Slide ID: 8cd79170b9a39ff09db077594b8ef415
+Epoch: 9, Batch: 219, Loss: 0.1232, LR: 0.0005, Time: 0.4176 sec/it, Seq len: 928.0, Slide ID: 79538de71a078ec7348f0340f8a7e995
+Epoch: 9, Batch: 239, Loss: 0.1254, LR: 0.0005, Time: 0.4198 sec/it, Seq len: 933.0, Slide ID: 6dcb18dd02dacd979a9610cc18c0d213
+Epoch: 9, Batch: 259, Loss: 0.1271, LR: 0.0005, Time: 0.4211 sec/it, Seq len: 936.0, Slide ID: 2ce35862db5e157ec48188318c015576
+Epoch: 9, Batch: 279, Loss: 0.1306, LR: 0.0005, Time: 0.4185 sec/it, Seq len: 931.2, Slide ID: 068067cb3873af5f4dcc3e5859b57991
+Epoch: 9, Batch: 299, Loss: 0.1324, LR: 0.0005, Time: 0.4207 sec/it, Seq len: 935.4, Slide ID: aad60997596c9d820acb6cb4b39a32ca
+Epoch: 9, Batch: 319, Loss: 0.1333, LR: 0.0005, Time: 0.4190 sec/it, Seq len: 931.6, Slide ID: 010670e9572e67e5a7e00fb791a343ef
+Epoch: 9, Batch: 339, Loss: 0.1336, LR: 0.0005, Time: 0.4164 sec/it, Seq len: 926.6, Slide ID: d9b2fdff45b816ec276306bb1ac2242f
+Epoch: 9, Batch: 359, Loss: 0.1375, LR: 0.0005, Time: 0.4145 sec/it, Seq len: 922.6, Slide ID: ad6e90147030566df6b1353432f41662
+Epoch: 9, Batch: 379, Loss: 0.1410, LR: 0.0005, Time: 0.4143 sec/it, Seq len: 921.9, Slide ID: 7db090c9c19ac5f8e5262833826dfa9c
+Epoch: 9, Batch: 399, Loss: 0.1451, LR: 0.0005, Time: 0.4126 sec/it, Seq len: 918.9, Slide ID: bb78a855048e4efc39c79882c6bd623b
+Epoch: 9, Batch: 419, Loss: 0.1531, LR: 0.0005, Time: 0.4123 sec/it, Seq len: 918.8, Slide ID: 71558dd96f24a06b1d3c9db21c183bd8
+Epoch: 9, Batch: 439, Loss: 0.1590, LR: 0.0005, Time: 0.4153 sec/it, Seq len: 925.6, Slide ID: f05d48bb9a4b1a9b1c6724988c2bcec0
+Epoch: 9, Batch: 459, Loss: 0.1645, LR: 0.0005, Time: 0.4153 sec/it, Seq len: 925.4, Slide ID: c3c95b4f53fd0aed77316430bdc69f81
+Epoch: 9, Loss: 0.0110
+Epoch: 9, Loss: 0.7024, AUROC: 0.9496, ACC: 0.7547, BACC: 0.6992, qwk: 0.9212
+Epoch: 10
+Epoch: 10, Batch: 19, Loss: 0.1580, LR: 0.0005, Time: 0.4632 sec/it, Seq len: 988.0, Slide ID: 00ed4dbf9af6cc102e04cc9a42b313e2
+Epoch: 10, Batch: 39, Loss: 0.1405, LR: 0.0005, Time: 0.4479 sec/it, Seq len: 975.0, Slide ID: 6fe956eb5739f0877752cba783828cd2
+Epoch: 10, Batch: 59, Loss: 0.1381, LR: 0.0005, Time: 0.4299 sec/it, Seq len: 946.6, Slide ID: 79067602aa4e5c1d6432839a07875f82
+Epoch: 10, Batch: 79, Loss: 0.1258, LR: 0.0005, Time: 0.4252 sec/it, Seq len: 941.6, Slide ID: c4cca933ba31dd08c18b9b607b73d90c
+Epoch: 10, Batch: 99, Loss: 0.1236, LR: 0.0005, Time: 0.4257 sec/it, Seq len: 944.4, Slide ID: a51ad4ec379a9209c740025a6d410708
+Epoch: 10, Batch: 119, Loss: 0.1296, LR: 0.0005, Time: 0.4274 sec/it, Seq len: 949.2, Slide ID: 19d156b7230b9379ce387261876116c5
+Epoch: 10, Batch: 139, Loss: 0.1261, LR: 0.0005, Time: 0.4260 sec/it, Seq len: 946.2, Slide ID: c34fa8189fe4e5b4995e1c14deb9f5a1
+Epoch: 10, Batch: 159, Loss: 0.1334, LR: 0.0005, Time: 0.4226 sec/it, Seq len: 940.1, Slide ID: 332db6f0f6f290e521b714b4d209ff25
+Epoch: 10, Batch: 179, Loss: 0.1405, LR: 0.0005, Time: 0.4225 sec/it, Seq len: 941.4, Slide ID: 91939627c20f2e47fa4be433363bfd6d
+Epoch: 10, Batch: 199, Loss: 0.1428, LR: 0.0005, Time: 0.4206 sec/it, Seq len: 937.2, Slide ID: 6a145f3d5ff13433f0ac7a92a7cf0bee
+Epoch: 10, Batch: 219, Loss: 0.1490, LR: 0.0005, Time: 0.4181 sec/it, Seq len: 931.8, Slide ID: a9602c1b9f465f9d3ca9f41084a6c64f
+Epoch: 10, Batch: 239, Loss: 0.1519, LR: 0.0005, Time: 0.4190 sec/it, Seq len: 934.4, Slide ID: ec98a1abb0df9d1de21534c1e40698ab
+Epoch: 10, Batch: 259, Loss: 0.1609, LR: 0.0005, Time: 0.4172 sec/it, Seq len: 930.8, Slide ID: a82ab9e22ff10be0575503d3262a1a61
+Epoch: 10, Batch: 279, Loss: 0.1629, LR: 0.0005, Time: 0.4156 sec/it, Seq len: 927.7, Slide ID: 30b5b45882af856464150d2bd86668b1
+Epoch: 10, Batch: 299, Loss: 0.1676, LR: 0.0005, Time: 0.4167 sec/it, Seq len: 929.5, Slide ID: ac115e6c259bf4b3f6f3240c26c35eab
+Epoch: 10, Batch: 319, Loss: 0.1777, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 928.5, Slide ID: 0470680842880ac7493bbf5e7cfbc26b
+Epoch: 10, Batch: 339, Loss: 0.1805, LR: 0.0005, Time: 0.4137 sec/it, Seq len: 923.7, Slide ID: 1c8a65cafba1a82092bf5ff231205f71
+Epoch: 10, Batch: 359, Loss: 0.1826, LR: 0.0005, Time: 0.4139 sec/it, Seq len: 923.2, Slide ID: 9d71b6e91cbc9477bc21247c3c13fb4d
+Epoch: 10, Batch: 379, Loss: 0.1837, LR: 0.0005, Time: 0.4130 sec/it, Seq len: 921.2, Slide ID: 891f54c0f474191384a4b5e2d97b4696
+Epoch: 10, Batch: 399, Loss: 0.1849, LR: 0.0005, Time: 0.4142 sec/it, Seq len: 924.0, Slide ID: 89ede291a13f7e38b926fc6ad5c4b959
+Epoch: 10, Batch: 419, Loss: 0.1844, LR: 0.0005, Time: 0.4140 sec/it, Seq len: 924.3, Slide ID: 8d26d0a42e1e8cc6e77979f84c811ac3
+Epoch: 10, Batch: 439, Loss: 0.1834, LR: 0.0005, Time: 0.4154 sec/it, Seq len: 926.9, Slide ID: 1efeb4184829ebaa4d10c223e73c5d4f
+Epoch: 10, Batch: 459, Loss: 0.1823, LR: 0.0005, Time: 0.4140 sec/it, Seq len: 924.5, Slide ID: 9c37ba42f856303b343aa8b26989cdcb
+Epoch: 10, Loss: 0.0268
+Epoch: 10, Loss: 0.8379, AUROC: 0.9584, ACC: 0.7872, BACC: 0.7386, qwk: 0.9424
+Epoch: 11
+Epoch: 11, Batch: 19, Loss: 0.0753, LR: 0.0005, Time: 0.4641 sec/it, Seq len: 971.8, Slide ID: 15a585235227d24cba1043ec9ab1928d
+Epoch: 11, Batch: 39, Loss: 0.1033, LR: 0.0005, Time: 0.4366 sec/it, Seq len: 950.6, Slide ID: 8a3232e8b3b2512f2f6cba0a265d175e
+Epoch: 11, Batch: 59, Loss: 0.0962, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 915.5, Slide ID: 13707d91437e3023c635b4a1c5c25185
+Epoch: 11, Batch: 79, Loss: 0.0975, LR: 0.0005, Time: 0.4083 sec/it, Seq len: 906.2, Slide ID: edac491ffa87aa2c0abccf1b8e5a6ff6
+Epoch: 11, Batch: 99, Loss: 0.1032, LR: 0.0005, Time: 0.4168 sec/it, Seq len: 927.3, Slide ID: 4203ec2a8c71bf1876526fb0111b8235
+Epoch: 11, Batch: 119, Loss: 0.1085, LR: 0.0005, Time: 0.4157 sec/it, Seq len: 924.0, Slide ID: 9d4c88beba0b2d533f205f1b615e6c7e
+Epoch: 11, Batch: 139, Loss: 0.1209, LR: 0.0005, Time: 0.4147 sec/it, Seq len: 922.0, Slide ID: c33af8c4a420e085d513136c23876dfd
+Epoch: 11, Batch: 159, Loss: 0.1266, LR: 0.0005, Time: 0.4163 sec/it, Seq len: 924.1, Slide ID: b8b631f236cb607964c258ceac5eb0bb
+Epoch: 11, Batch: 179, Loss: 0.1307, LR: 0.0005, Time: 0.4213 sec/it, Seq len: 936.2, Slide ID: 30cedc1713c3941e5b45ac98586b8208
+Epoch: 11, Batch: 199, Loss: 0.1341, LR: 0.0005, Time: 0.4213 sec/it, Seq len: 936.0, Slide ID: 67560153b5cec1288c56658e789b31e9
+Epoch: 11, Batch: 219, Loss: 0.1348, LR: 0.0005, Time: 0.4220 sec/it, Seq len: 937.5, Slide ID: 5d48c52e804a1b1d565ad60a71e38df0
+Epoch: 11, Batch: 239, Loss: 0.1349, LR: 0.0005, Time: 0.4193 sec/it, Seq len: 932.1, Slide ID: 723a7750742b4b7630fe743c74ce9cad
+Epoch: 11, Batch: 259, Loss: 0.1335, LR: 0.0005, Time: 0.4178 sec/it, Seq len: 928.9, Slide ID: 2e703d55529a045980adc4fde731b100
+Epoch: 11, Batch: 279, Loss: 0.1344, LR: 0.0005, Time: 0.4170 sec/it, Seq len: 926.7, Slide ID: 564252dc7eb1c27099ab70a95e189748
+Epoch: 11, Batch: 299, Loss: 0.1313, LR: 0.0005, Time: 0.4205 sec/it, Seq len: 935.0, Slide ID: 2fe856ea963cd9d023f693db12fe696e
+Epoch: 11, Batch: 319, Loss: 0.1329, LR: 0.0005, Time: 0.4180 sec/it, Seq len: 929.3, Slide ID: 6a4705f723c23536d58a72341e0eac1f
+Epoch: 11, Batch: 339, Loss: 0.1309, LR: 0.0005, Time: 0.4175 sec/it, Seq len: 927.9, Slide ID: 611dad205c637ac04eb23386dc32601c
+Epoch: 11, Batch: 359, Loss: 0.1328, LR: 0.0005, Time: 0.4169 sec/it, Seq len: 926.7, Slide ID: a9b1aea89f22c5e1bddc012a2f4c8544
+Epoch: 11, Batch: 379, Loss: 0.1343, LR: 0.0005, Time: 0.4167 sec/it, Seq len: 926.1, Slide ID: f7d2065831221dcb1fc9bd3eb02ef708
+Epoch: 11, Batch: 399, Loss: 0.1437, LR: 0.0005, Time: 0.4161 sec/it, Seq len: 925.3, Slide ID: 4166b08dab8537c35b51cb89616ef6e1
+Epoch: 11, Batch: 419, Loss: 0.1454, LR: 0.0005, Time: 0.4151 sec/it, Seq len: 924.0, Slide ID: 26f2d29004f336693739d11c4047816f
+Epoch: 11, Batch: 439, Loss: 0.1464, LR: 0.0005, Time: 0.4169 sec/it, Seq len: 927.5, Slide ID: b2ed25818b60032cf273066b9ae43c0d
+Epoch: 11, Batch: 459, Loss: 0.1467, LR: 0.0005, Time: 0.4172 sec/it, Seq len: 929.2, Slide ID: 77138e87f7edb07f8ba62c62652f47e5
+Epoch: 11, Loss: 0.0119
+Epoch: 11, Loss: 0.6889, AUROC: 0.9579, ACC: 0.7830, BACC: 0.7290, qwk: 0.9379
+Epoch: 12
+Epoch: 12, Batch: 19, Loss: 0.0909, LR: 0.0005, Time: 0.4957 sec/it, Seq len: 1045.4, Slide ID: 4b9990a038b7b29a12d971fb17372c2e
+Epoch: 12, Batch: 39, Loss: 0.0946, LR: 0.0005, Time: 0.4659 sec/it, Seq len: 1010.3, Slide ID: 1722126079d714cbffbe8e199976e0e2
+Epoch: 12, Batch: 59, Loss: 0.1009, LR: 0.0005, Time: 0.4396 sec/it, Seq len: 969.4, Slide ID: 8b301972309a5509bbb5946b9f133e37
+Epoch: 12, Batch: 79, Loss: 0.1031, LR: 0.0005, Time: 0.4274 sec/it, Seq len: 950.5, Slide ID: 4274afab5a0dfcdb8296d351150a754a
+Epoch: 12, Batch: 99, Loss: 0.1126, LR: 0.0005, Time: 0.4282 sec/it, Seq len: 949.3, Slide ID: f6e7b15af318c5fdc1990ed6a8b117bb
+Epoch: 12, Batch: 119, Loss: 0.1123, LR: 0.0004, Time: 0.4219 sec/it, Seq len: 935.7, Slide ID: a36ee9f2bc558182239d85d1f7a74e9b
+Epoch: 12, Batch: 139, Loss: 0.1162, LR: 0.0004, Time: 0.4195 sec/it, Seq len: 932.4, Slide ID: e5fc40d67ca490bb598688f92a2eff6b
+Epoch: 12, Batch: 159, Loss: 0.1217, LR: 0.0004, Time: 0.4209 sec/it, Seq len: 936.2, Slide ID: ed3028d82ffde075540a2d54abed2b15
+Epoch: 12, Batch: 179, Loss: 0.1276, LR: 0.0004, Time: 0.4183 sec/it, Seq len: 929.7, Slide ID: a57fce3a0a40fcdd2683b9c24739dd7f
+Epoch: 12, Batch: 199, Loss: 0.1266, LR: 0.0004, Time: 0.4157 sec/it, Seq len: 923.6, Slide ID: edd408ac28d172e7c80dbe7aea2ac283
+Epoch: 12, Batch: 219, Loss: 0.1296, LR: 0.0004, Time: 0.4128 sec/it, Seq len: 918.0, Slide ID: e1b7c9220455568017e53ed7f49dea90
+Epoch: 12, Batch: 239, Loss: 0.1319, LR: 0.0004, Time: 0.4138 sec/it, Seq len: 920.6, Slide ID: 226579a577a7a7487e97cb9c9a2c3886
+Epoch: 12, Batch: 259, Loss: 0.1311, LR: 0.0004, Time: 0.4122 sec/it, Seq len: 917.5, Slide ID: a7f00efad38057d7c04273206366b682
+Epoch: 12, Batch: 279, Loss: 0.1313, LR: 0.0004, Time: 0.4139 sec/it, Seq len: 921.9, Slide ID: 464f8dbd8b906717dd1eb94a344f7262
+Epoch: 12, Batch: 299, Loss: 0.1327, LR: 0.0004, Time: 0.4137 sec/it, Seq len: 922.0, Slide ID: c7d69b4a22cddd0c2f93cf6939d898e1
+Epoch: 12, Batch: 319, Loss: 0.1343, LR: 0.0004, Time: 0.4137 sec/it, Seq len: 921.5, Slide ID: 55bc19f33c8e76d179d4fff167424383
+Epoch: 12, Batch: 339, Loss: 0.1325, LR: 0.0004, Time: 0.4176 sec/it, Seq len: 929.1, Slide ID: 4aa3b5e41208988c1e018f2713b9e321
+Epoch: 12, Batch: 359, Loss: 0.1315, LR: 0.0004, Time: 0.4203 sec/it, Seq len: 934.9, Slide ID: 0b6d642c9b160678dcfff095c21ce09f
+Epoch: 12, Batch: 379, Loss: 0.1321, LR: 0.0004, Time: 0.4204 sec/it, Seq len: 935.9, Slide ID: b49cf4744ad7bde55eb848c822b457fd
+Epoch: 12, Batch: 399, Loss: 0.1340, LR: 0.0004, Time: 0.4181 sec/it, Seq len: 931.8, Slide ID: 7df851526f6b96fb36918417d70c559a
+Epoch: 12, Batch: 419, Loss: 0.1340, LR: 0.0004, Time: 0.4174 sec/it, Seq len: 930.4, Slide ID: 4352e4e84a3360c5d49b6c51c3646c45
+Epoch: 12, Batch: 439, Loss: 0.1347, LR: 0.0004, Time: 0.4175 sec/it, Seq len: 930.5, Slide ID: f2d8b98b713b1587017e9e0e7ae33fc1
+Epoch: 12, Batch: 459, Loss: 0.1386, LR: 0.0004, Time: 0.4167 sec/it, Seq len: 928.6, Slide ID: dc65b5af33ea3c704de7e3c8b43d33c8
+Epoch: 12, Loss: 0.0211
+Epoch: 12, Loss: 0.6533, AUROC: 0.9643, ACC: 0.8082, BACC: 0.7538, qwk: 0.9491
+Epoch: 13
+Epoch: 13, Batch: 19, Loss: 0.1105, LR: 0.0004, Time: 0.3978 sec/it, Seq len: 849.2, Slide ID: accd14af27733e4a820b6db8c88d50dd
+Epoch: 13, Batch: 39, Loss: 0.1152, LR: 0.0004, Time: 0.4097 sec/it, Seq len: 901.6, Slide ID: f96b3fd2d48542ff38fc3454bea1bbdb
+Epoch: 13, Batch: 59, Loss: 0.1057, LR: 0.0004, Time: 0.4089 sec/it, Seq len: 910.8, Slide ID: 48b90b806560b21a02cbfcea8a2b3977
+Epoch: 13, Batch: 79, Loss: 0.1051, LR: 0.0004, Time: 0.4149 sec/it, Seq len: 922.1, Slide ID: 15b607e8ee4ebc4809b499b7b7699bec
+Epoch: 13, Batch: 99, Loss: 0.0995, LR: 0.0004, Time: 0.4122 sec/it, Seq len: 918.4, Slide ID: 630ead3f5eee9ca3d292d65a785d480b
+Epoch: 13, Batch: 119, Loss: 0.1021, LR: 0.0004, Time: 0.4162 sec/it, Seq len: 927.4, Slide ID: ab81f1e238ba4350b836f161a0c5c043
+Epoch: 13, Batch: 139, Loss: 0.1082, LR: 0.0004, Time: 0.4150 sec/it, Seq len: 925.7, Slide ID: 9328dc3ac0b65b4f932053dcafde0e33
+Epoch: 13, Batch: 159, Loss: 0.1074, LR: 0.0004, Time: 0.4145 sec/it, Seq len: 922.8, Slide ID: 86d4f3bac81c1929300eb270c6aea4ea
+Epoch: 13, Batch: 179, Loss: 0.1193, LR: 0.0004, Time: 0.4145 sec/it, Seq len: 923.8, Slide ID: 7c75a0ddf67f2cca476d51ec8b95d60f
+Epoch: 13, Batch: 199, Loss: 0.1220, LR: 0.0004, Time: 0.4152 sec/it, Seq len: 924.1, Slide ID: 421bc0d45878fbe83068fb1923e3bffd
+Epoch: 13, Batch: 219, Loss: 0.1231, LR: 0.0004, Time: 0.4157 sec/it, Seq len: 925.1, Slide ID: cb447241302fbb5026b7cd6837232331
+Epoch: 13, Batch: 239, Loss: 0.1259, LR: 0.0004, Time: 0.4136 sec/it, Seq len: 921.7, Slide ID: 063528c18968c03f23e0c299bbba17e4
+Epoch: 13, Batch: 259, Loss: 0.1284, LR: 0.0004, Time: 0.4152 sec/it, Seq len: 924.4, Slide ID: 751b5369155b1086d5a5f3feeb21bdc5
+Epoch: 13, Batch: 279, Loss: 0.1293, LR: 0.0004, Time: 0.4218 sec/it, Seq len: 937.9, Slide ID: 697d92515038d4f651881ae13fb49d95
+Epoch: 13, Batch: 299, Loss: 0.1284, LR: 0.0004, Time: 0.4234 sec/it, Seq len: 941.4, Slide ID: 24018895d65de3eab9c2f29b071bf2e8
+Epoch: 13, Batch: 319, Loss: 0.1253, LR: 0.0004, Time: 0.4216 sec/it, Seq len: 938.3, Slide ID: c95bfd7e7fcb784d245163e8305143cc
+Epoch: 13, Batch: 339, Loss: 0.1224, LR: 0.0004, Time: 0.4200 sec/it, Seq len: 935.0, Slide ID: c5560bcc6aae0963ce9946a2f0913f16
+Epoch: 13, Batch: 359, Loss: 0.1200, LR: 0.0004, Time: 0.4190 sec/it, Seq len: 933.6, Slide ID: 42a4d1519445a251149be56ff8d9ed12
+Epoch: 13, Batch: 379, Loss: 0.1183, LR: 0.0004, Time: 0.4181 sec/it, Seq len: 932.2, Slide ID: 867bf41f609802d686b544b1f8afdcc2
+Epoch: 13, Batch: 399, Loss: 0.1177, LR: 0.0004, Time: 0.4168 sec/it, Seq len: 929.5, Slide ID: 0bfcecec15bb9bef0c8e59e2776ee3c7
+Epoch: 13, Batch: 419, Loss: 0.1170, LR: 0.0004, Time: 0.4169 sec/it, Seq len: 929.6, Slide ID: 389758c9e3aad00e774d581150f372db
+Epoch: 13, Batch: 439, Loss: 0.1147, LR: 0.0004, Time: 0.4154 sec/it, Seq len: 927.1, Slide ID: 5a1c715386006065330b45f52e394aba
+Epoch: 13, Batch: 459, Loss: 0.1150, LR: 0.0004, Time: 0.4159 sec/it, Seq len: 927.8, Slide ID: 98bfad4a1ec921edc2f61c9c9dd5690a
+Epoch: 13, Loss: 0.0045
+Epoch: 13, Loss: 0.9566, AUROC: 0.9584, ACC: 0.7788, BACC: 0.7230, qwk: 0.9426
+Epoch: 14
+Epoch: 14, Batch: 19, Loss: 0.0639, LR: 0.0004, Time: 0.4202 sec/it, Seq len: 888.0, Slide ID: 5a89e95c1dfe4f320ac954517281f9eb
+Epoch: 14, Batch: 39, Loss: 0.1006, LR: 0.0004, Time: 0.4151 sec/it, Seq len: 913.5, Slide ID: a8d0c2d41b4652dd6c430556283c3805
+Epoch: 14, Batch: 59, Loss: 0.0967, LR: 0.0004, Time: 0.4079 sec/it, Seq len: 904.8, Slide ID: a6e3d28846a05057588ca4a6b7bbc3ee
+Epoch: 14, Batch: 79, Loss: 0.0884, LR: 0.0004, Time: 0.4242 sec/it, Seq len: 939.8, Slide ID: 644eac827fab366642feb02840fff74c
+Epoch: 14, Batch: 99, Loss: 0.0809, LR: 0.0004, Time: 0.4223 sec/it, Seq len: 937.0, Slide ID: 545063a5e1917a0ddb4f48b99b40142f
+Epoch: 14, Batch: 119, Loss: 0.0822, LR: 0.0004, Time: 0.4298 sec/it, Seq len: 957.4, Slide ID: 8b0f143a34251629cd7c0d34743d3e63
+Epoch: 14, Batch: 139, Loss: 0.0837, LR: 0.0004, Time: 0.4249 sec/it, Seq len: 946.0, Slide ID: 1efeb4184829ebaa4d10c223e73c5d4f
+Epoch: 14, Batch: 159, Loss: 0.0923, LR: 0.0004, Time: 0.4234 sec/it, Seq len: 943.5, Slide ID: f93152017b2e6dc0e9c6dbbf0400d438
+Epoch: 14, Batch: 179, Loss: 0.0974, LR: 0.0004, Time: 0.4245 sec/it, Seq len: 945.8, Slide ID: fa33d8e17c61c79a65034494d37fa4a7
+Epoch: 14, Batch: 199, Loss: 0.0957, LR: 0.0004, Time: 0.4268 sec/it, Seq len: 949.4, Slide ID: 3c978c3d50eeb3eb1dc90ec153ea3637
+Epoch: 14, Batch: 219, Loss: 0.0943, LR: 0.0004, Time: 0.4256 sec/it, Seq len: 946.6, Slide ID: 7fad834b5a2804776b9f68ce9b30a756
+Epoch: 14, Batch: 239, Loss: 0.0970, LR: 0.0004, Time: 0.4222 sec/it, Seq len: 940.4, Slide ID: aaad0b3cad311ccd5d82959e14491fdb
+Epoch: 14, Batch: 259, Loss: 0.1011, LR: 0.0004, Time: 0.4202 sec/it, Seq len: 934.7, Slide ID: 1a12bfa2c136b75f8faa911f625b2ef9
+Epoch: 14, Batch: 279, Loss: 0.1035, LR: 0.0004, Time: 0.4204 sec/it, Seq len: 936.3, Slide ID: 63b475ef802ec75075a927c0980ca3d1
+Epoch: 14, Batch: 299, Loss: 0.1038, LR: 0.0004, Time: 0.4216 sec/it, Seq len: 938.0, Slide ID: 4f0225311fecb076b043bb08715b7b46
+Epoch: 14, Batch: 319, Loss: 0.1076, LR: 0.0004, Time: 0.4189 sec/it, Seq len: 932.5, Slide ID: 87c639ec5365c2d6d61581be6407c8b6
+Epoch: 14, Batch: 339, Loss: 0.1096, LR: 0.0004, Time: 0.4197 sec/it, Seq len: 934.7, Slide ID: f084f6eabe7932229687dfa7cbb3dbed
+Epoch: 14, Batch: 359, Loss: 0.1118, LR: 0.0004, Time: 0.4167 sec/it, Seq len: 929.0, Slide ID: 001c62abd11fa4b57bf7a6c603a11bb9
+Epoch: 14, Batch: 379, Loss: 0.1102, LR: 0.0004, Time: 0.4173 sec/it, Seq len: 930.0, Slide ID: 721c5739be68d229d30b8a616886a17f
+Epoch: 14, Batch: 399, Loss: 0.1096, LR: 0.0004, Time: 0.4172 sec/it, Seq len: 929.9, Slide ID: 80037713c44260079fb5ffb8474aa9e2
+Epoch: 14, Batch: 419, Loss: 0.1089, LR: 0.0004, Time: 0.4167 sec/it, Seq len: 928.7, Slide ID: 3421d5f3e6fbeccf4ccfc51ca0e7e911
+Epoch: 14, Batch: 439, Loss: 0.1089, LR: 0.0004, Time: 0.4164 sec/it, Seq len: 927.9, Slide ID: bc3ea73616f606f303527da9e52796c8
+Epoch: 14, Batch: 459, Loss: 0.1097, LR: 0.0004, Time: 0.4171 sec/it, Seq len: 930.2, Slide ID: 51be6e37c81a33e80ec75248f001fab8
+Epoch: 14, Loss: 0.0024
+Epoch: 14, Loss: 1.0927, AUROC: 0.9504, ACC: 0.7725, BACC: 0.7284, qwk: 0.9309
+Epoch: 15
+Epoch: 15, Batch: 19, Loss: 0.1452, LR: 0.0004, Time: 0.5192 sec/it, Seq len: 1086.9, Slide ID: d93b3bc2dd02c94fec754e34a0501284
+Epoch: 15, Batch: 39, Loss: 0.1225, LR: 0.0004, Time: 0.4907 sec/it, Seq len: 1063.9, Slide ID: fb01a0a69517bb47d7f4699b6217f69d
+Epoch: 15, Batch: 59, Loss: 0.1071, LR: 0.0004, Time: 0.4764 sec/it, Seq len: 1046.3, Slide ID: 1467d804990bad99d1c553ca5a007ecc
+Epoch: 15, Batch: 79, Loss: 0.1111, LR: 0.0004, Time: 0.4553 sec/it, Seq len: 1005.4, Slide ID: c0b74d23f8502804f3e047ff5129a57b
+Epoch: 15, Batch: 99, Loss: 0.1102, LR: 0.0004, Time: 0.4461 sec/it, Seq len: 986.8, Slide ID: 3ee71993acdc2ab83790ea25fafe319d
+Epoch: 15, Batch: 119, Loss: 0.1229, LR: 0.0004, Time: 0.4390 sec/it, Seq len: 973.1, Slide ID: 05e06bff98cf601bbee320f6547cf9ab
+Epoch: 15, Batch: 139, Loss: 0.1190, LR: 0.0004, Time: 0.4349 sec/it, Seq len: 964.6, Slide ID: b0db6c7062db390ce41581728f2ef122
+Epoch: 15, Batch: 159, Loss: 0.1213, LR: 0.0004, Time: 0.4314 sec/it, Seq len: 959.5, Slide ID: 12949eee9c2be841d54a2f25933396da
+Epoch: 15, Batch: 179, Loss: 0.1183, LR: 0.0004, Time: 0.4292 sec/it, Seq len: 955.0, Slide ID: c8412809e48d1d77a9ebd583a0bd9e27
+Epoch: 15, Batch: 199, Loss: 0.1128, LR: 0.0004, Time: 0.4261 sec/it, Seq len: 947.7, Slide ID: 65a653ff2eae408f815ffce6898173ca
+Epoch: 15, Batch: 219, Loss: 0.1120, LR: 0.0004, Time: 0.4244 sec/it, Seq len: 944.5, Slide ID: 3d478da1e66bfacc7567914809447099
+Epoch: 15, Batch: 239, Loss: 0.1121, LR: 0.0004, Time: 0.4216 sec/it, Seq len: 937.4, Slide ID: 55f9371f0cdd14ae2e4df9fd5f09878a
+Epoch: 15, Batch: 259, Loss: 0.1119, LR: 0.0004, Time: 0.4227 sec/it, Seq len: 939.7, Slide ID: 432757c5b256f8e55d71863b486c89ee
+Epoch: 15, Batch: 279, Loss: 0.1118, LR: 0.0004, Time: 0.4210 sec/it, Seq len: 935.8, Slide ID: 2a709812f21cab8f45ccc91371b7dc5f
+Epoch: 15, Batch: 299, Loss: 0.1119, LR: 0.0004, Time: 0.4163 sec/it, Seq len: 926.9, Slide ID: 6eff61540d687bb80f2eda923b2dca9b
+Epoch: 15, Batch: 319, Loss: 0.1101, LR: 0.0004, Time: 0.4181 sec/it, Seq len: 930.8, Slide ID: b9df338c2d3db201e2bd938ddbd1c913
+Epoch: 15, Batch: 339, Loss: 0.1116, LR: 0.0004, Time: 0.4159 sec/it, Seq len: 926.6, Slide ID: 88ecc79a10ff8a1f201b73b3e82a4648
+Epoch: 15, Batch: 359, Loss: 0.1129, LR: 0.0004, Time: 0.4153 sec/it, Seq len: 925.5, Slide ID: 340a470bf7a9667523386de85bafa32f
+Epoch: 15, Batch: 379, Loss: 0.1180, LR: 0.0004, Time: 0.4159 sec/it, Seq len: 926.7, Slide ID: 6979ba75d53caea50d85c1df133f5009
+Epoch: 15, Batch: 399, Loss: 0.1189, LR: 0.0004, Time: 0.4168 sec/it, Seq len: 928.1, Slide ID: 8d0e5feb0e72d7d75c73d8d5df4810a7
+Epoch: 15, Batch: 419, Loss: 0.1166, LR: 0.0004, Time: 0.4165 sec/it, Seq len: 927.1, Slide ID: 29a92930e1c1cad4e50b074a329bc9d6
+Epoch: 15, Batch: 439, Loss: 0.1191, LR: 0.0004, Time: 0.4172 sec/it, Seq len: 928.2, Slide ID: bda0fab1431ead234fcca4d4466b12d3
+Epoch: 15, Batch: 459, Loss: 0.1194, LR: 0.0004, Time: 0.4158 sec/it, Seq len: 925.9, Slide ID: 142bb88e0db1abb959a792eb24b646be
+Epoch: 15, Loss: 0.0445
+Epoch: 15, Loss: 0.7576, AUROC: 0.9618, ACC: 0.7935, BACC: 0.7459, qwk: 0.9409
+Epoch: 16
+Epoch: 16, Batch: 19, Loss: 0.0755, LR: 0.0004, Time: 0.4522 sec/it, Seq len: 930.8, Slide ID: bf88d7c0254e315ae6701f540dda23ce
+Epoch: 16, Batch: 39, Loss: 0.0873, LR: 0.0004, Time: 0.4318 sec/it, Seq len: 932.4, Slide ID: f56b848ef716237930644c45b7480b09
+Epoch: 16, Batch: 59, Loss: 0.0859, LR: 0.0004, Time: 0.4296 sec/it, Seq len: 946.2, Slide ID: fdad73308669459f04e6c8e14c38a56f
+Epoch: 16, Batch: 79, Loss: 0.1000, LR: 0.0004, Time: 0.4185 sec/it, Seq len: 928.2, Slide ID: 6272bd8c72545aa42d1abb9045bd7a97
+Epoch: 16, Batch: 99, Loss: 0.1043, LR: 0.0004, Time: 0.4189 sec/it, Seq len: 932.7, Slide ID: 921e586c2b5c9ac5b164f2229f7ea9f6
+Epoch: 16, Batch: 119, Loss: 0.0964, LR: 0.0004, Time: 0.4190 sec/it, Seq len: 932.6, Slide ID: cacafc88559ad26efe04463c52195f4c
+Epoch: 16, Batch: 139, Loss: 0.0993, LR: 0.0004, Time: 0.4181 sec/it, Seq len: 932.8, Slide ID: 148b753bb4a61f27bc4f17c6d123e1ec
+Epoch: 16, Batch: 159, Loss: 0.0987, LR: 0.0004, Time: 0.4112 sec/it, Seq len: 918.8, Slide ID: cd693fc01b5750ff2e7cbaf8e9e305f8
+Epoch: 16, Batch: 179, Loss: 0.0978, LR: 0.0004, Time: 0.4102 sec/it, Seq len: 917.4, Slide ID: a3794ec31a02fbf429486dd464f83d25
+Epoch: 16, Batch: 199, Loss: 0.1008, LR: 0.0004, Time: 0.4115 sec/it, Seq len: 918.8, Slide ID: 369765a1bd016016ceec70314dacc204
+Epoch: 16, Batch: 219, Loss: 0.0994, LR: 0.0004, Time: 0.4115 sec/it, Seq len: 918.1, Slide ID: eb78715d70073992ae1b97d02a0d106a
+Epoch: 16, Batch: 239, Loss: 0.1011, LR: 0.0004, Time: 0.4138 sec/it, Seq len: 920.9, Slide ID: 235cc1d05d01d1a3d2424514b27e68e2
+Epoch: 16, Batch: 259, Loss: 0.1021, LR: 0.0004, Time: 0.4160 sec/it, Seq len: 926.9, Slide ID: cf80de78a4b2fbf446923732c1046166
+Epoch: 16, Batch: 279, Loss: 0.1008, LR: 0.0004, Time: 0.4159 sec/it, Seq len: 926.7, Slide ID: dfefdf0717c69330a75f3cd28abcfff5
+Epoch: 16, Batch: 299, Loss: 0.1012, LR: 0.0004, Time: 0.4182 sec/it, Seq len: 931.5, Slide ID: 78d0d8888cb53a305dd5931d7cdb84eb
+Epoch: 16, Batch: 319, Loss: 0.1063, LR: 0.0004, Time: 0.4191 sec/it, Seq len: 933.2, Slide ID: d375f524d50db8fcf857eadcb70ef5d1
+Epoch: 16, Batch: 339, Loss: 0.1051, LR: 0.0004, Time: 0.4210 sec/it, Seq len: 936.6, Slide ID: 899208b5b6d4e2244928c3be37ca1a67
+Epoch: 16, Batch: 359, Loss: 0.1050, LR: 0.0004, Time: 0.4192 sec/it, Seq len: 933.7, Slide ID: da4b2e029abb2741bcfef60fa7ab10b0
+Epoch: 16, Batch: 379, Loss: 0.1035, LR: 0.0004, Time: 0.4202 sec/it, Seq len: 936.3, Slide ID: 255523fabdf1360f3db6def0d4b2d7d6
+Epoch: 16, Batch: 399, Loss: 0.1028, LR: 0.0004, Time: 0.4193 sec/it, Seq len: 935.2, Slide ID: 278ae74156d22b4e8457cd1bf2960f58
+Epoch: 16, Batch: 419, Loss: 0.1046, LR: 0.0004, Time: 0.4196 sec/it, Seq len: 935.5, Slide ID: 5619a242c6ea14b4d3196f2ee86b5579
+Epoch: 16, Batch: 439, Loss: 0.1035, LR: 0.0004, Time: 0.4176 sec/it, Seq len: 931.1, Slide ID: 0ff9887e50a45141bb1755c5dda1b8c6
+Epoch: 16, Batch: 459, Loss: 0.1030, LR: 0.0004, Time: 0.4155 sec/it, Seq len: 926.9, Slide ID: a26020fc089bd826b2d3eee48435b5e1
+Epoch: 16, Loss: 0.0038
+Epoch: 16, Loss: 0.8695, AUROC: 0.9579, ACC: 0.7851, BACC: 0.7348, qwk: 0.9357
+Epoch: 17
+Epoch: 17, Batch: 19, Loss: 0.0586, LR: 0.0004, Time: 0.4189 sec/it, Seq len: 889.5, Slide ID: f7090307815e24ae36ef9c66d063015b
+Epoch: 17, Batch: 39, Loss: 0.0553, LR: 0.0004, Time: 0.4239 sec/it, Seq len: 931.3, Slide ID: f7b209b0f45746e231c10a80bcd7285e
+Epoch: 17, Batch: 59, Loss: 0.0526, LR: 0.0004, Time: 0.4200 sec/it, Seq len: 933.2, Slide ID: fcad09ea1c5ae52d28fcd345c0a30b34
+Epoch: 17, Batch: 79, Loss: 0.0558, LR: 0.0004, Time: 0.4042 sec/it, Seq len: 903.8, Slide ID: d72d765ec852ae3f40b39fa6111aa1a0
+Epoch: 17, Batch: 99, Loss: 0.0559, LR: 0.0004, Time: 0.4013 sec/it, Seq len: 898.9, Slide ID: ea676a3e54bdcabbb71961bae282e561
+Epoch: 17, Batch: 119, Loss: 0.0651, LR: 0.0004, Time: 0.3980 sec/it, Seq len: 891.6, Slide ID: d13ee083f8ea8e6be9e54cf1c6d7fa50
+Epoch: 17, Batch: 139, Loss: 0.0678, LR: 0.0004, Time: 0.4021 sec/it, Seq len: 901.7, Slide ID: 9d98eb6c404f3c3d7191a8db379d2994
+Epoch: 17, Batch: 159, Loss: 0.0666, LR: 0.0004, Time: 0.4051 sec/it, Seq len: 907.1, Slide ID: 9817b2ffd97c44aba650bb86f4ab1b27
+Epoch: 17, Batch: 179, Loss: 0.0705, LR: 0.0004, Time: 0.4072 sec/it, Seq len: 909.4, Slide ID: 25f8b4140df3fcadc642f18b4279582d
+Epoch: 17, Batch: 199, Loss: 0.0706, LR: 0.0004, Time: 0.4080 sec/it, Seq len: 911.4, Slide ID: 8b175b733c6b5a19f107d7cd9cdd1b06
+Epoch: 17, Batch: 219, Loss: 0.0683, LR: 0.0004, Time: 0.4080 sec/it, Seq len: 910.8, Slide ID: ab807d486725cdf5c662257d7a77d4de
+Epoch: 17, Batch: 239, Loss: 0.0702, LR: 0.0004, Time: 0.4114 sec/it, Seq len: 917.4, Slide ID: befafdac95e8e497f11df8c2d997a989
+Epoch: 17, Batch: 259, Loss: 0.0698, LR: 0.0004, Time: 0.4091 sec/it, Seq len: 913.0, Slide ID: 5b4c450f95b5b0128b2465b8e7923ef3
+Epoch: 17, Batch: 279, Loss: 0.0739, LR: 0.0004, Time: 0.4107 sec/it, Seq len: 916.0, Slide ID: df386686a83a221eda2801df56e60bcd
+Epoch: 17, Batch: 299, Loss: 0.0733, LR: 0.0004, Time: 0.4102 sec/it, Seq len: 914.7, Slide ID: f6a5026c3875a441ac93945bd4ba9c18
+Epoch: 17, Batch: 319, Loss: 0.0751, LR: 0.0004, Time: 0.4118 sec/it, Seq len: 918.2, Slide ID: 7775b519430c6dff66beb29f1cc9f003
+Epoch: 17, Batch: 339, Loss: 0.0795, LR: 0.0004, Time: 0.4117 sec/it, Seq len: 918.3, Slide ID: 10a8a9a745a971ab7ed129c6283a3f7d
+Epoch: 17, Batch: 359, Loss: 0.0814, LR: 0.0004, Time: 0.4128 sec/it, Seq len: 920.3, Slide ID: 3a528abc8465a57d2a4c7f823051dcf8
+Epoch: 17, Batch: 379, Loss: 0.0829, LR: 0.0004, Time: 0.4141 sec/it, Seq len: 923.5, Slide ID: 57cccd066af8374b532f812c280571c1
+Epoch: 17, Batch: 399, Loss: 0.0849, LR: 0.0004, Time: 0.4133 sec/it, Seq len: 921.3, Slide ID: 97b7f54f14c7755f68592de20ea662b1
+Epoch: 17, Batch: 419, Loss: 0.0872, LR: 0.0004, Time: 0.4142 sec/it, Seq len: 923.5, Slide ID: a5dbc558ca9c9612b608645238c15129
+Epoch: 17, Batch: 439, Loss: 0.0875, LR: 0.0004, Time: 0.4161 sec/it, Seq len: 927.3, Slide ID: f82ed3f5d1a4a974884f7180af4f9ba5
+Epoch: 17, Batch: 459, Loss: 0.0888, LR: 0.0004, Time: 0.4170 sec/it, Seq len: 929.3, Slide ID: 2a8f8a39a833b8f141e0474b097fdb36
+Epoch: 17, Loss: 0.0276
+Epoch: 17, Loss: 0.7360, AUROC: 0.9626, ACC: 0.8029, BACC: 0.7595, qwk: 0.9484
+Epoch: 18
+Epoch: 18, Batch: 19, Loss: 0.1179, LR: 0.0004, Time: 0.4672 sec/it, Seq len: 988.1, Slide ID: 3ee71993acdc2ab83790ea25fafe319d
+Epoch: 18, Batch: 39, Loss: 0.0930, LR: 0.0004, Time: 0.4431 sec/it, Seq len: 963.9, Slide ID: 48440a60d18ab8e5a6f09de20a50bb27
+Epoch: 18, Batch: 59, Loss: 0.0749, LR: 0.0004, Time: 0.4238 sec/it, Seq len: 938.8, Slide ID: 1e751c3e6fd07ca73ff1eb2814c5335d
+Epoch: 18, Batch: 79, Loss: 0.0636, LR: 0.0004, Time: 0.4346 sec/it, Seq len: 962.2, Slide ID: 80e2221ab978a5978d1039977b335ca9
+Epoch: 18, Batch: 99, Loss: 0.0595, LR: 0.0004, Time: 0.4418 sec/it, Seq len: 978.5, Slide ID: 35d511cc9aa867856fadbe6ebf464d78
+Epoch: 18, Batch: 119, Loss: 0.0617, LR: 0.0004, Time: 0.4367 sec/it, Seq len: 966.5, Slide ID: c2a487c3082523f815ca8541a01f293d
+Epoch: 18, Batch: 139, Loss: 0.0628, LR: 0.0004, Time: 0.4293 sec/it, Seq len: 952.3, Slide ID: b9d20ddf4a37b9853aa63f0208a7d1e2
+Epoch: 18, Batch: 159, Loss: 0.0629, LR: 0.0004, Time: 0.4326 sec/it, Seq len: 957.6, Slide ID: 1e0379988bc494245913cc4bb10fb8c1
+Epoch: 18, Batch: 179, Loss: 0.0609, LR: 0.0004, Time: 0.4263 sec/it, Seq len: 946.5, Slide ID: 52ebb96589e05091e3ec2376f1e90e2b
+Epoch: 18, Batch: 199, Loss: 0.0635, LR: 0.0004, Time: 0.4260 sec/it, Seq len: 944.9, Slide ID: 9bd1adceec12ca2802bfe40bb2240e40
+Epoch: 18, Batch: 219, Loss: 0.0630, LR: 0.0004, Time: 0.4236 sec/it, Seq len: 941.1, Slide ID: ac32c2c755e496c5e7bc1949b78d36c9
+Epoch: 18, Batch: 239, Loss: 0.0644, LR: 0.0004, Time: 0.4213 sec/it, Seq len: 937.0, Slide ID: 3b9f1f0f05ca4c7cfd2000d7ae41f242
+Epoch: 18, Batch: 259, Loss: 0.0626, LR: 0.0004, Time: 0.4241 sec/it, Seq len: 943.0, Slide ID: 7b845b428b07584b93d5d07a1b0de2b6
+Epoch: 18, Batch: 279, Loss: 0.0654, LR: 0.0004, Time: 0.4243 sec/it, Seq len: 943.9, Slide ID: dd5c1496860cb32e24113cba850fe172
+Epoch: 18, Batch: 299, Loss: 0.0662, LR: 0.0004, Time: 0.4214 sec/it, Seq len: 937.8, Slide ID: 2fe01d7bbc55749e8108f0ce9c8fd6ca
+Epoch: 18, Batch: 319, Loss: 0.0669, LR: 0.0004, Time: 0.4195 sec/it, Seq len: 933.4, Slide ID: a5b9d82b7e211bf9e5d65ee738236366
+Epoch: 18, Batch: 339, Loss: 0.0706, LR: 0.0004, Time: 0.4200 sec/it, Seq len: 935.3, Slide ID: 8afc7add70b4d06343b2b9f37f58cf65
+Epoch: 18, Batch: 359, Loss: 0.0706, LR: 0.0004, Time: 0.4185 sec/it, Seq len: 932.0, Slide ID: 1844a09c66e370d856cefb21f5e82be4
+Epoch: 18, Batch: 379, Loss: 0.0710, LR: 0.0004, Time: 0.4188 sec/it, Seq len: 932.9, Slide ID: d1de8d4b1b39a0daeb0038f93931665d
+Epoch: 18, Batch: 399, Loss: 0.0728, LR: 0.0004, Time: 0.4183 sec/it, Seq len: 932.1, Slide ID: a61bde5fa031a829eed61c44ea348963
+Epoch: 18, Batch: 419, Loss: 0.0726, LR: 0.0004, Time: 0.4164 sec/it, Seq len: 928.6, Slide ID: dc5c8aee736af815a7952a7dc7bccfee
+Epoch: 18, Batch: 439, Loss: 0.0711, LR: 0.0004, Time: 0.4164 sec/it, Seq len: 929.3, Slide ID: f1a956dea62abf0e11ff2a61b9aa192e
+Epoch: 18, Batch: 459, Loss: 0.0718, LR: 0.0004, Time: 0.4161 sec/it, Seq len: 928.6, Slide ID: 5a06d394902b921255cce2ed1bfd2f57
+Epoch: 18, Loss: 0.0059
+Epoch: 18, Loss: 0.8049, AUROC: 0.9606, ACC: 0.8092, BACC: 0.7680, qwk: 0.9507
+Epoch: 19
+Epoch: 19, Batch: 19, Loss: 0.0230, LR: 0.0004, Time: 0.4775 sec/it, Seq len: 987.2, Slide ID: b667f22fcffe74c3c719b11c6d53cdb8
+Epoch: 19, Batch: 39, Loss: 0.0365, LR: 0.0004, Time: 0.4696 sec/it, Seq len: 1017.0, Slide ID: f480b897adfe65f572f79d9f8d45ac9e
+Epoch: 19, Batch: 59, Loss: 0.0307, LR: 0.0004, Time: 0.4585 sec/it, Seq len: 1004.3, Slide ID: 1c8a65cafba1a82092bf5ff231205f71
+Epoch: 19, Batch: 79, Loss: 0.0342, LR: 0.0004, Time: 0.4496 sec/it, Seq len: 987.8, Slide ID: bfc4d35887c4df323cfbe761d1f33c7c
+Epoch: 19, Batch: 99, Loss: 0.0331, LR: 0.0004, Time: 0.4412 sec/it, Seq len: 970.1, Slide ID: 9c03a2d8fbaca4009d887539b1bab17f
+Epoch: 19, Batch: 119, Loss: 0.0313, LR: 0.0004, Time: 0.4399 sec/it, Seq len: 968.5, Slide ID: ac7383c33d7b376592a2ebbc512d7493
+Epoch: 19, Batch: 139, Loss: 0.0297, LR: 0.0004, Time: 0.4306 sec/it, Seq len: 952.7, Slide ID: 0b73719f81c77051bb4b0ece8647a48e
+Epoch: 19, Batch: 159, Loss: 0.0327, LR: 0.0004, Time: 0.4231 sec/it, Seq len: 938.9, Slide ID: 19f3f3265bd80f1ee68cff968541639a
+Epoch: 19, Batch: 179, Loss: 0.0315, LR: 0.0004, Time: 0.4221 sec/it, Seq len: 936.3, Slide ID: 4a3cd784b891733e6f807e69a592e13f
+Epoch: 19, Batch: 199, Loss: 0.0316, LR: 0.0004, Time: 0.4253 sec/it, Seq len: 943.1, Slide ID: 765b21a22c0ced4bd463ac18bca81705
+Epoch: 19, Batch: 219, Loss: 0.0312, LR: 0.0004, Time: 0.4244 sec/it, Seq len: 942.0, Slide ID: df0b1629048c16c4ccf02559dc75d3d3
+Epoch: 19, Batch: 239, Loss: 0.0297, LR: 0.0004, Time: 0.4255 sec/it, Seq len: 946.0, Slide ID: c7579439b6073eed35a3df5a541b3949
+Epoch: 19, Batch: 259, Loss: 0.0298, LR: 0.0004, Time: 0.4244 sec/it, Seq len: 945.2, Slide ID: 4faa91189634933ba26fcb01a8804d33
+Epoch: 19, Batch: 279, Loss: 0.0303, LR: 0.0004, Time: 0.4255 sec/it, Seq len: 947.6, Slide ID: 3ef789f8caa7186261ad9f77bb552c7a
+Epoch: 19, Batch: 299, Loss: 0.0313, LR: 0.0004, Time: 0.4240 sec/it, Seq len: 944.9, Slide ID: 01c816336959ee9d94b23b37b0f71f21
+Epoch: 19, Batch: 319, Loss: 0.0335, LR: 0.0004, Time: 0.4251 sec/it, Seq len: 946.4, Slide ID: 0e37381aa92c289f168388fb6a332b8c
+Epoch: 19, Batch: 339, Loss: 0.0351, LR: 0.0004, Time: 0.4221 sec/it, Seq len: 940.6, Slide ID: 717749557a161cd11f28a353b0daff52
+Epoch: 19, Batch: 359, Loss: 0.0363, LR: 0.0003, Time: 0.4201 sec/it, Seq len: 936.5, Slide ID: f09235b441d9c6e5c0164dcd37b0565a
+Epoch: 19, Batch: 379, Loss: 0.0384, LR: 0.0003, Time: 0.4180 sec/it, Seq len: 932.5, Slide ID: 070f969f4b4952f08d94f056615c8def
+Epoch: 19, Batch: 399, Loss: 0.0389, LR: 0.0003, Time: 0.4173 sec/it, Seq len: 930.7, Slide ID: feee92608ee1caac1480fa63eb14e739
+Epoch: 19, Batch: 419, Loss: 0.0395, LR: 0.0003, Time: 0.4152 sec/it, Seq len: 927.1, Slide ID: 1ee5dd11e670c5a007555d77537635b6
+Epoch: 19, Batch: 439, Loss: 0.0402, LR: 0.0003, Time: 0.4153 sec/it, Seq len: 927.5, Slide ID: 38020becb73cea2d52e02adb5d3704ef
+Epoch: 19, Batch: 459, Loss: 0.0407, LR: 0.0003, Time: 0.4156 sec/it, Seq len: 928.2, Slide ID: 9741cdc1c51f48c18871789cdb8491fd
+Epoch: 19, Loss: 0.0001
+Epoch: 19, Loss: 0.9747, AUROC: 0.9590, ACC: 0.7851, BACC: 0.7354, qwk: 0.9464
+Epoch: 20
+Epoch: 20, Batch: 19, Loss: 0.0433, LR: 0.0003, Time: 0.4790 sec/it, Seq len: 1011.7, Slide ID: e2a398c41516ce8ffc8fb4c1fb9a20af
+Epoch: 20, Batch: 39, Loss: 0.0399, LR: 0.0003, Time: 0.4480 sec/it, Seq len: 977.4, Slide ID: bd70c30d44284585a6de70e61813fa4b
+Epoch: 20, Batch: 59, Loss: 0.0533, LR: 0.0003, Time: 0.4395 sec/it, Seq len: 971.0, Slide ID: 32751c898368ef065ae6b907d1743846
+Epoch: 20, Batch: 79, Loss: 0.0499, LR: 0.0003, Time: 0.4282 sec/it, Seq len: 950.7, Slide ID: 9e994536fd365604921e85f145f6e7b5
+Epoch: 20, Batch: 99, Loss: 0.0579, LR: 0.0003, Time: 0.4299 sec/it, Seq len: 949.6, Slide ID: 0748aba46621600d1e6b6ec02f90dfe5
+Epoch: 20, Batch: 119, Loss: 0.0649, LR: 0.0003, Time: 0.4272 sec/it, Seq len: 946.0, Slide ID: b94e363b5500bffeb841e2f5ddaad50b
+Epoch: 20, Batch: 139, Loss: 0.0648, LR: 0.0003, Time: 0.4223 sec/it, Seq len: 937.4, Slide ID: 8fb59dad9900993009ec713ff08f7a56
+Epoch: 20, Batch: 159, Loss: 0.0611, LR: 0.0003, Time: 0.4224 sec/it, Seq len: 938.8, Slide ID: 54cc7131563c99be891630e83faa40e1
+Epoch: 20, Batch: 179, Loss: 0.0608, LR: 0.0003, Time: 0.4213 sec/it, Seq len: 938.2, Slide ID: 9aa7af9abe0bb29823762cb8aac52db7
+Epoch: 20, Batch: 199, Loss: 0.0588, LR: 0.0003, Time: 0.4226 sec/it, Seq len: 939.6, Slide ID: 9848ee7cc45f7cd373b155191085f06a
+Epoch: 20, Batch: 219, Loss: 0.0569, LR: 0.0003, Time: 0.4230 sec/it, Seq len: 940.7, Slide ID: 1806b2c1ff66377269ffc9a26ffde9d7
+Epoch: 20, Batch: 239, Loss: 0.0548, LR: 0.0003, Time: 0.4210 sec/it, Seq len: 936.5, Slide ID: 13181ac5a364d28673e6bbe718133c71
+Epoch: 20, Batch: 259, Loss: 0.0533, LR: 0.0003, Time: 0.4199 sec/it, Seq len: 934.5, Slide ID: 45e450648c66601b514e55a12ef4fb65
+Epoch: 20, Batch: 279, Loss: 0.0521, LR: 0.0003, Time: 0.4187 sec/it, Seq len: 931.5, Slide ID: 2a3883e1ff960fefc4b94fe5b1b0391e
+Epoch: 20, Batch: 299, Loss: 0.0507, LR: 0.0003, Time: 0.4184 sec/it, Seq len: 931.8, Slide ID: b36b56a7df47298eb36c6def50c76ca1
+Epoch: 20, Batch: 319, Loss: 0.0486, LR: 0.0003, Time: 0.4159 sec/it, Seq len: 927.5, Slide ID: febfd4b08450491c1cff519f9d051da2
+Epoch: 20, Batch: 339, Loss: 0.0474, LR: 0.0003, Time: 0.4151 sec/it, Seq len: 925.9, Slide ID: f74aebdc286a55cf7c44be1f8b7e9744
+Epoch: 20, Batch: 359, Loss: 0.0487, LR: 0.0003, Time: 0.4154 sec/it, Seq len: 926.7, Slide ID: 7bc0cca2cee2bf4522192fd5ba79347c
+Epoch: 20, Batch: 379, Loss: 0.0477, LR: 0.0003, Time: 0.4154 sec/it, Seq len: 927.8, Slide ID: ead9a151a1d35c75305d3dd321c6676e
+Epoch: 20, Batch: 399, Loss: 0.0492, LR: 0.0003, Time: 0.4145 sec/it, Seq len: 925.8, Slide ID: 6ccd71f80656fd3329eb9547d783fb8f
+Epoch: 20, Batch: 419, Loss: 0.0491, LR: 0.0003, Time: 0.4157 sec/it, Seq len: 927.9, Slide ID: 6966c2b9fa1ae59141ab221b32d878cf
+Epoch: 20, Batch: 439, Loss: 0.0493, LR: 0.0003, Time: 0.4170 sec/it, Seq len: 930.7, Slide ID: 83f3b246bdbd51ed830877c3991bf7ca
+Epoch: 20, Batch: 459, Loss: 0.0495, LR: 0.0003, Time: 0.4172 sec/it, Seq len: 931.7, Slide ID: 901a4d6d3cdfc23bf94bc1cb3e03fbc5
+Epoch: 20, Loss: 0.0067
+Epoch: 20, Loss: 1.1809, AUROC: 0.9588, ACC: 0.7998, BACC: 0.7608, qwk: 0.9486
+Epoch: 21
+Epoch: 21, Batch: 19, Loss: 0.0374, LR: 0.0003, Time: 0.4203 sec/it, Seq len: 882.6, Slide ID: eac2bfcf6b1dd7733ab9e2f31452e5bd
+Epoch: 21, Batch: 39, Loss: 0.0306, LR: 0.0003, Time: 0.4271 sec/it, Seq len: 924.1, Slide ID: ea6b2ae44450c9d6f1df788eec496694
+Epoch: 21, Batch: 59, Loss: 0.0488, LR: 0.0003, Time: 0.4308 sec/it, Seq len: 948.2, Slide ID: 5088ad926fb0b20d97de089d851dfabd
+Epoch: 21, Batch: 79, Loss: 0.0452, LR: 0.0003, Time: 0.4350 sec/it, Seq len: 956.0, Slide ID: 66f04788a17915feba394290384e13a4
+Epoch: 21, Batch: 99, Loss: 0.0435, LR: 0.0003, Time: 0.4236 sec/it, Seq len: 933.8, Slide ID: 85874a84d6fd4b14d5d9816650a6a17f
+Epoch: 21, Batch: 119, Loss: 0.0427, LR: 0.0003, Time: 0.4182 sec/it, Seq len: 924.7, Slide ID: 48c427f785410f88f8eddb1f1a13fa14
+Epoch: 21, Batch: 139, Loss: 0.0405, LR: 0.0003, Time: 0.4170 sec/it, Seq len: 923.7, Slide ID: 9188974a29e847d6eb44f3db923ce08d
+Epoch: 21, Batch: 159, Loss: 0.0407, LR: 0.0003, Time: 0.4190 sec/it, Seq len: 928.4, Slide ID: c009af812719b5960f2e11eb295c7466
+Epoch: 21, Batch: 179, Loss: 0.0417, LR: 0.0003, Time: 0.4165 sec/it, Seq len: 924.5, Slide ID: bade12795492d77cea24cac88d383e39
+Epoch: 21, Batch: 199, Loss: 0.0397, LR: 0.0003, Time: 0.4150 sec/it, Seq len: 921.6, Slide ID: 3bab742acf3fdc581cbc57468eac9603
+Epoch: 21, Batch: 219, Loss: 0.0410, LR: 0.0003, Time: 0.4158 sec/it, Seq len: 923.2, Slide ID: 13707d91437e3023c635b4a1c5c25185
+Epoch: 21, Batch: 239, Loss: 0.0424, LR: 0.0003, Time: 0.4126 sec/it, Seq len: 917.9, Slide ID: 8889db1bff5d7e9b8d8fe4a1d47f97b4
+Epoch: 21, Batch: 259, Loss: 0.0407, LR: 0.0003, Time: 0.4105 sec/it, Seq len: 915.2, Slide ID: ee3a23485cb29881a50f2ab3b51b25d4
+Epoch: 21, Batch: 279, Loss: 0.0411, LR: 0.0003, Time: 0.4099 sec/it, Seq len: 915.1, Slide ID: 6a363e70baf98838b0093f9ae93052fd
+Epoch: 21, Batch: 299, Loss: 0.0399, LR: 0.0003, Time: 0.4100 sec/it, Seq len: 915.7, Slide ID: 53c42a394b9b949e8fe7c66df360aa5e
+Epoch: 21, Batch: 319, Loss: 0.0410, LR: 0.0003, Time: 0.4090 sec/it, Seq len: 914.0, Slide ID: 9aaa737a20544b0e1a40fba9b57d43ca
+Epoch: 21, Batch: 339, Loss: 0.0415, LR: 0.0003, Time: 0.4078 sec/it, Seq len: 911.0, Slide ID: 3112c494c644128c2a0f7fbc1e9a23f1
+Epoch: 21, Batch: 359, Loss: 0.0404, LR: 0.0003, Time: 0.4098 sec/it, Seq len: 915.8, Slide ID: 91b65eeea73dd7309880c990458e97ca
+Epoch: 21, Batch: 379, Loss: 0.0398, LR: 0.0003, Time: 0.4102 sec/it, Seq len: 917.1, Slide ID: 0b90de9a5e884982c165c6f2a46c5762
+Epoch: 21, Batch: 399, Loss: 0.0392, LR: 0.0003, Time: 0.4135 sec/it, Seq len: 924.6, Slide ID: 21e92b285b43c4585bdff04f758bf883
+Epoch: 21, Batch: 419, Loss: 0.0385, LR: 0.0003, Time: 0.4147 sec/it, Seq len: 927.1, Slide ID: ef78804e47bf8950bced09b56309ec0b
+Epoch: 21, Batch: 439, Loss: 0.0390, LR: 0.0003, Time: 0.4146 sec/it, Seq len: 926.3, Slide ID: 1ff3c2c6abd78e3c115939d98644f15e
+Epoch: 21, Batch: 459, Loss: 0.0388, LR: 0.0003, Time: 0.4146 sec/it, Seq len: 926.7, Slide ID: fd2c0fd3dccaa4eb53ac8cae0a366969
+Epoch: 21, Loss: 0.0116
+Epoch: 21, Loss: 1.0488, AUROC: 0.9580, ACC: 0.7987, BACC: 0.7518, qwk: 0.9427
+Epoch: 22
+Epoch: 22, Batch: 19, Loss: 0.0185, LR: 0.0003, Time: 0.4313 sec/it, Seq len: 921.0, Slide ID: 883da8599360fdc5f7ce01ec771b2e65
+Epoch: 22, Batch: 39, Loss: 0.0167, LR: 0.0003, Time: 0.4196 sec/it, Seq len: 912.0, Slide ID: 51c58c76e2907090db536a7734cfbabe
+Epoch: 22, Batch: 59, Loss: 0.0237, LR: 0.0003, Time: 0.4128 sec/it, Seq len: 911.5, Slide ID: 339bae6b7ac013bc70f243812c863125
+Epoch: 22, Batch: 79, Loss: 0.0224, LR: 0.0003, Time: 0.4133 sec/it, Seq len: 917.3, Slide ID: a8b8f6be7310d77eb7e785e2f341a137
+Epoch: 22, Batch: 99, Loss: 0.0240, LR: 0.0003, Time: 0.4055 sec/it, Seq len: 903.8, Slide ID: 32a9b5b85a1b52d9a9a677aef9d0b837
+Epoch: 22, Batch: 119, Loss: 0.0302, LR: 0.0003, Time: 0.4044 sec/it, Seq len: 902.1, Slide ID: 52b651323a91da711733ee07620a32c4
+Epoch: 22, Batch: 139, Loss: 0.0306, LR: 0.0003, Time: 0.4106 sec/it, Seq len: 915.9, Slide ID: 019f98ef49bcbff0b0bb513b7d66fcf5
+Epoch: 22, Batch: 159, Loss: 0.0308, LR: 0.0003, Time: 0.4122 sec/it, Seq len: 919.8, Slide ID: fbc9a26a3d51bab4d032b1273fd5edf9
+Epoch: 22, Batch: 179, Loss: 0.0297, LR: 0.0003, Time: 0.4185 sec/it, Seq len: 932.2, Slide ID: fb5d4dfd933a1fec3fa1bd05f571a88c
+Epoch: 22, Batch: 199, Loss: 0.0277, LR: 0.0003, Time: 0.4166 sec/it, Seq len: 929.3, Slide ID: 59001f029aafc4adc0971c0397df6173
+Epoch: 22, Batch: 219, Loss: 0.0277, LR: 0.0003, Time: 0.4131 sec/it, Seq len: 922.5, Slide ID: e1473b87b0374c25573eafc237eb5b0d
+Epoch: 22, Batch: 239, Loss: 0.0337, LR: 0.0003, Time: 0.4144 sec/it, Seq len: 925.3, Slide ID: 1bf018aea8d9b1546d3d3461b37d215e
+Epoch: 22, Batch: 259, Loss: 0.0372, LR: 0.0003, Time: 0.4145 sec/it, Seq len: 925.1, Slide ID: 463d78544902aee6b2474a5baec29f9e
+Epoch: 22, Batch: 279, Loss: 0.0387, LR: 0.0003, Time: 0.4128 sec/it, Seq len: 923.4, Slide ID: 89dc2910f86eb2f24aeb28fbcf55d996
+Epoch: 22, Batch: 299, Loss: 0.0478, LR: 0.0003, Time: 0.4135 sec/it, Seq len: 924.3, Slide ID: ba57c9eb0628f28c35722f0ebef5b620
+Epoch: 22, Batch: 319, Loss: 0.0609, LR: 0.0003, Time: 0.4109 sec/it, Seq len: 919.4, Slide ID: 2ae687e6a07ac70f9391efc3c3a08746
+Epoch: 22, Batch: 339, Loss: 0.0639, LR: 0.0003, Time: 0.4079 sec/it, Seq len: 913.6, Slide ID: cfbabe8f3c5c7978dc95f905d16914a9
+Epoch: 22, Batch: 359, Loss: 0.0653, LR: 0.0003, Time: 0.4090 sec/it, Seq len: 915.8, Slide ID: 49a2ed9b6af2a48a788b9dd6066bdb0a
+Epoch: 22, Batch: 379, Loss: 0.0687, LR: 0.0003, Time: 0.4121 sec/it, Seq len: 922.4, Slide ID: a19e008bb1811dbb0095b4cd4c3bc8c5
+Epoch: 22, Batch: 399, Loss: 0.0705, LR: 0.0003, Time: 0.4105 sec/it, Seq len: 919.8, Slide ID: 40fe12c95fcb153affac97575937819b
+Epoch: 22, Batch: 419, Loss: 0.0722, LR: 0.0003, Time: 0.4126 sec/it, Seq len: 923.7, Slide ID: 07a14fa5b8f74272e4cc0a439dbc8f7f
+Epoch: 22, Batch: 439, Loss: 0.0741, LR: 0.0003, Time: 0.4132 sec/it, Seq len: 924.6, Slide ID: eb846d2f14749c4913bf0affa0578d8d
+Epoch: 22, Batch: 459, Loss: 0.0742, LR: 0.0003, Time: 0.4139 sec/it, Seq len: 926.8, Slide ID: c06212919dd85bfa05a7d2e0a12a09c0
+Epoch: 22, Loss: 0.0256
+Epoch: 22, Loss: 0.9610, AUROC: 0.9571, ACC: 0.7862, BACC: 0.7229, qwk: 0.9356
+Epoch: 23
+Epoch: 23, Batch: 19, Loss: 0.0683, LR: 0.0003, Time: 0.4346 sec/it, Seq len: 901.2, Slide ID: 367f122e80bcd0bffc02f6a04c1d8234
+Epoch: 23, Batch: 39, Loss: 0.0921, LR: 0.0003, Time: 0.4170 sec/it, Seq len: 907.4, Slide ID: 3479b69cf34e5241ddabe268dc304c56
+Epoch: 23, Batch: 59, Loss: 0.0758, LR: 0.0003, Time: 0.4345 sec/it, Seq len: 950.5, Slide ID: 7198a4a8aa40162461573004014923b2
+Epoch: 23, Batch: 79, Loss: 0.0678, LR: 0.0003, Time: 0.4181 sec/it, Seq len: 921.9, Slide ID: b48da7b81527cb6b406f2187043d9626
+Epoch: 23, Batch: 99, Loss: 0.0622, LR: 0.0003, Time: 0.4134 sec/it, Seq len: 916.4, Slide ID: 979eda484717cd406350e95df7862329
+Epoch: 23, Batch: 119, Loss: 0.0541, LR: 0.0003, Time: 0.4189 sec/it, Seq len: 929.0, Slide ID: f3273751f723042683d45d00d3880c8c
+Epoch: 23, Batch: 139, Loss: 0.0559, LR: 0.0003, Time: 0.4116 sec/it, Seq len: 915.6, Slide ID: af4e9bbfb08853b7b2813331fbe5b877
+Epoch: 23, Batch: 159, Loss: 0.0519, LR: 0.0003, Time: 0.4160 sec/it, Seq len: 926.3, Slide ID: d9ccb1baa42354825862d4e4b3e48507
+Epoch: 23, Batch: 179, Loss: 0.0525, LR: 0.0003, Time: 0.4153 sec/it, Seq len: 925.0, Slide ID: bd650136debd7ab365c3222253637f9a
+Epoch: 23, Batch: 199, Loss: 0.0501, LR: 0.0003, Time: 0.4105 sec/it, Seq len: 914.7, Slide ID: dbb61e609cd4e8bcd8d56db2c7cb5df0
+Epoch: 23, Batch: 219, Loss: 0.0535, LR: 0.0003, Time: 0.4110 sec/it, Seq len: 913.9, Slide ID: c06212919dd85bfa05a7d2e0a12a09c0
+Epoch: 23, Batch: 239, Loss: 0.0520, LR: 0.0003, Time: 0.4076 sec/it, Seq len: 908.4, Slide ID: 23ec87e1f63c8280c65b233420d08065
+Epoch: 23, Batch: 259, Loss: 0.0550, LR: 0.0003, Time: 0.4104 sec/it, Seq len: 914.2, Slide ID: 99c859ed54c280bb910ae90ec68c228d
+Epoch: 23, Batch: 279, Loss: 0.0525, LR: 0.0003, Time: 0.4107 sec/it, Seq len: 913.8, Slide ID: d94046cd69c8102ff1e1a871077c7984
+Epoch: 23, Batch: 299, Loss: 0.0513, LR: 0.0003, Time: 0.4139 sec/it, Seq len: 920.5, Slide ID: 757b7b672e19cfa1350f8477f4b5d66e
+Epoch: 23, Batch: 319, Loss: 0.0520, LR: 0.0003, Time: 0.4124 sec/it, Seq len: 917.9, Slide ID: 50ec3c5cb23d1b97d2b2566608d47c36
+Epoch: 23, Batch: 339, Loss: 0.0504, LR: 0.0003, Time: 0.4156 sec/it, Seq len: 925.6, Slide ID: f944e46987d2a4e424c34b9a87ab7d99
+Epoch: 23, Batch: 359, Loss: 0.0483, LR: 0.0003, Time: 0.4155 sec/it, Seq len: 925.9, Slide ID: 497e1c9755641be4757136f16b8a8fad
+Epoch: 23, Batch: 379, Loss: 0.0464, LR: 0.0003, Time: 0.4146 sec/it, Seq len: 924.4, Slide ID: dfefdf0717c69330a75f3cd28abcfff5
+Epoch: 23, Batch: 399, Loss: 0.0453, LR: 0.0003, Time: 0.4146 sec/it, Seq len: 924.9, Slide ID: 0cb2ce337d1a2073f68553d15eacb3a8
+Epoch: 23, Batch: 419, Loss: 0.0441, LR: 0.0003, Time: 0.4147 sec/it, Seq len: 925.5, Slide ID: be8584d0393a178557fbcf29e770f690
+Epoch: 23, Batch: 439, Loss: 0.0437, LR: 0.0003, Time: 0.4152 sec/it, Seq len: 926.8, Slide ID: f836bf8b2f7a52acc668fcd59ec0122f
+Epoch: 23, Batch: 459, Loss: 0.0430, LR: 0.0003, Time: 0.4152 sec/it, Seq len: 926.7, Slide ID: e300fa3d0d231de0f5c533900bd8108d
+Epoch: 23, Loss: 0.0007
+Epoch: 23, Loss: 1.0340, AUROC: 0.9583, ACC: 0.8050, BACC: 0.7557, qwk: 0.9456
+Epoch: 24
+Epoch: 24, Batch: 19, Loss: 0.0101, LR: 0.0003, Time: 0.4652 sec/it, Seq len: 973.9, Slide ID: 629462b0eeb5ac0ac86c52d1bba21146
+Epoch: 24, Batch: 39, Loss: 0.0092, LR: 0.0003, Time: 0.4542 sec/it, Seq len: 983.5, Slide ID: 958b673142f168452d11347144168cd1
+Epoch: 24, Batch: 59, Loss: 0.0101, LR: 0.0003, Time: 0.4481 sec/it, Seq len: 984.1, Slide ID: 31b128f74dbeb86a08d310524b772c05
+Epoch: 24, Batch: 79, Loss: 0.0103, LR: 0.0003, Time: 0.4301 sec/it, Seq len: 953.5, Slide ID: fa74ab756f01ab6b562643955d297cba
+Epoch: 24, Batch: 99, Loss: 0.0101, LR: 0.0003, Time: 0.4350 sec/it, Seq len: 968.4, Slide ID: be2b21968d5ad6861b24d7ca54d44ad5
+Epoch: 24, Batch: 119, Loss: 0.0127, LR: 0.0003, Time: 0.4266 sec/it, Seq len: 952.8, Slide ID: a9b52672e84888c7a26fc2694106f86f
+Epoch: 24, Batch: 139, Loss: 0.0125, LR: 0.0003, Time: 0.4237 sec/it, Seq len: 947.1, Slide ID: 15a542e51a3c58da002695eed33a1511
+Epoch: 24, Batch: 159, Loss: 0.0126, LR: 0.0003, Time: 0.4179 sec/it, Seq len: 936.4, Slide ID: 76646d841dfa7b647f6034e73417c1ee
+Epoch: 24, Batch: 179, Loss: 0.0158, LR: 0.0003, Time: 0.4139 sec/it, Seq len: 928.6, Slide ID: 80175c7d26a0677a08f54c5b66af1555
+Epoch: 24, Batch: 199, Loss: 0.0152, LR: 0.0003, Time: 0.4156 sec/it, Seq len: 931.6, Slide ID: 1364c10e1e7f1ad0457f649a44d74888
+Epoch: 24, Batch: 219, Loss: 0.0153, LR: 0.0003, Time: 0.4179 sec/it, Seq len: 935.6, Slide ID: b9d7f39fa0980b37d7c53d01934695f3
+Epoch: 24, Batch: 239, Loss: 0.0150, LR: 0.0003, Time: 0.4170 sec/it, Seq len: 932.9, Slide ID: ebcc8512888bfadf6c90598a7e0b466b
+Epoch: 24, Batch: 259, Loss: 0.0155, LR: 0.0003, Time: 0.4151 sec/it, Seq len: 929.5, Slide ID: 973e60e06a743e34fdac3675a6c72e86
+Epoch: 24, Batch: 279, Loss: 0.0161, LR: 0.0003, Time: 0.4168 sec/it, Seq len: 933.2, Slide ID: 91943fddc4c32254d35553f7cef53683
+Epoch: 24, Batch: 299, Loss: 0.0157, LR: 0.0003, Time: 0.4184 sec/it, Seq len: 935.8, Slide ID: 4002b1133f43037e87085d13da0db7b7
+Epoch: 24, Batch: 319, Loss: 0.0151, LR: 0.0003, Time: 0.4178 sec/it, Seq len: 934.2, Slide ID: 0550b23f29085f41b10d165a46ad4371
+Epoch: 24, Batch: 339, Loss: 0.0153, LR: 0.0003, Time: 0.4184 sec/it, Seq len: 935.8, Slide ID: 6eb0214c5c18d2925fce96792123ab5c
+Epoch: 24, Batch: 359, Loss: 0.0151, LR: 0.0003, Time: 0.4159 sec/it, Seq len: 930.7, Slide ID: 1eff40a181bdf4e036ebf8fecebe8b20
+Epoch: 24, Batch: 379, Loss: 0.0152, LR: 0.0003, Time: 0.4133 sec/it, Seq len: 925.2, Slide ID: 03881bfd835f664da3e62ce6ea025046
+Epoch: 24, Batch: 399, Loss: 0.0158, LR: 0.0003, Time: 0.4143 sec/it, Seq len: 927.7, Slide ID: 5ed3bb060e0e6d7fe6472f1982e530e9
+Epoch: 24, Batch: 419, Loss: 0.0164, LR: 0.0003, Time: 0.4144 sec/it, Seq len: 927.3, Slide ID: 72e0bd3f347c8619508cbf214024f647
+Epoch: 24, Batch: 439, Loss: 0.0174, LR: 0.0003, Time: 0.4142 sec/it, Seq len: 926.6, Slide ID: a0e3ae771cc087ecfd5251a95043f1f0
+Epoch: 24, Batch: 459, Loss: 0.0173, LR: 0.0003, Time: 0.4121 sec/it, Seq len: 921.8, Slide ID: e261d02e8951aa3d7f0c32c6f0d5eaf8
+Epoch: 24, Loss: 0.0000
+Epoch: 24, Loss: 1.3309, AUROC: 0.9546, ACC: 0.7925, BACC: 0.7387, qwk: 0.9373
+Epoch: 25
+Epoch: 25, Batch: 19, Loss: 0.0107, LR: 0.0003, Time: 0.4359 sec/it, Seq len: 939.4, Slide ID: a38edfd7f0ab8eb00995e7c1c3168b60
+Epoch: 25, Batch: 39, Loss: 0.0172, LR: 0.0003, Time: 0.4101 sec/it, Seq len: 902.6, Slide ID: 3e508c22af058baeb48beebd9b03be01
+Epoch: 25, Batch: 59, Loss: 0.0156, LR: 0.0003, Time: 0.4057 sec/it, Seq len: 905.1, Slide ID: 37f5f5eeed547c62c951aee3ecdc97ee
+Epoch: 25, Batch: 79, Loss: 0.0136, LR: 0.0003, Time: 0.3958 sec/it, Seq len: 886.0, Slide ID: ce04c1a8d8577bb9620620c0a62edb15
+Epoch: 25, Batch: 99, Loss: 0.0134, LR: 0.0003, Time: 0.4036 sec/it, Seq len: 904.1, Slide ID: b610eb6e68c21ac91a0ffd1005035715
+Epoch: 25, Batch: 119, Loss: 0.0152, LR: 0.0003, Time: 0.4135 sec/it, Seq len: 924.4, Slide ID: c77075a7f8ad3b3f413cee8b8df89203
+Epoch: 25, Batch: 139, Loss: 0.0162, LR: 0.0003, Time: 0.4133 sec/it, Seq len: 924.7, Slide ID: 67bc9a23a87b07457464561b22515733
+Epoch: 25, Batch: 159, Loss: 0.0159, LR: 0.0003, Time: 0.4120 sec/it, Seq len: 921.9, Slide ID: db9ab40f85a838fb688892d9080a3560
+Epoch: 25, Batch: 179, Loss: 0.0155, LR: 0.0003, Time: 0.4108 sec/it, Seq len: 919.7, Slide ID: e877ea3e61db21b1a35468e9fcbf80cc
+Epoch: 25, Batch: 199, Loss: 0.0165, LR: 0.0003, Time: 0.4102 sec/it, Seq len: 918.7, Slide ID: 480dc522c58d59f6a6eb7b5351352d16
+Epoch: 25, Batch: 219, Loss: 0.0164, LR: 0.0003, Time: 0.4133 sec/it, Seq len: 925.4, Slide ID: 57e625f31af9400c35f881ede09c1ac5
+Epoch: 25, Batch: 239, Loss: 0.0177, LR: 0.0003, Time: 0.4151 sec/it, Seq len: 928.6, Slide ID: abb4ad0009ce57bca8d400acff5d34a8
+Epoch: 25, Batch: 259, Loss: 0.0185, LR: 0.0003, Time: 0.4122 sec/it, Seq len: 923.0, Slide ID: dee6f372d17c4f4457948f38d13970e9
+Epoch: 25, Batch: 279, Loss: 0.0179, LR: 0.0003, Time: 0.4125 sec/it, Seq len: 923.8, Slide ID: 6f8bf6cfb0c020fdfef1ddb79a250464
+Epoch: 25, Batch: 299, Loss: 0.0185, LR: 0.0003, Time: 0.4126 sec/it, Seq len: 923.1, Slide ID: 4f7748b6eb69e97cb9c7d4c00cf3a1d3
+Epoch: 25, Batch: 319, Loss: 0.0205, LR: 0.0003, Time: 0.4124 sec/it, Seq len: 922.4, Slide ID: 844e3d9d86b7637b36d6893397861c89
+Epoch: 25, Batch: 339, Loss: 0.0212, LR: 0.0003, Time: 0.4115 sec/it, Seq len: 920.3, Slide ID: 5a06d394902b921255cce2ed1bfd2f57
+Epoch: 25, Batch: 359, Loss: 0.0207, LR: 0.0003, Time: 0.4110 sec/it, Seq len: 918.6, Slide ID: 0a8b2cefacdad96c6005799832055629
+Epoch: 25, Batch: 379, Loss: 0.0205, LR: 0.0003, Time: 0.4095 sec/it, Seq len: 915.8, Slide ID: 5f171365f520e179ee080df12dd0330e
+Epoch: 25, Batch: 399, Loss: 0.0208, LR: 0.0003, Time: 0.4091 sec/it, Seq len: 914.9, Slide ID: 39b20d5c2588bafb42c5d6915de11b6b
+Epoch: 25, Batch: 419, Loss: 0.0223, LR: 0.0003, Time: 0.4118 sec/it, Seq len: 920.8, Slide ID: 5724a6703905a9e591fe7f6017eab790
+Epoch: 25, Batch: 439, Loss: 0.0224, LR: 0.0003, Time: 0.4131 sec/it, Seq len: 921.8, Slide ID: 5037b3b05aec2c96a034ce9301a43326
+Epoch: 25, Batch: 459, Loss: 0.0226, LR: 0.0002, Time: 0.4134 sec/it, Seq len: 923.2, Slide ID: e9e02b1633898ce8d73147ff8017776e
+Epoch: 25, Loss: 0.0038
+Epoch: 25, Loss: 1.2464, AUROC: 0.9564, ACC: 0.7841, BACC: 0.7446, qwk: 0.9396
+Epoch: 26
+Epoch: 26, Batch: 19, Loss: 0.0246, LR: 0.0002, Time: 0.4518 sec/it, Seq len: 957.6, Slide ID: ba79259f809a3397afb951e3f604bd90
+Epoch: 26, Batch: 39, Loss: 0.0207, LR: 0.0002, Time: 0.4205 sec/it, Seq len: 924.8, Slide ID: 6b6e1ffee1c8a8182f3258ab8c846fa9
+Epoch: 26, Batch: 59, Loss: 0.0286, LR: 0.0002, Time: 0.4125 sec/it, Seq len: 913.5, Slide ID: d844c98b020831cd13e0dbed2f72e719
+Epoch: 26, Batch: 79, Loss: 0.0299, LR: 0.0002, Time: 0.4107 sec/it, Seq len: 911.5, Slide ID: 8647686bb5a90fd797ab8ca2b9e40e1c
+Epoch: 26, Batch: 99, Loss: 0.0277, LR: 0.0002, Time: 0.4150 sec/it, Seq len: 923.3, Slide ID: a4400c5e31462e7d221bb1a06d2ba0de
+Epoch: 26, Batch: 119, Loss: 0.0243, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 921.0, Slide ID: e42266419ea81e25ffbea2954c817ad5
+Epoch: 26, Batch: 139, Loss: 0.0241, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 921.6, Slide ID: 68fa730b281bed2236a0b26397a000ce
+Epoch: 26, Batch: 159, Loss: 0.0238, LR: 0.0002, Time: 0.4162 sec/it, Seq len: 924.4, Slide ID: c127660ea8547c6d1e13a2785791707c
+Epoch: 26, Batch: 179, Loss: 0.0246, LR: 0.0002, Time: 0.4158 sec/it, Seq len: 923.9, Slide ID: 4d87ea697b26548b98d3591c5ebd5a4b
+Epoch: 26, Batch: 199, Loss: 0.0236, LR: 0.0002, Time: 0.4162 sec/it, Seq len: 925.0, Slide ID: 4d048dd585259614c27e11431ec2c860
+Epoch: 26, Batch: 219, Loss: 0.0229, LR: 0.0002, Time: 0.4130 sec/it, Seq len: 919.6, Slide ID: 4840094b5f83d841f77859ed1ce6865f
+Epoch: 26, Batch: 239, Loss: 0.0228, LR: 0.0002, Time: 0.4129 sec/it, Seq len: 919.2, Slide ID: 6dd5fc9704c89ebdc01692c44c30da14
+Epoch: 26, Batch: 259, Loss: 0.0222, LR: 0.0002, Time: 0.4127 sec/it, Seq len: 918.1, Slide ID: f079a9a9d4c30cbdc55917df9f5f6541
+Epoch: 26, Batch: 279, Loss: 0.0217, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 923.1, Slide ID: 2ce35862db5e157ec48188318c015576
+Epoch: 26, Batch: 299, Loss: 0.0211, LR: 0.0002, Time: 0.4144 sec/it, Seq len: 922.3, Slide ID: 5560bd3b03194cf9cdb514f7254b17b5
+Epoch: 26, Batch: 319, Loss: 0.0206, LR: 0.0002, Time: 0.4130 sec/it, Seq len: 919.9, Slide ID: a2203e3e55982d90983e61c1dfc3802c
+Epoch: 26, Batch: 339, Loss: 0.0209, LR: 0.0002, Time: 0.4138 sec/it, Seq len: 922.8, Slide ID: 0cda721ed6ea6bc2826914ddac3cc338
+Epoch: 26, Batch: 359, Loss: 0.0206, LR: 0.0002, Time: 0.4136 sec/it, Seq len: 922.5, Slide ID: 52b651323a91da711733ee07620a32c4
+Epoch: 26, Batch: 379, Loss: 0.0198, LR: 0.0002, Time: 0.4151 sec/it, Seq len: 926.5, Slide ID: a996595380b54dc905dba46b751ec82f
+Epoch: 26, Batch: 399, Loss: 0.0204, LR: 0.0002, Time: 0.4148 sec/it, Seq len: 925.9, Slide ID: 42bdc13df1e2910577c98462716c6075
+Epoch: 26, Batch: 419, Loss: 0.0205, LR: 0.0002, Time: 0.4128 sec/it, Seq len: 921.5, Slide ID: 87f54ef4d144fdbcc7a97541396e3a9b
+Epoch: 26, Batch: 439, Loss: 0.0206, LR: 0.0002, Time: 0.4139 sec/it, Seq len: 924.4, Slide ID: fb80c40073a4016bf384f408ec048f55
+Epoch: 26, Batch: 459, Loss: 0.0201, LR: 0.0002, Time: 0.4160 sec/it, Seq len: 928.7, Slide ID: ba0476c61b241addd5a5b83fc6dd0aa4
+Epoch: 26, Loss: 0.0241
+Epoch: 26, Loss: 1.4232, AUROC: 0.9571, ACC: 0.7830, BACC: 0.7435, qwk: 0.9381
+Epoch: 27
+Epoch: 27, Batch: 19, Loss: 0.0531, LR: 0.0002, Time: 0.4562 sec/it, Seq len: 968.4, Slide ID: 333bc859088cb64ca1d20af155b8bf57
+Epoch: 27, Batch: 39, Loss: 0.0417, LR: 0.0002, Time: 0.4219 sec/it, Seq len: 932.5, Slide ID: 3da913b3f89eefa02a90c878ebc4c3ae
+Epoch: 27, Batch: 59, Loss: 0.0351, LR: 0.0002, Time: 0.4093 sec/it, Seq len: 914.1, Slide ID: cbe58732cb94078090d6a35b712e19d8
+Epoch: 27, Batch: 79, Loss: 0.0302, LR: 0.0002, Time: 0.4187 sec/it, Seq len: 934.8, Slide ID: f05d48bb9a4b1a9b1c6724988c2bcec0
+Epoch: 27, Batch: 99, Loss: 0.0303, LR: 0.0002, Time: 0.4234 sec/it, Seq len: 941.4, Slide ID: 821b7c89e5f5879c21cefcdeb0df1657
+Epoch: 27, Batch: 119, Loss: 0.0274, LR: 0.0002, Time: 0.4170 sec/it, Seq len: 927.2, Slide ID: 0b6d642c9b160678dcfff095c21ce09f
+Epoch: 27, Batch: 139, Loss: 0.0271, LR: 0.0002, Time: 0.4157 sec/it, Seq len: 927.2, Slide ID: 8649dd890dd9e3b689564efb505397a8
+Epoch: 27, Batch: 159, Loss: 0.0281, LR: 0.0002, Time: 0.4188 sec/it, Seq len: 932.4, Slide ID: d98de7b36e1362dfa74903ec96e53c15
+Epoch: 27, Batch: 179, Loss: 0.0289, LR: 0.0002, Time: 0.4132 sec/it, Seq len: 920.9, Slide ID: 467e6dae0cb2eb1af21e9cc3c602fde7
+Epoch: 27, Batch: 199, Loss: 0.0275, LR: 0.0002, Time: 0.4179 sec/it, Seq len: 931.2, Slide ID: d5235bb224047dae8ea4c5882dbc7e43
+Epoch: 27, Batch: 219, Loss: 0.0272, LR: 0.0002, Time: 0.4165 sec/it, Seq len: 928.8, Slide ID: 05042f83b5d00b7ca6e2b4f0a2b3add1
+Epoch: 27, Batch: 239, Loss: 0.0267, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 924.4, Slide ID: 6210ddaf9f3e233411579da0ea9a0484
+Epoch: 27, Batch: 259, Loss: 0.0255, LR: 0.0002, Time: 0.4164 sec/it, Seq len: 928.1, Slide ID: 754bb7812dca6a3fe59c3da1558a411f
+Epoch: 27, Batch: 279, Loss: 0.0247, LR: 0.0002, Time: 0.4167 sec/it, Seq len: 930.4, Slide ID: 2cd0a5200034022b5e594f200bb8073d
+Epoch: 27, Batch: 299, Loss: 0.0243, LR: 0.0002, Time: 0.4186 sec/it, Seq len: 933.1, Slide ID: 274187a867ebf7834ab44372da776439
+Epoch: 27, Batch: 319, Loss: 0.0233, LR: 0.0002, Time: 0.4191 sec/it, Seq len: 934.4, Slide ID: be1573a19286fcb2ab6fa14b32bd68a6
+Epoch: 27, Batch: 339, Loss: 0.0223, LR: 0.0002, Time: 0.4223 sec/it, Seq len: 940.8, Slide ID: 3484d8c6a8bfbbdd516bb1e57a338953
+Epoch: 27, Batch: 359, Loss: 0.0231, LR: 0.0002, Time: 0.4206 sec/it, Seq len: 937.8, Slide ID: 6bd476d515d75746bf716e578c704c3b
+Epoch: 27, Batch: 379, Loss: 0.0236, LR: 0.0002, Time: 0.4220 sec/it, Seq len: 940.6, Slide ID: 340236fc3587d38939e3dd669bbfe3e8
+Epoch: 27, Batch: 399, Loss: 0.0228, LR: 0.0002, Time: 0.4202 sec/it, Seq len: 936.9, Slide ID: af19419c91142ecb32673de460b8d556
+Epoch: 27, Batch: 419, Loss: 0.0226, LR: 0.0002, Time: 0.4199 sec/it, Seq len: 936.3, Slide ID: 652e4ef79f6f829a57aa0021d5a8d3e5
+Epoch: 27, Batch: 439, Loss: 0.0220, LR: 0.0002, Time: 0.4181 sec/it, Seq len: 933.7, Slide ID: 58068fcdb3562d6c87a5984660f7c81b
+Epoch: 27, Batch: 459, Loss: 0.0214, LR: 0.0002, Time: 0.4190 sec/it, Seq len: 935.4, Slide ID: 89572c5f93eb8b635a350d9fafa2044f
+Epoch: 27, Loss: 0.0005
+Epoch: 27, Loss: 1.1644, AUROC: 0.9589, ACC: 0.8071, BACC: 0.7618, qwk: 0.9399
+Epoch: 28
+Epoch: 28, Batch: 19, Loss: 0.0139, LR: 0.0002, Time: 0.4781 sec/it, Seq len: 1020.3, Slide ID: 75cb55b879fce1a96c8273cdd77048c0
+Epoch: 28, Batch: 39, Loss: 0.0162, LR: 0.0002, Time: 0.4449 sec/it, Seq len: 974.6, Slide ID: b6f90e7ab21daafd78c0c8f8d6370afa
+Epoch: 28, Batch: 59, Loss: 0.0242, LR: 0.0002, Time: 0.4365 sec/it, Seq len: 968.0, Slide ID: abf805f154494f6b9fddf2b66c6e6c43
+Epoch: 28, Batch: 79, Loss: 0.0210, LR: 0.0002, Time: 0.4294 sec/it, Seq len: 953.4, Slide ID: 66f04788a17915feba394290384e13a4
+Epoch: 28, Batch: 99, Loss: 0.0217, LR: 0.0002, Time: 0.4215 sec/it, Seq len: 939.8, Slide ID: d77156c36bb14ea111fd2bfa22d8c9bc
+Epoch: 28, Batch: 119, Loss: 0.0200, LR: 0.0002, Time: 0.4156 sec/it, Seq len: 927.3, Slide ID: 8d042c218851d6c8385cb5f1e321ced6
+Epoch: 28, Batch: 139, Loss: 0.0192, LR: 0.0002, Time: 0.4245 sec/it, Seq len: 943.8, Slide ID: 037e64a6aaddb326a8575de52771064a
+Epoch: 28, Batch: 159, Loss: 0.0194, LR: 0.0002, Time: 0.4238 sec/it, Seq len: 943.0, Slide ID: e97722ee42a5566b71eef7e75e9d86f0
+Epoch: 28, Batch: 179, Loss: 0.0186, LR: 0.0002, Time: 0.4176 sec/it, Seq len: 931.0, Slide ID: 6392947d42a28861f68363b1f2e536e5
+Epoch: 28, Batch: 199, Loss: 0.0190, LR: 0.0002, Time: 0.4165 sec/it, Seq len: 929.5, Slide ID: 585bf47f399249d4bc1e18a0aad69d2a
+Epoch: 28, Batch: 219, Loss: 0.0191, LR: 0.0002, Time: 0.4132 sec/it, Seq len: 923.2, Slide ID: c3206e3a627cf34dfb2b013847b924c2
+Epoch: 28, Batch: 239, Loss: 0.0190, LR: 0.0002, Time: 0.4133 sec/it, Seq len: 923.9, Slide ID: f2061f4d36c3ed5e865d8f8d8e0785b3
+Epoch: 28, Batch: 259, Loss: 0.0186, LR: 0.0002, Time: 0.4127 sec/it, Seq len: 924.0, Slide ID: b07c8235c0ffccec16ec7caa70c1d4a9
+Epoch: 28, Batch: 279, Loss: 0.0180, LR: 0.0002, Time: 0.4119 sec/it, Seq len: 921.2, Slide ID: 7732735eaffbc56feead4e9d2e4663f2
+Epoch: 28, Batch: 299, Loss: 0.0180, LR: 0.0002, Time: 0.4121 sec/it, Seq len: 921.5, Slide ID: 97bf4d65f07954809658e01478408637
+Epoch: 28, Batch: 319, Loss: 0.0177, LR: 0.0002, Time: 0.4104 sec/it, Seq len: 917.2, Slide ID: 4d16a16f6528437aac495b6428d9bf61
+Epoch: 28, Batch: 339, Loss: 0.0188, LR: 0.0002, Time: 0.4120 sec/it, Seq len: 920.5, Slide ID: 532779ee14c90e573b4d5c99cd63f757
+Epoch: 28, Batch: 359, Loss: 0.0181, LR: 0.0002, Time: 0.4140 sec/it, Seq len: 924.6, Slide ID: f56e89dc86b2573d9759aa38c8bd05e9
+Epoch: 28, Batch: 379, Loss: 0.0175, LR: 0.0002, Time: 0.4137 sec/it, Seq len: 923.9, Slide ID: 6cbd13aad5efec0454b8168ec8588cb6
+Epoch: 28, Batch: 399, Loss: 0.0169, LR: 0.0002, Time: 0.4142 sec/it, Seq len: 924.9, Slide ID: c9125c5d49123077ce43cc815e92af40
+Epoch: 28, Batch: 419, Loss: 0.0173, LR: 0.0002, Time: 0.4121 sec/it, Seq len: 921.0, Slide ID: 6976004fb0e04f4435b0e1e127032881
+Epoch: 28, Batch: 439, Loss: 0.0168, LR: 0.0002, Time: 0.4132 sec/it, Seq len: 923.1, Slide ID: 4a13ec6df5b95b9161b6e4c9ca8de864
+Epoch: 28, Batch: 459, Loss: 0.0167, LR: 0.0002, Time: 0.4138 sec/it, Seq len: 925.0, Slide ID: 554c017aec32fb7b6448c3ba22d3f0e4
+Epoch: 28, Loss: 0.0013
+Epoch: 28, Loss: 1.2408, AUROC: 0.9589, ACC: 0.8082, BACC: 0.7714, qwk: 0.9443
+Epoch: 29
+Epoch: 29, Batch: 19, Loss: 0.0357, LR: 0.0002, Time: 0.4452 sec/it, Seq len: 932.2, Slide ID: f05d48bb9a4b1a9b1c6724988c2bcec0
+Epoch: 29, Batch: 39, Loss: 0.0221, LR: 0.0002, Time: 0.4283 sec/it, Seq len: 931.0, Slide ID: 1b5076baaa25ce4ab5e9da8e0ae041ca
+Epoch: 29, Batch: 59, Loss: 0.0292, LR: 0.0002, Time: 0.4177 sec/it, Seq len: 920.9, Slide ID: 8fb12946881047895dd14ed095a99367
+Epoch: 29, Batch: 79, Loss: 0.0237, LR: 0.0002, Time: 0.4114 sec/it, Seq len: 913.3, Slide ID: 73ca95633a46136d909f5ad45c7ddda1
+Epoch: 29, Batch: 99, Loss: 0.0211, LR: 0.0002, Time: 0.4082 sec/it, Seq len: 908.6, Slide ID: f800a3979b283e4b697fa2aade0c1947
+Epoch: 29, Batch: 119, Loss: 0.0182, LR: 0.0002, Time: 0.4150 sec/it, Seq len: 921.0, Slide ID: e4215cfc8c41ec04a55431cc413688a9
+Epoch: 29, Batch: 139, Loss: 0.0169, LR: 0.0002, Time: 0.4135 sec/it, Seq len: 918.9, Slide ID: a58d6425e3c86c6d532cd57dc7504c13
+Epoch: 29, Batch: 159, Loss: 0.0161, LR: 0.0002, Time: 0.4118 sec/it, Seq len: 915.3, Slide ID: 59273487fefd0612a56959315cc476a1
+Epoch: 29, Batch: 179, Loss: 0.0146, LR: 0.0002, Time: 0.4128 sec/it, Seq len: 917.7, Slide ID: 82a8afddaa5244a756cc8b18e5b14c43
+Epoch: 29, Batch: 199, Loss: 0.0161, LR: 0.0002, Time: 0.4129 sec/it, Seq len: 918.9, Slide ID: 2006437aaa412947ebfe92fd61c62a18
+Epoch: 29, Batch: 219, Loss: 0.0151, LR: 0.0002, Time: 0.4163 sec/it, Seq len: 926.4, Slide ID: 98052e108edf90a5e0d327745ca0a2a0
+Epoch: 29, Batch: 239, Loss: 0.0142, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 924.0, Slide ID: 3ed23a08a9d7631f2bb25c3dd0cf327c
+Epoch: 29, Batch: 259, Loss: 0.0133, LR: 0.0002, Time: 0.4120 sec/it, Seq len: 918.4, Slide ID: eb0784168cd25dac78137baa950b3c73
+Epoch: 29, Batch: 279, Loss: 0.0135, LR: 0.0002, Time: 0.4141 sec/it, Seq len: 923.5, Slide ID: ef20ad4052dba940a75b752f48432737
+Epoch: 29, Batch: 299, Loss: 0.0131, LR: 0.0002, Time: 0.4172 sec/it, Seq len: 930.2, Slide ID: f38dbf8baa31d34599b8673cb0303405
+Epoch: 29, Batch: 319, Loss: 0.0129, LR: 0.0002, Time: 0.4167 sec/it, Seq len: 928.3, Slide ID: 6b551001da9ab34a28cf56529df5fad9
+Epoch: 29, Batch: 339, Loss: 0.0123, LR: 0.0002, Time: 0.4158 sec/it, Seq len: 926.3, Slide ID: 59750807e9d7869288cc60f7c318314d
+Epoch: 29, Batch: 359, Loss: 0.0125, LR: 0.0002, Time: 0.4156 sec/it, Seq len: 926.0, Slide ID: 3eea18b89ad8caf07946476d89a7aa8a
+Epoch: 29, Batch: 379, Loss: 0.0122, LR: 0.0002, Time: 0.4143 sec/it, Seq len: 924.0, Slide ID: 0280f8b612771801229e2dde52371141
+Epoch: 29, Batch: 399, Loss: 0.0120, LR: 0.0002, Time: 0.4142 sec/it, Seq len: 923.7, Slide ID: f6c48b756b48f8b45aaec467ff3273d6
+Epoch: 29, Batch: 419, Loss: 0.0117, LR: 0.0002, Time: 0.4121 sec/it, Seq len: 919.6, Slide ID: 5c1b69f90894b89741cc22d135dd14c7
+Epoch: 29, Batch: 439, Loss: 0.0113, LR: 0.0002, Time: 0.4127 sec/it, Seq len: 921.2, Slide ID: 48440a60d18ab8e5a6f09de20a50bb27
+Epoch: 29, Batch: 459, Loss: 0.0112, LR: 0.0002, Time: 0.4163 sec/it, Seq len: 929.5, Slide ID: 3ea2b7849d7ce4fccad168565e8e669e
+Epoch: 29, Loss: 0.0002
+Epoch: 29, Loss: 1.2642, AUROC: 0.9580, ACC: 0.8082, BACC: 0.7625, qwk: 0.9473
+Epoch: 30
+Epoch: 30, Batch: 19, Loss: 0.0088, LR: 0.0002, Time: 0.3980 sec/it, Seq len: 850.8, Slide ID: 60b46e491d5aa1cadeac8e97ec073c6e
+Epoch: 30, Batch: 39, Loss: 0.0055, LR: 0.0002, Time: 0.4114 sec/it, Seq len: 907.0, Slide ID: 516f93fd6b07daa49fb374122d2664c3
+Epoch: 30, Batch: 59, Loss: 0.0068, LR: 0.0002, Time: 0.4131 sec/it, Seq len: 916.6, Slide ID: f8e31591718a4a1934728a9767c6459c
+Epoch: 30, Batch: 79, Loss: 0.0081, LR: 0.0002, Time: 0.4264 sec/it, Seq len: 948.7, Slide ID: 49db2dc6d2b8ec83e08ecb69182012e1
+Epoch: 30, Batch: 99, Loss: 0.0075, LR: 0.0002, Time: 0.4220 sec/it, Seq len: 939.7, Slide ID: 3ba4e8d4a0b0ef0ef31383ff7cf2b76c
+Epoch: 30, Batch: 119, Loss: 0.0065, LR: 0.0002, Time: 0.4309 sec/it, Seq len: 957.6, Slide ID: f13eb7c6b71d6346bd1421117b18ff3d
+Epoch: 30, Batch: 139, Loss: 0.0061, LR: 0.0002, Time: 0.4258 sec/it, Seq len: 949.2, Slide ID: 2f1c751ab10b8b009b3391ae86acf6c3
+Epoch: 30, Batch: 159, Loss: 0.0056, LR: 0.0002, Time: 0.4226 sec/it, Seq len: 944.7, Slide ID: 3546206e8f2a9495e81fdd6af08a5a6b
+Epoch: 30, Batch: 179, Loss: 0.0056, LR: 0.0002, Time: 0.4236 sec/it, Seq len: 947.8, Slide ID: 6e5421b95ba6f7ae6d5c3ffddd797ca0
+Epoch: 30, Batch: 199, Loss: 0.0054, LR: 0.0002, Time: 0.4267 sec/it, Seq len: 952.8, Slide ID: f39bf22d9a2f313425ee201932bac91a
+Epoch: 30, Batch: 219, Loss: 0.0051, LR: 0.0002, Time: 0.4280 sec/it, Seq len: 955.8, Slide ID: 2f307cc31799996529e44c0bcc87b9dd
+Epoch: 30, Batch: 239, Loss: 0.0049, LR: 0.0002, Time: 0.4245 sec/it, Seq len: 948.9, Slide ID: 95c2d3c62a1958314c31967600e736ee
+Epoch: 30, Batch: 259, Loss: 0.0048, LR: 0.0002, Time: 0.4203 sec/it, Seq len: 940.2, Slide ID: 73df680f7884e13355a1f1fc2bacc3a4
+Epoch: 30, Batch: 279, Loss: 0.0047, LR: 0.0002, Time: 0.4221 sec/it, Seq len: 942.6, Slide ID: 9825a1b0d9fd541a2849af0880927c88
+Epoch: 30, Batch: 299, Loss: 0.0044, LR: 0.0002, Time: 0.4208 sec/it, Seq len: 940.2, Slide ID: efc999f01b27bc25d9a75a5583dbd938
+Epoch: 30, Batch: 319, Loss: 0.0042, LR: 0.0002, Time: 0.4228 sec/it, Seq len: 945.0, Slide ID: 48896f2b866e9694586b3377025c4927
+Epoch: 30, Batch: 339, Loss: 0.0040, LR: 0.0002, Time: 0.4206 sec/it, Seq len: 940.0, Slide ID: db50ae671fd181d31c89728e6a71e582
+Epoch: 30, Batch: 359, Loss: 0.0038, LR: 0.0002, Time: 0.4207 sec/it, Seq len: 939.7, Slide ID: 05a48d521ee6697052fc1bd914fb6edb
+Epoch: 30, Batch: 379, Loss: 0.0037, LR: 0.0002, Time: 0.4194 sec/it, Seq len: 937.4, Slide ID: 1844a09c66e370d856cefb21f5e82be4
+Epoch: 30, Batch: 399, Loss: 0.0040, LR: 0.0002, Time: 0.4178 sec/it, Seq len: 934.1, Slide ID: 59c75ad5b178f5f2860deef480d6837b
+Epoch: 30, Batch: 419, Loss: 0.0039, LR: 0.0002, Time: 0.4189 sec/it, Seq len: 936.5, Slide ID: 86fd4ff8a21d365227993c845db5e6e8
+Epoch: 30, Batch: 439, Loss: 0.0038, LR: 0.0002, Time: 0.4169 sec/it, Seq len: 932.3, Slide ID: 38020becb73cea2d52e02adb5d3704ef
+Epoch: 30, Batch: 459, Loss: 0.0038, LR: 0.0002, Time: 0.4144 sec/it, Seq len: 927.6, Slide ID: 4aac539cdb139eb4549013b591084c4f
+Epoch: 30, Loss: 0.0000
+Epoch: 30, Loss: 1.3318, AUROC: 0.9589, ACC: 0.8197, BACC: 0.7756, qwk: 0.9482
+Epoch: 31
+Epoch: 31, Batch: 19, Loss: 0.0010, LR: 0.0002, Time: 0.4633 sec/it, Seq len: 963.9, Slide ID: 11fb56dd38d8f4179c702afacbd70d41
+Epoch: 31, Batch: 39, Loss: 0.0014, LR: 0.0002, Time: 0.4275 sec/it, Seq len: 929.8, Slide ID: 93d0dc29c48d0c31738d20d3c5c38aab
+Epoch: 31, Batch: 59, Loss: 0.0047, LR: 0.0002, Time: 0.4388 sec/it, Seq len: 965.1, Slide ID: 203c6d9817fc00d1b1fdcc6eae2118b4
+Epoch: 31, Batch: 79, Loss: 0.0068, LR: 0.0002, Time: 0.4233 sec/it, Seq len: 939.0, Slide ID: 5be8d68eedfec296cca5d90a403e1025
+Epoch: 31, Batch: 99, Loss: 0.0058, LR: 0.0002, Time: 0.4134 sec/it, Seq len: 921.2, Slide ID: 2e75d8e70ab893203aafbd1444d7ebe7
+Epoch: 31, Batch: 119, Loss: 0.0055, LR: 0.0002, Time: 0.4074 sec/it, Seq len: 909.0, Slide ID: 527282598f789e5e0854a7f208016533
+Epoch: 31, Batch: 139, Loss: 0.0057, LR: 0.0002, Time: 0.4082 sec/it, Seq len: 908.8, Slide ID: fbec7a11045c409213445c592bdadfae
+Epoch: 31, Batch: 159, Loss: 0.0052, LR: 0.0002, Time: 0.4102 sec/it, Seq len: 914.4, Slide ID: 12942b14ee8cde158e33d537cc3582a9
+Epoch: 31, Batch: 179, Loss: 0.0055, LR: 0.0002, Time: 0.4088 sec/it, Seq len: 912.1, Slide ID: 6eff61540d687bb80f2eda923b2dca9b
+Epoch: 31, Batch: 199, Loss: 0.0052, LR: 0.0002, Time: 0.4147 sec/it, Seq len: 924.3, Slide ID: d782c4a766ad5d361a9370fd0c6c6fd5
+Epoch: 31, Batch: 219, Loss: 0.0049, LR: 0.0002, Time: 0.4174 sec/it, Seq len: 930.1, Slide ID: f0b3a37f233c1a02dc1b7ecfc7dc61b8
+Epoch: 31, Batch: 239, Loss: 0.0053, LR: 0.0002, Time: 0.4221 sec/it, Seq len: 939.4, Slide ID: 9d824f1d72e60812b7a165c42e1162ba
+Epoch: 31, Batch: 259, Loss: 0.0064, LR: 0.0002, Time: 0.4207 sec/it, Seq len: 936.6, Slide ID: b7a656a61d26bd78d95c3449cfc1fab8
+Epoch: 31, Batch: 279, Loss: 0.0073, LR: 0.0002, Time: 0.4220 sec/it, Seq len: 939.7, Slide ID: 948e99d0e90585562815a1b73b96c5dd
+Epoch: 31, Batch: 299, Loss: 0.0085, LR: 0.0002, Time: 0.4196 sec/it, Seq len: 934.7, Slide ID: 8e25daf57ff5b9ee0053514ee21ad9b6
+Epoch: 31, Batch: 319, Loss: 0.0086, LR: 0.0002, Time: 0.4181 sec/it, Seq len: 931.4, Slide ID: c34fa8189fe4e5b4995e1c14deb9f5a1
+Epoch: 31, Batch: 339, Loss: 0.0093, LR: 0.0002, Time: 0.4171 sec/it, Seq len: 929.8, Slide ID: 5a0c582812967666f68055b84aa6a69b
+Epoch: 31, Batch: 359, Loss: 0.0097, LR: 0.0002, Time: 0.4189 sec/it, Seq len: 933.3, Slide ID: 0446851f36b7a60cb971e05365ce0188
+Epoch: 31, Batch: 379, Loss: 0.0105, LR: 0.0002, Time: 0.4169 sec/it, Seq len: 929.9, Slide ID: 28ca3539cc4b25b0a3d571c1fe108aba
+Epoch: 31, Batch: 399, Loss: 0.0105, LR: 0.0002, Time: 0.4159 sec/it, Seq len: 927.1, Slide ID: 40ec1569058af6c26f95522ccfd30693
+Epoch: 31, Batch: 419, Loss: 0.0105, LR: 0.0002, Time: 0.4167 sec/it, Seq len: 928.6, Slide ID: 9e9c36a50726e766d79a3871e0fead40
+Epoch: 31, Batch: 439, Loss: 0.0106, LR: 0.0002, Time: 0.4159 sec/it, Seq len: 927.4, Slide ID: 6cfcd028cfca9fb39a8976882d0167f2
+Epoch: 31, Batch: 459, Loss: 0.0112, LR: 0.0002, Time: 0.4165 sec/it, Seq len: 928.5, Slide ID: 9f183415180fe74f08ac54da7ffa8a4a
+Epoch: 31, Loss: 0.0033
+Epoch: 31, Loss: 1.4993, AUROC: 0.9528, ACC: 0.8103, BACC: 0.7663, qwk: 0.9470
+Epoch: 32
+Epoch: 32, Batch: 19, Loss: 0.0125, LR: 0.0002, Time: 0.4584 sec/it, Seq len: 961.0, Slide ID: 28c34a837397ac08f276bfac99af6daf
+Epoch: 32, Batch: 39, Loss: 0.0135, LR: 0.0002, Time: 0.4345 sec/it, Seq len: 946.0, Slide ID: 07eaadc46babea72e7fd1c3be000928e
+Epoch: 32, Batch: 59, Loss: 0.0102, LR: 0.0002, Time: 0.4281 sec/it, Seq len: 947.6, Slide ID: fc6a695ba44f4b64425c522f590bac48
+Epoch: 32, Batch: 79, Loss: 0.0093, LR: 0.0002, Time: 0.4229 sec/it, Seq len: 939.8, Slide ID: b0404032716fda7bf95526f298822900
+Epoch: 32, Batch: 99, Loss: 0.0077, LR: 0.0002, Time: 0.4140 sec/it, Seq len: 923.1, Slide ID: 79c1bcc4eda4d24d26faa9154123774e
+Epoch: 32, Batch: 119, Loss: 0.0083, LR: 0.0001, Time: 0.4159 sec/it, Seq len: 926.6, Slide ID: c2701c13451133bb51ae89e03f77e88d
+Epoch: 32, Batch: 139, Loss: 0.0086, LR: 0.0001, Time: 0.4142 sec/it, Seq len: 923.4, Slide ID: e643797bc1d667d5b6a4f43ddd91c27b
+Epoch: 32, Batch: 159, Loss: 0.0094, LR: 0.0001, Time: 0.4125 sec/it, Seq len: 919.3, Slide ID: d04a52ee5ed0a35c5741c7276eb0a063
+Epoch: 32, Batch: 179, Loss: 0.0089, LR: 0.0001, Time: 0.4128 sec/it, Seq len: 919.0, Slide ID: 4f7296f162c6248fdd1e06f5aa5d6eb3
+Epoch: 32, Batch: 199, Loss: 0.0083, LR: 0.0001, Time: 0.4101 sec/it, Seq len: 914.2, Slide ID: 60bf955e8135c580681a253469151ed6
+Epoch: 32, Batch: 219, Loss: 0.0089, LR: 0.0001, Time: 0.4110 sec/it, Seq len: 915.2, Slide ID: 008069b542b0439ed69b194674051964
+Epoch: 32, Batch: 239, Loss: 0.0090, LR: 0.0001, Time: 0.4084 sec/it, Seq len: 910.3, Slide ID: 647f4dabc53f943acbffbde9db87e35e
+Epoch: 32, Batch: 259, Loss: 0.0095, LR: 0.0001, Time: 0.4111 sec/it, Seq len: 915.3, Slide ID: fbb8090f001cfe840cbe84d42e70bab8
+Epoch: 32, Batch: 279, Loss: 0.0095, LR: 0.0001, Time: 0.4103 sec/it, Seq len: 913.4, Slide ID: 65ae2ddcf6dbae0f38297cfa1e3e5d0b
+Epoch: 32, Batch: 299, Loss: 0.0098, LR: 0.0001, Time: 0.4114 sec/it, Seq len: 917.0, Slide ID: 26b5257856e96a2a3d3d3e681ae13aa1
+Epoch: 32, Batch: 319, Loss: 0.0094, LR: 0.0001, Time: 0.4113 sec/it, Seq len: 916.2, Slide ID: 9526ed25cd1ac4113139593575131cd1
+Epoch: 32, Batch: 339, Loss: 0.0091, LR: 0.0001, Time: 0.4114 sec/it, Seq len: 917.2, Slide ID: 40f53e192b5ef10af5d9f176cb1705bc
+Epoch: 32, Batch: 359, Loss: 0.0087, LR: 0.0001, Time: 0.4122 sec/it, Seq len: 919.0, Slide ID: 35e9d8f8ce16d61751bbe6d24fee0da3
+Epoch: 32, Batch: 379, Loss: 0.0083, LR: 0.0001, Time: 0.4131 sec/it, Seq len: 921.1, Slide ID: 59fce17965127867763cdd31e2b88ae2
+Epoch: 32, Batch: 399, Loss: 0.0082, LR: 0.0001, Time: 0.4152 sec/it, Seq len: 926.1, Slide ID: 2d6db0d8b5f891613239814ae8513a73
+Epoch: 32, Batch: 419, Loss: 0.0081, LR: 0.0001, Time: 0.4144 sec/it, Seq len: 925.3, Slide ID: 40b8995e152c9965d198d7edb5932121
+Epoch: 32, Batch: 439, Loss: 0.0078, LR: 0.0001, Time: 0.4154 sec/it, Seq len: 927.6, Slide ID: 5ba5c62518b86d2f6ac2f6f31e38c23f
+Epoch: 32, Batch: 459, Loss: 0.0075, LR: 0.0001, Time: 0.4159 sec/it, Seq len: 929.4, Slide ID: 235c5e6cd107a96be0670d71e72ebc6d
+Epoch: 32, Loss: 0.0011
+Epoch: 32, Loss: 1.3251, AUROC: 0.9571, ACC: 0.8166, BACC: 0.7703, qwk: 0.9512
+Epoch: 33
+Epoch: 33, Batch: 19, Loss: 0.0016, LR: 0.0001, Time: 0.4363 sec/it, Seq len: 928.9, Slide ID: fa1308140eb6aea8c7d91ebebf51073e
+Epoch: 33, Batch: 39, Loss: 0.0018, LR: 0.0001, Time: 0.4118 sec/it, Seq len: 908.8, Slide ID: cc1ff189efdd483f831fb118780026ec
+Epoch: 33, Batch: 59, Loss: 0.0029, LR: 0.0001, Time: 0.4008 sec/it, Seq len: 895.2, Slide ID: 6d2141c1c6593fc206e2a695cb591831
+Epoch: 33, Batch: 79, Loss: 0.0023, LR: 0.0001, Time: 0.3960 sec/it, Seq len: 886.5, Slide ID: 764ec457d473f52c479f2abbb21ce157
+Epoch: 33, Batch: 99, Loss: 0.0053, LR: 0.0001, Time: 0.4043 sec/it, Seq len: 904.0, Slide ID: 34238501396310a6512eccb0120bd85b
+Epoch: 33, Batch: 119, Loss: 0.0044, LR: 0.0001, Time: 0.4051 sec/it, Seq len: 906.3, Slide ID: e3306507fac36d68ea6c6e20bda23200
+Epoch: 33, Batch: 139, Loss: 0.0046, LR: 0.0001, Time: 0.4070 sec/it, Seq len: 909.9, Slide ID: dd4b7951eccf92f36cddfb02de6c2839
+Epoch: 33, Batch: 159, Loss: 0.0056, LR: 0.0001, Time: 0.4104 sec/it, Seq len: 918.6, Slide ID: fc12d2a7d97431711f9e80af51c1760f
+Epoch: 33, Batch: 179, Loss: 0.0053, LR: 0.0001, Time: 0.4124 sec/it, Seq len: 923.7, Slide ID: 59273487fefd0612a56959315cc476a1
+Epoch: 33, Batch: 199, Loss: 0.0053, LR: 0.0001, Time: 0.4110 sec/it, Seq len: 918.5, Slide ID: 2577c90f6ee46adf9d3f7c16ba8db9c3
+Epoch: 33, Batch: 219, Loss: 0.0053, LR: 0.0001, Time: 0.4128 sec/it, Seq len: 922.5, Slide ID: 2f66cb1103d6a05264fcc8e8841a6890
+Epoch: 33, Batch: 239, Loss: 0.0056, LR: 0.0001, Time: 0.4139 sec/it, Seq len: 924.3, Slide ID: 1cca851fcb421dbabc8e6550257e8160
+Epoch: 33, Batch: 259, Loss: 0.0053, LR: 0.0001, Time: 0.4167 sec/it, Seq len: 930.7, Slide ID: 659d4fca38eed915a13188a1f2b03ee4
+Epoch: 33, Batch: 279, Loss: 0.0050, LR: 0.0001, Time: 0.4162 sec/it, Seq len: 928.9, Slide ID: e2578d331ae6cb3bc649027498c8ff8d
+Epoch: 33, Batch: 299, Loss: 0.0047, LR: 0.0001, Time: 0.4186 sec/it, Seq len: 934.3, Slide ID: a5f7e4be7d541aeab8b4b45f9a681300
+Epoch: 33, Batch: 319, Loss: 0.0045, LR: 0.0001, Time: 0.4200 sec/it, Seq len: 936.8, Slide ID: b5d4713427dfe4ec5f0315f0724d69ea
+Epoch: 33, Batch: 339, Loss: 0.0044, LR: 0.0001, Time: 0.4202 sec/it, Seq len: 937.4, Slide ID: 0b517956117177d8efec1a7efe60a985
+Epoch: 33, Batch: 359, Loss: 0.0047, LR: 0.0001, Time: 0.4202 sec/it, Seq len: 938.0, Slide ID: c876728a121713f5d999154f0730d5e9
+Epoch: 33, Batch: 379, Loss: 0.0046, LR: 0.0001, Time: 0.4203 sec/it, Seq len: 937.9, Slide ID: 5f5fa1cce0a7969903073b2d3242eea3
+Epoch: 33, Batch: 399, Loss: 0.0044, LR: 0.0001, Time: 0.4195 sec/it, Seq len: 936.0, Slide ID: 6cfcd028cfca9fb39a8976882d0167f2
+Epoch: 33, Batch: 419, Loss: 0.0045, LR: 0.0001, Time: 0.4186 sec/it, Seq len: 933.8, Slide ID: f2a41d0bcc37df0b70f2a002317c1a77
+Epoch: 33, Batch: 439, Loss: 0.0048, LR: 0.0001, Time: 0.4171 sec/it, Seq len: 930.8, Slide ID: 3edccb2b905b03511825b5413f1ddce0
+Epoch: 33, Batch: 459, Loss: 0.0049, LR: 0.0001, Time: 0.4155 sec/it, Seq len: 927.8, Slide ID: 1d05f36a330dd277b194f98a84a08ee8
+Epoch: 33, Loss: 0.0001
+Epoch: 33, Loss: 1.4224, AUROC: 0.9563, ACC: 0.8124, BACC: 0.7692, qwk: 0.9456
+Epoch: 34
+Epoch: 34, Batch: 19, Loss: 0.0062, LR: 0.0001, Time: 0.4133 sec/it, Seq len: 870.4, Slide ID: f03af6a10717282de524bec7dc01111f
+Epoch: 34, Batch: 39, Loss: 0.0037, LR: 0.0001, Time: 0.4107 sec/it, Seq len: 895.7, Slide ID: 297276e5cd02ffae7626e025bedfd9fa
+Epoch: 34, Batch: 59, Loss: 0.0053, LR: 0.0001, Time: 0.4073 sec/it, Seq len: 905.8, Slide ID: 434832e9d4adaa4aa96cb3ede61d66e3
+Epoch: 34, Batch: 79, Loss: 0.0043, LR: 0.0001, Time: 0.4043 sec/it, Seq len: 902.6, Slide ID: 615b8a4e40699ea384e5f518ac0c68b4
+Epoch: 34, Batch: 99, Loss: 0.0035, LR: 0.0001, Time: 0.4141 sec/it, Seq len: 920.5, Slide ID: fec8271c64b26205d7fd0a18f2a1dedd
+Epoch: 34, Batch: 119, Loss: 0.0031, LR: 0.0001, Time: 0.4101 sec/it, Seq len: 914.8, Slide ID: aff9deb3016a3ba5db5a5edb22ecc982
+Epoch: 34, Batch: 139, Loss: 0.0034, LR: 0.0001, Time: 0.4118 sec/it, Seq len: 916.6, Slide ID: def34835d0079f5fdd5bfd81b01ff7ee
+Epoch: 34, Batch: 159, Loss: 0.0036, LR: 0.0001, Time: 0.4209 sec/it, Seq len: 937.0, Slide ID: 60d32cd009e0175fe8607166861cd430
+Epoch: 34, Batch: 179, Loss: 0.0036, LR: 0.0001, Time: 0.4275 sec/it, Seq len: 952.4, Slide ID: 7c879895184685f2ade71c54e63960d8
+Epoch: 34, Batch: 199, Loss: 0.0033, LR: 0.0001, Time: 0.4263 sec/it, Seq len: 949.7, Slide ID: fc6a695ba44f4b64425c522f590bac48
+Epoch: 34, Batch: 219, Loss: 0.0030, LR: 0.0001, Time: 0.4229 sec/it, Seq len: 944.0, Slide ID: c49e42400702d46c33351ec9e74ccd30
+Epoch: 34, Batch: 239, Loss: 0.0029, LR: 0.0001, Time: 0.4199 sec/it, Seq len: 938.2, Slide ID: 2cb257b54e4f700a448606578ac3261b
+Epoch: 34, Batch: 259, Loss: 0.0031, LR: 0.0001, Time: 0.4168 sec/it, Seq len: 932.3, Slide ID: 82896ceb267497b41fe1d8271ecf0a6e
+Epoch: 34, Batch: 279, Loss: 0.0032, LR: 0.0001, Time: 0.4160 sec/it, Seq len: 929.8, Slide ID: b44f0f61b3e77a2230c0774a20f8a9df
+Epoch: 34, Batch: 299, Loss: 0.0030, LR: 0.0001, Time: 0.4159 sec/it, Seq len: 931.1, Slide ID: b56b08ed50b28ecd0762e79512d11516
+Epoch: 34, Batch: 319, Loss: 0.0029, LR: 0.0001, Time: 0.4174 sec/it, Seq len: 933.0, Slide ID: a9001c117730dcb698f2186402a5c697
+Epoch: 34, Batch: 339, Loss: 0.0028, LR: 0.0001, Time: 0.4158 sec/it, Seq len: 930.4, Slide ID: a3fcf7e4e09f8910e49ecc061b5d8c17
+Epoch: 34, Batch: 359, Loss: 0.0026, LR: 0.0001, Time: 0.4176 sec/it, Seq len: 934.7, Slide ID: f32688fe7e4e02caeb04361b8e8d223c
+Epoch: 34, Batch: 379, Loss: 0.0026, LR: 0.0001, Time: 0.4194 sec/it, Seq len: 938.6, Slide ID: c4cba053efafeac85ec882e30ac6e498
+Epoch: 34, Batch: 399, Loss: 0.0025, LR: 0.0001, Time: 0.4184 sec/it, Seq len: 936.7, Slide ID: 836e53a9dcd0ce941da4e0c6d6fa399f
+Epoch: 34, Batch: 419, Loss: 0.0024, LR: 0.0001, Time: 0.4190 sec/it, Seq len: 938.1, Slide ID: b2af2b481ff84df45b02df098e9a8e46
+Epoch: 34, Batch: 439, Loss: 0.0028, LR: 0.0001, Time: 0.4187 sec/it, Seq len: 937.5, Slide ID: 003a91841da04a5a31f808fb5c21538a
+Epoch: 34, Batch: 459, Loss: 0.0027, LR: 0.0001, Time: 0.4171 sec/it, Seq len: 934.1, Slide ID: 2f45cafe638848ee98e0b998d9aeb888
+Epoch: 34, Loss: 0.0000
+Epoch: 34, Loss: 1.4020, AUROC: 0.9567, ACC: 0.8155, BACC: 0.7714, qwk: 0.9460
+Epoch: 35
+Epoch: 35, Batch: 19, Loss: 0.0004, LR: 0.0001, Time: 0.4275 sec/it, Seq len: 897.0, Slide ID: c95bfd7e7fcb784d245163e8305143cc
+Epoch: 35, Batch: 39, Loss: 0.0005, LR: 0.0001, Time: 0.4231 sec/it, Seq len: 926.0, Slide ID: 5a2deec84849fdc2216bab61452451b7
+Epoch: 35, Batch: 59, Loss: 0.0006, LR: 0.0001, Time: 0.4218 sec/it, Seq len: 933.5, Slide ID: 08788ad91d8fd0fbf8e130739837b03f
+Epoch: 35, Batch: 79, Loss: 0.0014, LR: 0.0001, Time: 0.4164 sec/it, Seq len: 927.0, Slide ID: f4252060c37bb037f3b93a39e5a4819e
+Epoch: 35, Batch: 99, Loss: 0.0012, LR: 0.0001, Time: 0.4199 sec/it, Seq len: 931.1, Slide ID: bb21976c037d50bb45aedaa4448ede1e
+Epoch: 35, Batch: 119, Loss: 0.0012, LR: 0.0001, Time: 0.4190 sec/it, Seq len: 930.1, Slide ID: dd52af5bb1333bb7ce33ed9ca36454b4
+Epoch: 35, Batch: 139, Loss: 0.0013, LR: 0.0001, Time: 0.4241 sec/it, Seq len: 940.0, Slide ID: 31e5c663f99421030b778af7f2dfe339
+Epoch: 35, Batch: 159, Loss: 0.0012, LR: 0.0001, Time: 0.4212 sec/it, Seq len: 935.8, Slide ID: b10037ea8ac8060ce3906a9812f32fff
+Epoch: 35, Batch: 179, Loss: 0.0012, LR: 0.0001, Time: 0.4173 sec/it, Seq len: 929.7, Slide ID: 899208b5b6d4e2244928c3be37ca1a67
+Epoch: 35, Batch: 199, Loss: 0.0012, LR: 0.0001, Time: 0.4226 sec/it, Seq len: 941.0, Slide ID: 4e1247214b51cb4a801fa001251195f4
+Epoch: 35, Batch: 219, Loss: 0.0014, LR: 0.0001, Time: 0.4201 sec/it, Seq len: 936.2, Slide ID: 76541217a60105571466b759358ab8df
+Epoch: 35, Batch: 239, Loss: 0.0013, LR: 0.0001, Time: 0.4221 sec/it, Seq len: 941.3, Slide ID: ad7966354108cafde4ab6dfc2abcfcea
+Epoch: 35, Batch: 259, Loss: 0.0012, LR: 0.0001, Time: 0.4238 sec/it, Seq len: 946.0, Slide ID: d2acc357f4126d54cbfb4ff7ed254616
+Epoch: 35, Batch: 279, Loss: 0.0012, LR: 0.0001, Time: 0.4226 sec/it, Seq len: 943.7, Slide ID: a8efd93f48e458673c4069a36c757173
+Epoch: 35, Batch: 299, Loss: 0.0011, LR: 0.0001, Time: 0.4182 sec/it, Seq len: 935.3, Slide ID: 184b98556b06d9962dee7e737b23902b
+Epoch: 35, Batch: 319, Loss: 0.0011, LR: 0.0001, Time: 0.4169 sec/it, Seq len: 932.8, Slide ID: a6ba6423d654ae961d730c72a1a2f50f
+Epoch: 35, Batch: 339, Loss: 0.0011, LR: 0.0001, Time: 0.4172 sec/it, Seq len: 934.2, Slide ID: 77db80dce3763d46aacb3e82c59bc325
+Epoch: 35, Batch: 359, Loss: 0.0011, LR: 0.0001, Time: 0.4163 sec/it, Seq len: 931.6, Slide ID: 799e5493454e8e8e4f75d383846625b0
+Epoch: 35, Batch: 379, Loss: 0.0011, LR: 0.0001, Time: 0.4152 sec/it, Seq len: 929.1, Slide ID: 463b0017e84cfe5ed9e1e78c99a22554
+Epoch: 35, Batch: 399, Loss: 0.0011, LR: 0.0001, Time: 0.4139 sec/it, Seq len: 926.1, Slide ID: 3a565cdeac048c3fafbba7b913061689
+Epoch: 35, Batch: 419, Loss: 0.0010, LR: 0.0001, Time: 0.4146 sec/it, Seq len: 927.3, Slide ID: a280d60407c69e37fad4d7290ac948a6
+Epoch: 35, Batch: 439, Loss: 0.0010, LR: 0.0001, Time: 0.4141 sec/it, Seq len: 926.6, Slide ID: 52ad032950196f56b1203d2a7b71d3b7
+Epoch: 35, Batch: 459, Loss: 0.0010, LR: 0.0001, Time: 0.4152 sec/it, Seq len: 928.4, Slide ID: 0b5f952f3a5bf6885d7230acd5cbf720
+Epoch: 35, Loss: 0.0000
+Epoch: 35, Loss: 1.4488, AUROC: 0.9551, ACC: 0.8134, BACC: 0.7679, qwk: 0.9416
+Epoch: 36
+Epoch: 36, Batch: 19, Loss: 0.0007, LR: 0.0001, Time: 0.4954 sec/it, Seq len: 1024.0, Slide ID: 74e62ea8e9e5c1a2f6081b831dc1535e
+Epoch: 36, Batch: 39, Loss: 0.0011, LR: 0.0001, Time: 0.4333 sec/it, Seq len: 932.9, Slide ID: 3046035f348012fdba6f7c53c4faa16e
+Epoch: 36, Batch: 59, Loss: 0.0008, LR: 0.0001, Time: 0.4156 sec/it, Seq len: 911.2, Slide ID: 2577c90f6ee46adf9d3f7c16ba8db9c3
+Epoch: 36, Batch: 79, Loss: 0.0007, LR: 0.0001, Time: 0.4261 sec/it, Seq len: 935.2, Slide ID: 01faa9d3bc7a2464c7b6d71ea904970f
+Epoch: 36, Batch: 99, Loss: 0.0006, LR: 0.0001, Time: 0.4187 sec/it, Seq len: 918.9, Slide ID: f332a3076891e25ce5f028081614f5cc
+Epoch: 36, Batch: 119, Loss: 0.0005, LR: 0.0001, Time: 0.4158 sec/it, Seq len: 915.0, Slide ID: a0b7d920c249437e4e7aea315df4a0a0
+Epoch: 36, Batch: 139, Loss: 0.0005, LR: 0.0001, Time: 0.4126 sec/it, Seq len: 909.9, Slide ID: 7648ece616fd961c1447684b7dc0c654
+Epoch: 36, Batch: 159, Loss: 0.0004, LR: 0.0001, Time: 0.4102 sec/it, Seq len: 906.0, Slide ID: 86fd4ff8a21d365227993c845db5e6e8
+Epoch: 36, Batch: 179, Loss: 0.0005, LR: 0.0001, Time: 0.4086 sec/it, Seq len: 904.7, Slide ID: 9c37e4cad0a3fd8edae320d73c314e8c
+Epoch: 36, Batch: 199, Loss: 0.0007, LR: 0.0001, Time: 0.4149 sec/it, Seq len: 919.4, Slide ID: 053be6185799c8688b4988b7085c7958
+Epoch: 36, Batch: 219, Loss: 0.0007, LR: 0.0001, Time: 0.4115 sec/it, Seq len: 913.5, Slide ID: 6e0dbb5af39a9b7199796dbe16fc5765
+Epoch: 36, Batch: 239, Loss: 0.0009, LR: 0.0001, Time: 0.4104 sec/it, Seq len: 912.3, Slide ID: 2a0f517e43256b1e6580c389d95cc96b
+Epoch: 36, Batch: 259, Loss: 0.0008, LR: 0.0001, Time: 0.4086 sec/it, Seq len: 909.0, Slide ID: ed6df9ab166f61c7f18725ebfaa893f9
+Epoch: 36, Batch: 279, Loss: 0.0008, LR: 0.0001, Time: 0.4087 sec/it, Seq len: 910.7, Slide ID: be8584d0393a178557fbcf29e770f690
+Epoch: 36, Batch: 299, Loss: 0.0008, LR: 0.0001, Time: 0.4112 sec/it, Seq len: 915.7, Slide ID: 82dd91dc60d7a36257237f229df31b70
+Epoch: 36, Batch: 319, Loss: 0.0008, LR: 0.0001, Time: 0.4110 sec/it, Seq len: 915.1, Slide ID: 64486f84f721d5873cc034802f8c31bc
+Epoch: 36, Batch: 339, Loss: 0.0007, LR: 0.0001, Time: 0.4088 sec/it, Seq len: 911.1, Slide ID: e241df65ca9194cb95c86f93ddd85bf7
+Epoch: 36, Batch: 359, Loss: 0.0007, LR: 0.0001, Time: 0.4110 sec/it, Seq len: 916.7, Slide ID: 982b6631c1ceadb6bbf9f693f687917f
+Epoch: 36, Batch: 379, Loss: 0.0007, LR: 0.0001, Time: 0.4109 sec/it, Seq len: 916.9, Slide ID: a7542dcc3123f9cce837cd93f13c0a27
+Epoch: 36, Batch: 399, Loss: 0.0007, LR: 0.0001, Time: 0.4108 sec/it, Seq len: 917.0, Slide ID: bbe3ebb10d3477aa01bb01a6c91a8622
+Epoch: 36, Batch: 419, Loss: 0.0007, LR: 0.0001, Time: 0.4096 sec/it, Seq len: 915.1, Slide ID: 09471c7d6b4a7b117f7ab3a52d7828c4
+Epoch: 36, Batch: 439, Loss: 0.0007, LR: 0.0001, Time: 0.4105 sec/it, Seq len: 916.9, Slide ID: 2ae687e6a07ac70f9391efc3c3a08746
+Epoch: 36, Batch: 459, Loss: 0.0007, LR: 0.0001, Time: 0.4103 sec/it, Seq len: 916.6, Slide ID: 516f93fd6b07daa49fb374122d2664c3
+Epoch: 36, Loss: 0.0000
+Epoch: 36, Loss: 1.4707, AUROC: 0.9555, ACC: 0.8218, BACC: 0.7806, qwk: 0.9460
+Epoch: 37
+Epoch: 37, Batch: 19, Loss: 0.0003, LR: 0.0001, Time: 0.4723 sec/it, Seq len: 1015.5, Slide ID: 5203b6b2f6c3e46cdb2f09b9d99a5ecd
+Epoch: 37, Batch: 39, Loss: 0.0002, LR: 0.0001, Time: 0.4389 sec/it, Seq len: 963.5, Slide ID: b02d2e1a8b84a4e0786a8fbd2775d767
+Epoch: 37, Batch: 59, Loss: 0.0003, LR: 0.0001, Time: 0.4313 sec/it, Seq len: 950.8, Slide ID: 94f7caa8da3e5c1d5507ddde7b6d6c24
+Epoch: 37, Batch: 79, Loss: 0.0002, LR: 0.0001, Time: 0.4237 sec/it, Seq len: 940.7, Slide ID: 6cc0dd4d822245ba07dba7fda2b3e57c
+Epoch: 37, Batch: 99, Loss: 0.0006, LR: 0.0001, Time: 0.4192 sec/it, Seq len: 932.8, Slide ID: 45960112d5ceb77e4e61c68028bfb160
+Epoch: 37, Batch: 119, Loss: 0.0008, LR: 0.0001, Time: 0.4189 sec/it, Seq len: 929.7, Slide ID: 7314acc5f6e8d42d384a13da803e10b2
+Epoch: 37, Batch: 139, Loss: 0.0008, LR: 0.0001, Time: 0.4170 sec/it, Seq len: 926.1, Slide ID: 4f7296f162c6248fdd1e06f5aa5d6eb3
+Epoch: 37, Batch: 159, Loss: 0.0008, LR: 0.0001, Time: 0.4170 sec/it, Seq len: 925.7, Slide ID: 738c290ad6589e07a3c07158f691dbf9
+Epoch: 37, Batch: 179, Loss: 0.0008, LR: 0.0001, Time: 0.4150 sec/it, Seq len: 922.5, Slide ID: fa185cbfa3c6bb40a7dd0397b88539d9
+Epoch: 37, Batch: 199, Loss: 0.0007, LR: 0.0001, Time: 0.4159 sec/it, Seq len: 924.8, Slide ID: 010670e9572e67e5a7e00fb791a343ef
+Epoch: 37, Batch: 219, Loss: 0.0007, LR: 0.0001, Time: 0.4184 sec/it, Seq len: 930.2, Slide ID: 2761824bce549fdab3b032fb57e120a8
+Epoch: 37, Batch: 239, Loss: 0.0007, LR: 0.0001, Time: 0.4236 sec/it, Seq len: 942.1, Slide ID: d341e19a76135d79774f19f5e9ecc5a9
+Epoch: 37, Batch: 259, Loss: 0.0007, LR: 0.0001, Time: 0.4230 sec/it, Seq len: 941.2, Slide ID: 5a559062e13cda0bf20a0cb475a11daf
+Epoch: 37, Batch: 279, Loss: 0.0006, LR: 0.0001, Time: 0.4220 sec/it, Seq len: 938.6, Slide ID: 2da314766cfe9d62f7bd6a60cfd856bb
+Epoch: 37, Batch: 299, Loss: 0.0008, LR: 0.0001, Time: 0.4250 sec/it, Seq len: 945.0, Slide ID: a068d48cb0127a48b4b8c8574b39a2e3
+Epoch: 37, Batch: 319, Loss: 0.0007, LR: 0.0001, Time: 0.4232 sec/it, Seq len: 942.0, Slide ID: 9b1ffef735e7269deed27dd7e8db6b42
+Epoch: 37, Batch: 339, Loss: 0.0007, LR: 0.0001, Time: 0.4223 sec/it, Seq len: 940.5, Slide ID: a9b52672e84888c7a26fc2694106f86f
+Epoch: 37, Batch: 359, Loss: 0.0007, LR: 0.0001, Time: 0.4246 sec/it, Seq len: 945.6, Slide ID: 43276423852d930b27c86103e63d8288
+Epoch: 37, Batch: 379, Loss: 0.0006, LR: 0.0001, Time: 0.4234 sec/it, Seq len: 943.2, Slide ID: 288a512bf5affa970a81d9c553feef40
+Epoch: 37, Batch: 399, Loss: 0.0008, LR: 0.0001, Time: 0.4216 sec/it, Seq len: 939.6, Slide ID: ca6c4f4b24578588762712262de479ab
+Epoch: 37, Batch: 419, Loss: 0.0008, LR: 0.0001, Time: 0.4194 sec/it, Seq len: 935.5, Slide ID: 845f93031768557ad5c0948bf08d043b
+Epoch: 37, Batch: 439, Loss: 0.0008, LR: 0.0001, Time: 0.4197 sec/it, Seq len: 936.6, Slide ID: 35d511cc9aa867856fadbe6ebf464d78
+Epoch: 37, Batch: 459, Loss: 0.0008, LR: 0.0001, Time: 0.4179 sec/it, Seq len: 933.4, Slide ID: c176b834c3a5045ac074fb70637cfa8d
+Epoch: 37, Loss: 0.0000
+Epoch: 37, Loss: 1.4821, AUROC: 0.9545, ACC: 0.8113, BACC: 0.7651, qwk: 0.9425
+Epoch: 38
+Epoch: 38, Batch: 19, Loss: 0.0002, LR: 0.0001, Time: 0.4626 sec/it, Seq len: 953.2, Slide ID: a07fe1aaac5b3147fa1450b39b05e5c9
+Epoch: 38, Batch: 39, Loss: 0.0003, LR: 0.0001, Time: 0.4363 sec/it, Seq len: 933.3, Slide ID: 07a14fa5b8f74272e4cc0a439dbc8f7f
+Epoch: 38, Batch: 59, Loss: 0.0003, LR: 0.0001, Time: 0.4209 sec/it, Seq len: 919.5, Slide ID: 38ed9636bac9547da263faf1d068dcf6
+Epoch: 38, Batch: 79, Loss: 0.0002, LR: 0.0001, Time: 0.4201 sec/it, Seq len: 922.3, Slide ID: 59bc7df93b3b01dc3a1f3935555c3009
+Epoch: 38, Batch: 99, Loss: 0.0002, LR: 0.0001, Time: 0.4142 sec/it, Seq len: 912.9, Slide ID: a2b8cad572d92f6e24b69495e3b961a8
+Epoch: 38, Batch: 119, Loss: 0.0002, LR: 0.0001, Time: 0.4100 sec/it, Seq len: 906.2, Slide ID: 7de19911779711a8dd86be6f3e888910
+Epoch: 38, Batch: 139, Loss: 0.0002, LR: 0.0001, Time: 0.4174 sec/it, Seq len: 921.6, Slide ID: baae023569b99bf917bf03ac536875fc
+Epoch: 38, Batch: 159, Loss: 0.0002, LR: 0.0001, Time: 0.4222 sec/it, Seq len: 932.8, Slide ID: 17a486c9252622e27c2714de7e7695b7
+Epoch: 38, Batch: 179, Loss: 0.0002, LR: 0.0001, Time: 0.4177 sec/it, Seq len: 925.6, Slide ID: 5252182ded15f6179aba4b367c0215dc
+Epoch: 38, Batch: 199, Loss: 0.0002, LR: 0.0001, Time: 0.4152 sec/it, Seq len: 921.9, Slide ID: 29eed8a71c8bee8fc007b0fe4edcc712
+Epoch: 38, Batch: 219, Loss: 0.0002, LR: 0.0001, Time: 0.4150 sec/it, Seq len: 922.6, Slide ID: 4c25d8ba4a2ecabe2b69b901c994e2dd
+Epoch: 38, Batch: 239, Loss: 0.0002, LR: 0.0001, Time: 0.4153 sec/it, Seq len: 922.9, Slide ID: 39aa993dd0320beff42381bc9b6b498a
+Epoch: 38, Batch: 259, Loss: 0.0016, LR: 0.0001, Time: 0.4161 sec/it, Seq len: 924.4, Slide ID: 691b8d6d8606006ea205fd1189d017f7
+Epoch: 38, Batch: 279, Loss: 0.0015, LR: 0.0001, Time: 0.4132 sec/it, Seq len: 919.1, Slide ID: b06a67b1cfc4b815fbe169d323633c3e
+Epoch: 38, Batch: 299, Loss: 0.0014, LR: 0.0001, Time: 0.4134 sec/it, Seq len: 920.5, Slide ID: 5ca13bda1c8a128938a5cb71e54f692c
+Epoch: 38, Batch: 319, Loss: 0.0014, LR: 0.0001, Time: 0.4128 sec/it, Seq len: 919.9, Slide ID: 835c8af6ba7ba991a5788192bfe0759f
+Epoch: 38, Batch: 339, Loss: 0.0013, LR: 0.0001, Time: 0.4124 sec/it, Seq len: 919.7, Slide ID: a068d48cb0127a48b4b8c8574b39a2e3
+Epoch: 38, Batch: 359, Loss: 0.0013, LR: 0.0001, Time: 0.4118 sec/it, Seq len: 918.7, Slide ID: 6f0a397467d394b62c48a6199db06b6b
+Epoch: 38, Batch: 379, Loss: 0.0013, LR: 0.0001, Time: 0.4123 sec/it, Seq len: 920.4, Slide ID: abb4ad0009ce57bca8d400acff5d34a8
+Epoch: 38, Batch: 399, Loss: 0.0012, LR: 0.0001, Time: 0.4110 sec/it, Seq len: 918.1, Slide ID: 16e1c7937dc0a2394bf82f863dd1a25f
+Epoch: 38, Batch: 419, Loss: 0.0012, LR: 0.0001, Time: 0.4135 sec/it, Seq len: 924.4, Slide ID: f655e438215464825b8d2805905323e0
+Epoch: 38, Batch: 439, Loss: 0.0011, LR: 0.0001, Time: 0.4128 sec/it, Seq len: 922.7, Slide ID: de3b05db139bc09c5fd3b846245d647c
+Epoch: 38, Batch: 459, Loss: 0.0011, LR: 0.0001, Time: 0.4138 sec/it, Seq len: 924.9, Slide ID: 6eff61540d687bb80f2eda923b2dca9b
+Epoch: 38, Loss: 0.0000
+Epoch: 38, Loss: 1.4876, AUROC: 0.9555, ACC: 0.8155, BACC: 0.7749, qwk: 0.9428
+Epoch: 39
+Epoch: 39, Batch: 19, Loss: 0.0004, LR: 0.0001, Time: 0.4281 sec/it, Seq len: 887.8, Slide ID: 73cea45cabd1048067e6500bdacb7356
+Epoch: 39, Batch: 39, Loss: 0.0002, LR: 0.0001, Time: 0.4091 sec/it, Seq len: 885.3, Slide ID: fec79645cf3b92343f453b945916af29
+Epoch: 39, Batch: 59, Loss: 0.0003, LR: 0.0001, Time: 0.3935 sec/it, Seq len: 864.2, Slide ID: 8b8eb1cfa610bf99c73b771db76be17d
+Epoch: 39, Batch: 79, Loss: 0.0003, LR: 0.0001, Time: 0.3854 sec/it, Seq len: 855.9, Slide ID: 9c28f2bb8ecc9e89f8c141b768434d67
+Epoch: 39, Batch: 99, Loss: 0.0002, LR: 0.0001, Time: 0.4019 sec/it, Seq len: 892.4, Slide ID: 82dd91dc60d7a36257237f229df31b70
+Epoch: 39, Batch: 119, Loss: 0.0002, LR: 0.0001, Time: 0.4003 sec/it, Seq len: 891.3, Slide ID: 33752aa0f25ce754f491b9c6c442983b
+Epoch: 39, Batch: 139, Loss: 0.0003, LR: 0.0001, Time: 0.4065 sec/it, Seq len: 902.7, Slide ID: 259e66de7ab753d9c36797b831ce518e
+Epoch: 39, Batch: 159, Loss: 0.0003, LR: 0.0001, Time: 0.4084 sec/it, Seq len: 907.0, Slide ID: aeaa36ea58cad0b8121e59321ef1d41e
+Epoch: 39, Batch: 179, Loss: 0.0003, LR: 0.0001, Time: 0.4098 sec/it, Seq len: 912.1, Slide ID: b9c08ad54a17440c8901a5d5516a53c6
+Epoch: 39, Batch: 199, Loss: 0.0003, LR: 0.0001, Time: 0.4159 sec/it, Seq len: 924.0, Slide ID: b669e716e27806335a1b9b2082f95bd6
+Epoch: 39, Batch: 219, Loss: 0.0003, LR: 0.0001, Time: 0.4151 sec/it, Seq len: 923.7, Slide ID: e07df1b576368de561f00d6bbccacf2c
+Epoch: 39, Batch: 239, Loss: 0.0003, LR: 0.0001, Time: 0.4138 sec/it, Seq len: 922.4, Slide ID: a798f33537433d71e8e219b26a2c7ec2
+Epoch: 39, Batch: 259, Loss: 0.0003, LR: 0.0001, Time: 0.4143 sec/it, Seq len: 923.8, Slide ID: 56019667ff344d5bd98e7fbcbc6396bb
+Epoch: 39, Batch: 279, Loss: 0.0003, LR: 0.0001, Time: 0.4137 sec/it, Seq len: 922.4, Slide ID: 5b01a2f268bd6365a7ef77b16ffd7173
+Epoch: 39, Batch: 299, Loss: 0.0003, LR: 0.0001, Time: 0.4143 sec/it, Seq len: 923.4, Slide ID: e9f33468a68c94621a437aee8674be96
+Epoch: 39, Batch: 319, Loss: 0.0003, LR: 0.0001, Time: 0.4120 sec/it, Seq len: 918.9, Slide ID: 9c5565193a8ab6ddc3b303bc0a9cca09
+Epoch: 39, Batch: 339, Loss: 0.0003, LR: 0.0001, Time: 0.4137 sec/it, Seq len: 922.4, Slide ID: bf7e9ce61ffe58f2276a4689d00eddf1
+Epoch: 39, Batch: 359, Loss: 0.0003, LR: 0.0001, Time: 0.4145 sec/it, Seq len: 925.0, Slide ID: de40ff48038838a3dc494e839dde2945
+Epoch: 39, Batch: 379, Loss: 0.0003, LR: 0.0001, Time: 0.4153 sec/it, Seq len: 926.7, Slide ID: 89b62c165838d36fd294a57624db8e4f
+Epoch: 39, Batch: 399, Loss: 0.0003, LR: 0.0001, Time: 0.4137 sec/it, Seq len: 923.9, Slide ID: a34c0d728771285a18dfb156259eb817
+Epoch: 39, Batch: 419, Loss: 0.0003, LR: 0.0001, Time: 0.4138 sec/it, Seq len: 924.4, Slide ID: b3f95c218c30f8837966918de5568f00
+Epoch: 39, Batch: 439, Loss: 0.0003, LR: 0.0001, Time: 0.4155 sec/it, Seq len: 928.4, Slide ID: 3cdd1b5804ca615f07b0da831a6cf368
+Epoch: 39, Batch: 459, Loss: 0.0003, LR: 0.0001, Time: 0.4156 sec/it, Seq len: 928.4, Slide ID: 79e6f48335f8260876bff6941eddbf18
+Epoch: 39, Loss: 0.0000
+Epoch: 39, Loss: 1.5027, AUROC: 0.9554, ACC: 0.8229, BACC: 0.7817, qwk: 0.9469
+Epoch: 40
+Epoch: 40, Batch: 19, Loss: 0.0002, LR: 0.0001, Time: 0.4251 sec/it, Seq len: 909.9, Slide ID: 5a89e95c1dfe4f320ac954517281f9eb
+Epoch: 40, Batch: 39, Loss: 0.0024, LR: 0.0001, Time: 0.3972 sec/it, Seq len: 879.5, Slide ID: e833077427f0f5cceaba7f6d92bb3904
+Epoch: 40, Batch: 59, Loss: 0.0017, LR: 0.0001, Time: 0.4227 sec/it, Seq len: 938.5, Slide ID: e5fc40d67ca490bb598688f92a2eff6b
+Epoch: 40, Batch: 79, Loss: 0.0013, LR: 0.0000, Time: 0.4297 sec/it, Seq len: 954.8, Slide ID: f8fed3a0a18e9073248eaa126fd0a208
+Epoch: 40, Batch: 99, Loss: 0.0011, LR: 0.0000, Time: 0.4214 sec/it, Seq len: 938.9, Slide ID: 19638106770d8d0494e4d1ccf64e1662
+Epoch: 40, Batch: 119, Loss: 0.0009, LR: 0.0000, Time: 0.4245 sec/it, Seq len: 945.6, Slide ID: 95ceba057707ca5624053399bd2f14db
+Epoch: 40, Batch: 139, Loss: 0.0009, LR: 0.0000, Time: 0.4211 sec/it, Seq len: 937.7, Slide ID: 828b6eff01c7a265a2f6812b89744860
+Epoch: 40, Batch: 159, Loss: 0.0008, LR: 0.0000, Time: 0.4240 sec/it, Seq len: 943.9, Slide ID: 1cb56f571749e201e1e37e166d32b0bf
+Epoch: 40, Batch: 179, Loss: 0.0007, LR: 0.0000, Time: 0.4228 sec/it, Seq len: 941.5, Slide ID: 1ff168402732503d9036a2858dc8ce2c
+Epoch: 40, Batch: 199, Loss: 0.0006, LR: 0.0000, Time: 0.4195 sec/it, Seq len: 934.6, Slide ID: 090a77c517a7a2caa23e443a77a78bc7
+Epoch: 40, Batch: 219, Loss: 0.0006, LR: 0.0000, Time: 0.4174 sec/it, Seq len: 930.2, Slide ID: ab526f17170864dea67909338879b3dc
+Epoch: 40, Batch: 239, Loss: 0.0006, LR: 0.0000, Time: 0.4202 sec/it, Seq len: 935.4, Slide ID: a47c3c9b14bea63ce59d9cbb5b0d3e2e
+Epoch: 40, Batch: 259, Loss: 0.0005, LR: 0.0000, Time: 0.4187 sec/it, Seq len: 932.6, Slide ID: a6567125ec06dda3533e654d761ae78e
+Epoch: 40, Batch: 279, Loss: 0.0005, LR: 0.0000, Time: 0.4139 sec/it, Seq len: 923.2, Slide ID: 4329ecc226ab6eaac30528500da78995
+Epoch: 40, Batch: 299, Loss: 0.0005, LR: 0.0000, Time: 0.4128 sec/it, Seq len: 920.9, Slide ID: 8f08fea7cd2b67c68a1b388b197b6ff1
+Epoch: 40, Batch: 319, Loss: 0.0005, LR: 0.0000, Time: 0.4120 sec/it, Seq len: 919.5, Slide ID: a7d18581b5402766aacf91d52e6143eb
+Epoch: 40, Batch: 339, Loss: 0.0004, LR: 0.0000, Time: 0.4116 sec/it, Seq len: 918.6, Slide ID: da0c4c33709fb5d3372c7e0685b6a767
+Epoch: 40, Batch: 359, Loss: 0.0004, LR: 0.0000, Time: 0.4146 sec/it, Seq len: 925.1, Slide ID: a2c484cd17f6001e7a0dae4f2f57039b
+Epoch: 40, Batch: 379, Loss: 0.0004, LR: 0.0000, Time: 0.4132 sec/it, Seq len: 922.8, Slide ID: bf1d001ccf13938721098d0f5f3ab546
+Epoch: 40, Batch: 399, Loss: 0.0004, LR: 0.0000, Time: 0.4117 sec/it, Seq len: 919.9, Slide ID: 375771fed439d26b5374aae3f6b1d653
+Epoch: 40, Batch: 419, Loss: 0.0005, LR: 0.0000, Time: 0.4139 sec/it, Seq len: 923.5, Slide ID: a0a19caa7f2b6ff84b3e5cf0aa3fc68e
+Epoch: 40, Batch: 439, Loss: 0.0005, LR: 0.0000, Time: 0.4149 sec/it, Seq len: 925.7, Slide ID: 144128bf2adebe5cb85b76e0f94f3f01
+Epoch: 40, Batch: 459, Loss: 0.0004, LR: 0.0000, Time: 0.4153 sec/it, Seq len: 927.1, Slide ID: 6aff87e11871f4ce9682eec497239c71
+Epoch: 40, Loss: 0.0000
+Epoch: 40, Loss: 1.5235, AUROC: 0.9542, ACC: 0.8166, BACC: 0.7760, qwk: 0.9402
+Epoch: 41
+Epoch: 41, Batch: 19, Loss: 0.0002, LR: 0.0000, Time: 0.4504 sec/it, Seq len: 960.9, Slide ID: c19bc72dee1df0b97ed8527521b57099
+Epoch: 41, Batch: 39, Loss: 0.0002, LR: 0.0000, Time: 0.4285 sec/it, Seq len: 940.9, Slide ID: 44fe9866a8fbfc80642bd800e2e4954b
+Epoch: 41, Batch: 59, Loss: 0.0002, LR: 0.0000, Time: 0.4260 sec/it, Seq len: 939.9, Slide ID: 2c98f05bcfa52796fbb66a10f15ad826
+Epoch: 41, Batch: 79, Loss: 0.0002, LR: 0.0000, Time: 0.4256 sec/it, Seq len: 940.6, Slide ID: b1ce56fd6c860e726c622c3f6b7de421
+Epoch: 41, Batch: 99, Loss: 0.0003, LR: 0.0000, Time: 0.4238 sec/it, Seq len: 939.9, Slide ID: 94f59c80441412249d37ee784bbb64aa
+Epoch: 41, Batch: 119, Loss: 0.0002, LR: 0.0000, Time: 0.4214 sec/it, Seq len: 934.8, Slide ID: b7b307b6ac3d7e91a49b66f43ee939f0
+Epoch: 41, Batch: 139, Loss: 0.0002, LR: 0.0000, Time: 0.4198 sec/it, Seq len: 933.3, Slide ID: 24dec714435950378692d40fe4d4b449
+Epoch: 41, Batch: 159, Loss: 0.0002, LR: 0.0000, Time: 0.4169 sec/it, Seq len: 927.0, Slide ID: 497b7731f13ad07c0afe2dd81c52e021
+Epoch: 41, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4167 sec/it, Seq len: 928.1, Slide ID: 444ea9591c618ea3aa47ca894c85c339
+Epoch: 41, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4186 sec/it, Seq len: 932.1, Slide ID: e877ea3e61db21b1a35468e9fcbf80cc
+Epoch: 41, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4168 sec/it, Seq len: 928.6, Slide ID: d6b1c8ca6037b5ddca5d2086975a643b
+Epoch: 41, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4182 sec/it, Seq len: 932.1, Slide ID: 8948231e22708d60c8f855d7cbae5cf3
+Epoch: 41, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4204 sec/it, Seq len: 936.5, Slide ID: ee1110b27defb401d09d65145d2c046c
+Epoch: 41, Batch: 279, Loss: 0.0002, LR: 0.0000, Time: 0.4166 sec/it, Seq len: 928.5, Slide ID: 6f10905caac3dca8c74143bf90848378
+Epoch: 41, Batch: 299, Loss: 0.0002, LR: 0.0000, Time: 0.4157 sec/it, Seq len: 926.7, Slide ID: 66617150a489dc0628762098b0fd8e99
+Epoch: 41, Batch: 319, Loss: 0.0002, LR: 0.0000, Time: 0.4154 sec/it, Seq len: 925.6, Slide ID: 1aa5ff56e243cbc8ed0e140a7148f3fd
+Epoch: 41, Batch: 339, Loss: 0.0002, LR: 0.0000, Time: 0.4140 sec/it, Seq len: 922.9, Slide ID: 5a46e8adec9c72070618f776583dd581
+Epoch: 41, Batch: 359, Loss: 0.0002, LR: 0.0000, Time: 0.4138 sec/it, Seq len: 922.8, Slide ID: 406a9e1224e5795fdaaf3424b8c593f7
+Epoch: 41, Batch: 379, Loss: 0.0002, LR: 0.0000, Time: 0.4133 sec/it, Seq len: 922.3, Slide ID: 4d87ea697b26548b98d3591c5ebd5a4b
+Epoch: 41, Batch: 399, Loss: 0.0002, LR: 0.0000, Time: 0.4126 sec/it, Seq len: 920.9, Slide ID: 9f887e6311f6062c5741bfae853edb80
+Epoch: 41, Batch: 419, Loss: 0.0002, LR: 0.0000, Time: 0.4132 sec/it, Seq len: 922.4, Slide ID: f1154a0a76a952a3518092263a2db902
+Epoch: 41, Batch: 439, Loss: 0.0002, LR: 0.0000, Time: 0.4138 sec/it, Seq len: 924.3, Slide ID: 73ca95633a46136d909f5ad45c7ddda1
+Epoch: 41, Batch: 459, Loss: 0.0002, LR: 0.0000, Time: 0.4139 sec/it, Seq len: 924.5, Slide ID: 237a26535117ff8e51d28df0058e488d
+Epoch: 41, Loss: 0.0000
+Epoch: 41, Loss: 1.5319, AUROC: 0.9542, ACC: 0.8145, BACC: 0.7732, qwk: 0.9398
+Epoch: 42
+Epoch: 42, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4189 sec/it, Seq len: 877.3, Slide ID: 794ae0323bf83d25bc4494ffdb1a8a45
+Epoch: 42, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4077 sec/it, Seq len: 884.4, Slide ID: f77965d26573294bdf67672718b3d4d0
+Epoch: 42, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4001 sec/it, Seq len: 881.9, Slide ID: 6f0a397467d394b62c48a6199db06b6b
+Epoch: 42, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4023 sec/it, Seq len: 890.4, Slide ID: c2296406fa9de6a029e798d89a1c8734
+Epoch: 42, Batch: 99, Loss: 0.0002, LR: 0.0000, Time: 0.4013 sec/it, Seq len: 892.5, Slide ID: 87667e72b7fa0491a09fc9555894bfbe
+Epoch: 42, Batch: 119, Loss: 0.0002, LR: 0.0000, Time: 0.4057 sec/it, Seq len: 902.8, Slide ID: 89572c5f93eb8b635a350d9fafa2044f
+Epoch: 42, Batch: 139, Loss: 0.0002, LR: 0.0000, Time: 0.4038 sec/it, Seq len: 900.1, Slide ID: b77c336bc0171afc713510eec35a584d
+Epoch: 42, Batch: 159, Loss: 0.0002, LR: 0.0000, Time: 0.4076 sec/it, Seq len: 908.1, Slide ID: 085185a62d672e6ce606260f602ac8ab
+Epoch: 42, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4104 sec/it, Seq len: 912.5, Slide ID: 6999be089c587ca5e9397fbe7638af3a
+Epoch: 42, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4101 sec/it, Seq len: 912.3, Slide ID: 52e4b8211dbecc7176734c51734f9988
+Epoch: 42, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4050 sec/it, Seq len: 902.4, Slide ID: 7626a74f93075073e51994c4f3c5f2a5
+Epoch: 42, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4112 sec/it, Seq len: 916.2, Slide ID: bebc85c00d7bbf56ebe048147b15ace4
+Epoch: 42, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4133 sec/it, Seq len: 921.1, Slide ID: 9bd1adceec12ca2802bfe40bb2240e40
+Epoch: 42, Batch: 279, Loss: 0.0002, LR: 0.0000, Time: 0.4162 sec/it, Seq len: 927.9, Slide ID: 849ff9e1d95166edd8a36277c5487567
+Epoch: 42, Batch: 299, Loss: 0.0001, LR: 0.0000, Time: 0.4171 sec/it, Seq len: 929.6, Slide ID: b1ce56fd6c860e726c622c3f6b7de421
+Epoch: 42, Batch: 319, Loss: 0.0001, LR: 0.0000, Time: 0.4176 sec/it, Seq len: 930.9, Slide ID: ddd2f284a0815fb717d5ad3ee2d0d3d8
+Epoch: 42, Batch: 339, Loss: 0.0001, LR: 0.0000, Time: 0.4180 sec/it, Seq len: 932.2, Slide ID: 373c3e3962c89a016c118cd3b4dac926
+Epoch: 42, Batch: 359, Loss: 0.0001, LR: 0.0000, Time: 0.4168 sec/it, Seq len: 929.8, Slide ID: 1d54eb35ac47ca398377128f15275f40
+Epoch: 42, Batch: 379, Loss: 0.0001, LR: 0.0000, Time: 0.4167 sec/it, Seq len: 928.9, Slide ID: c34fa8189fe4e5b4995e1c14deb9f5a1
+Epoch: 42, Batch: 399, Loss: 0.0001, LR: 0.0000, Time: 0.4160 sec/it, Seq len: 927.9, Slide ID: 932af254f55ed4607b6a31c4fc69726f
+Epoch: 42, Batch: 419, Loss: 0.0001, LR: 0.0000, Time: 0.4172 sec/it, Seq len: 930.8, Slide ID: 5f5fa1cce0a7969903073b2d3242eea3
+Epoch: 42, Batch: 439, Loss: 0.0001, LR: 0.0000, Time: 0.4165 sec/it, Seq len: 929.8, Slide ID: f48a0a2fee0dbba4e2745c7037a366ed
+Epoch: 42, Batch: 459, Loss: 0.0001, LR: 0.0000, Time: 0.4159 sec/it, Seq len: 928.7, Slide ID: 54eb7abc2a838e3f49f7e38361ce0b12
+Epoch: 42, Loss: 0.0000
+Epoch: 42, Loss: 1.5265, AUROC: 0.9548, ACC: 0.8197, BACC: 0.7783, qwk: 0.9438
+Epoch: 43
+Epoch: 43, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4487 sec/it, Seq len: 968.7, Slide ID: d6112e98bf1d15028ccb46cefd393241
+Epoch: 43, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4229 sec/it, Seq len: 934.2, Slide ID: b06049ce3ec82f00aebdc4e368edc90f
+Epoch: 43, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4161 sec/it, Seq len: 927.7, Slide ID: 0748aba46621600d1e6b6ec02f90dfe5
+Epoch: 43, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4066 sec/it, Seq len: 909.8, Slide ID: 4a2a3bb75dc38efd9525cf96c379feb6
+Epoch: 43, Batch: 99, Loss: 0.0001, LR: 0.0000, Time: 0.4138 sec/it, Seq len: 922.9, Slide ID: 51cae066e83f4428d6d3c60d7543a105
+Epoch: 43, Batch: 119, Loss: 0.0001, LR: 0.0000, Time: 0.4174 sec/it, Seq len: 929.4, Slide ID: 418aa1d085fe63ffb9c5510a9075f8e5
+Epoch: 43, Batch: 139, Loss: 0.0001, LR: 0.0000, Time: 0.4277 sec/it, Seq len: 952.0, Slide ID: bf0156293b04b7a7793f8e7199743398
+Epoch: 43, Batch: 159, Loss: 0.0002, LR: 0.0000, Time: 0.4246 sec/it, Seq len: 946.7, Slide ID: 043489a629f6bdec1d08515a6daabb78
+Epoch: 43, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4253 sec/it, Seq len: 949.2, Slide ID: 71866d9b0216c9023de83ef2f9906cb8
+Epoch: 43, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4244 sec/it, Seq len: 947.6, Slide ID: e33f022f319d81b60bc1fcf1c139a0f1
+Epoch: 43, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4237 sec/it, Seq len: 946.8, Slide ID: a65a4942b32e64ab56e8128575f81f9b
+Epoch: 43, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4177 sec/it, Seq len: 935.7, Slide ID: 89b62c165838d36fd294a57624db8e4f
+Epoch: 43, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4165 sec/it, Seq len: 932.4, Slide ID: 2e5002e01c53488e4f40c4a68b3cd4b6
+Epoch: 43, Batch: 279, Loss: 0.0001, LR: 0.0000, Time: 0.4170 sec/it, Seq len: 932.5, Slide ID: 0c782b90b01085cd1c390076363c6fe6
+Epoch: 43, Batch: 299, Loss: 0.0001, LR: 0.0000, Time: 0.4152 sec/it, Seq len: 929.1, Slide ID: 10b57920070f6adc8435b9531e0a5398
+Epoch: 43, Batch: 319, Loss: 0.0001, LR: 0.0000, Time: 0.4166 sec/it, Seq len: 932.1, Slide ID: 4e043062905b6c64b1835bd9b22321ba
+Epoch: 43, Batch: 339, Loss: 0.0001, LR: 0.0000, Time: 0.4160 sec/it, Seq len: 930.3, Slide ID: 77de0e765d8729e7386589f21961279f
+Epoch: 43, Batch: 359, Loss: 0.0001, LR: 0.0000, Time: 0.4157 sec/it, Seq len: 929.0, Slide ID: 8dbbf6f6aebb8aea3339f70dbfd7cf07
+Epoch: 43, Batch: 379, Loss: 0.0002, LR: 0.0000, Time: 0.4136 sec/it, Seq len: 925.4, Slide ID: 2b59dfa72ed1fbb3cc1dd6be9b16ae76
+Epoch: 43, Batch: 399, Loss: 0.0001, LR: 0.0000, Time: 0.4112 sec/it, Seq len: 920.5, Slide ID: 77baa1e549ada2966bd21cb3eb6b5072
+Epoch: 43, Batch: 419, Loss: 0.0001, LR: 0.0000, Time: 0.4123 sec/it, Seq len: 922.9, Slide ID: 5f204e4117e261c6bfb06626e5bb2410
+Epoch: 43, Batch: 439, Loss: 0.0001, LR: 0.0000, Time: 0.4139 sec/it, Seq len: 925.9, Slide ID: 0cd5be1bd117769faf8325db00c3f5eb
+Epoch: 43, Batch: 459, Loss: 0.0001, LR: 0.0000, Time: 0.4140 sec/it, Seq len: 927.0, Slide ID: f9b0585f3bed42786c6c9fc199e59dc8
+Epoch: 43, Loss: 0.0000
+Epoch: 43, Loss: 1.5373, AUROC: 0.9545, ACC: 0.8197, BACC: 0.7781, qwk: 0.9438
+Epoch: 44
+Epoch: 44, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4108 sec/it, Seq len: 875.1, Slide ID: 4a7f326315f1b706434fd5314bd605d2
+Epoch: 44, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4369 sec/it, Seq len: 964.4, Slide ID: 66b715d5da126fcd163dd420ca983cf6
+Epoch: 44, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4270 sec/it, Seq len: 951.1, Slide ID: e0f850185533c61897ea1e2975b45f4a
+Epoch: 44, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4316 sec/it, Seq len: 961.4, Slide ID: 6c99a5ca4d6c8a76c87d2fd4795cbf55
+Epoch: 44, Batch: 99, Loss: 0.0002, LR: 0.0000, Time: 0.4285 sec/it, Seq len: 956.2, Slide ID: 73ca95633a46136d909f5ad45c7ddda1
+Epoch: 44, Batch: 119, Loss: 0.0003, LR: 0.0000, Time: 0.4228 sec/it, Seq len: 943.2, Slide ID: a043e7be47fa98c814af7969a55f8bc6
+Epoch: 44, Batch: 139, Loss: 0.0002, LR: 0.0000, Time: 0.4231 sec/it, Seq len: 944.3, Slide ID: ec31746a04ca87e961b4b9d4d6f6bd60
+Epoch: 44, Batch: 159, Loss: 0.0002, LR: 0.0000, Time: 0.4209 sec/it, Seq len: 939.0, Slide ID: 0c625807666551dc07436779d1969b24
+Epoch: 44, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4263 sec/it, Seq len: 950.3, Slide ID: ddc0548b91893ec459bac4504b9b10c6
+Epoch: 44, Batch: 199, Loss: 0.0003, LR: 0.0000, Time: 0.4268 sec/it, Seq len: 951.4, Slide ID: 0c46c60ae2ef49657bc843707162ba6e
+Epoch: 44, Batch: 219, Loss: 0.0003, LR: 0.0000, Time: 0.4261 sec/it, Seq len: 950.3, Slide ID: 44d1baf3f558ceb7cad8400079178649
+Epoch: 44, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4236 sec/it, Seq len: 945.0, Slide ID: 306c500894cef0f73406f227152ef357
+Epoch: 44, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4224 sec/it, Seq len: 943.3, Slide ID: 1785c37e3065cf68c0ef04d6fdb5dbcb
+Epoch: 44, Batch: 279, Loss: 0.0002, LR: 0.0000, Time: 0.4218 sec/it, Seq len: 941.8, Slide ID: 69aa17f4856a40568185449b4d2db5c3
+Epoch: 44, Batch: 299, Loss: 0.0002, LR: 0.0000, Time: 0.4239 sec/it, Seq len: 945.0, Slide ID: 0896c0e0ee1979a0075927acb663f2a4
+Epoch: 44, Batch: 319, Loss: 0.0002, LR: 0.0000, Time: 0.4237 sec/it, Seq len: 943.9, Slide ID: 0ad349dc15725bebc39d343ef41743aa
+Epoch: 44, Batch: 339, Loss: 0.0002, LR: 0.0000, Time: 0.4213 sec/it, Seq len: 939.3, Slide ID: 82d54116781696f12d1b9cebbc4598b0
+Epoch: 44, Batch: 359, Loss: 0.0002, LR: 0.0000, Time: 0.4199 sec/it, Seq len: 936.4, Slide ID: 71f11949b427eac5591d44419969e616
+Epoch: 44, Batch: 379, Loss: 0.0002, LR: 0.0000, Time: 0.4197 sec/it, Seq len: 936.6, Slide ID: e9b23d50388ce76955b95f482e892f5b
+Epoch: 44, Batch: 399, Loss: 0.0002, LR: 0.0000, Time: 0.4170 sec/it, Seq len: 931.1, Slide ID: 26ca4dbc8c6f341f304cd49e4fa0a215
+Epoch: 44, Batch: 419, Loss: 0.0002, LR: 0.0000, Time: 0.4161 sec/it, Seq len: 929.1, Slide ID: f1f5f493f2f436a7049f899b4ca4bac6
+Epoch: 44, Batch: 439, Loss: 0.0002, LR: 0.0000, Time: 0.4157 sec/it, Seq len: 928.5, Slide ID: af9a7c64f3218dcb1ed01cc10d3f7e50
+Epoch: 44, Batch: 459, Loss: 0.0002, LR: 0.0000, Time: 0.4142 sec/it, Seq len: 925.8, Slide ID: 7657e325f5f8e11b05ea3428ba89b53d
+Epoch: 44, Loss: 0.0000
+Epoch: 44, Loss: 1.5343, AUROC: 0.9551, ACC: 0.8145, BACC: 0.7718, qwk: 0.9420
+Epoch: 45
+Epoch: 45, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4357 sec/it, Seq len: 907.6, Slide ID: eaf66ac783499827a7f09d69793a07d7
+Epoch: 45, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4184 sec/it, Seq len: 908.0, Slide ID: 1a5123a18c641040307c36f5e9811efc
+Epoch: 45, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4205 sec/it, Seq len: 929.4, Slide ID: 700c5807a050c1819ce4e295890b35b2
+Epoch: 45, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4233 sec/it, Seq len: 938.1, Slide ID: 3406d5d8ae8ffd5e42386d8caf2d023f
+Epoch: 45, Batch: 99, Loss: 0.0001, LR: 0.0000, Time: 0.4204 sec/it, Seq len: 937.0, Slide ID: 4b38723b387a432075f7cb3544172900
+Epoch: 45, Batch: 119, Loss: 0.0001, LR: 0.0000, Time: 0.4235 sec/it, Seq len: 945.3, Slide ID: 382ddc25ec205c031a76956d6060bd2b
+Epoch: 45, Batch: 139, Loss: 0.0001, LR: 0.0000, Time: 0.4198 sec/it, Seq len: 938.5, Slide ID: 7fbd12db8dceaec4f97268f44853fc57
+Epoch: 45, Batch: 159, Loss: 0.0001, LR: 0.0000, Time: 0.4184 sec/it, Seq len: 937.3, Slide ID: 7a464bac7623466f449cbc7279d79f85
+Epoch: 45, Batch: 179, Loss: 0.0001, LR: 0.0000, Time: 0.4175 sec/it, Seq len: 934.3, Slide ID: e805fcf7bfd5a7cd6c652c1ed288bcd8
+Epoch: 45, Batch: 199, Loss: 0.0001, LR: 0.0000, Time: 0.4144 sec/it, Seq len: 926.6, Slide ID: 2a006dc0297080f9f6f23397b180a889
+Epoch: 45, Batch: 219, Loss: 0.0001, LR: 0.0000, Time: 0.4159 sec/it, Seq len: 929.6, Slide ID: f836bf8b2f7a52acc668fcd59ec0122f
+Epoch: 45, Batch: 239, Loss: 0.0001, LR: 0.0000, Time: 0.4190 sec/it, Seq len: 934.8, Slide ID: cf80de78a4b2fbf446923732c1046166
+Epoch: 45, Batch: 259, Loss: 0.0001, LR: 0.0000, Time: 0.4187 sec/it, Seq len: 935.6, Slide ID: b7932b71e15722e1908ad98af13d50fb
+Epoch: 45, Batch: 279, Loss: 0.0001, LR: 0.0000, Time: 0.4175 sec/it, Seq len: 932.1, Slide ID: 20295d0f4917e297c4827296397fbec1
+Epoch: 45, Batch: 299, Loss: 0.0001, LR: 0.0000, Time: 0.4194 sec/it, Seq len: 935.9, Slide ID: 71d1f80515b8060538cca8ef303fe853
+Epoch: 45, Batch: 319, Loss: 0.0001, LR: 0.0000, Time: 0.4190 sec/it, Seq len: 935.5, Slide ID: 60b46e491d5aa1cadeac8e97ec073c6e
+Epoch: 45, Batch: 339, Loss: 0.0001, LR: 0.0000, Time: 0.4155 sec/it, Seq len: 929.1, Slide ID: b86bdca8e34a5d265e5df2dcbe0b2969
+Epoch: 45, Batch: 359, Loss: 0.0001, LR: 0.0000, Time: 0.4159 sec/it, Seq len: 930.1, Slide ID: 1b537a80f1e8a878059a4bfea02a7a6b
+Epoch: 45, Batch: 379, Loss: 0.0001, LR: 0.0000, Time: 0.4144 sec/it, Seq len: 927.1, Slide ID: 87c242a8e7dc0e5636b0ea1927f616cd
+Epoch: 45, Batch: 399, Loss: 0.0001, LR: 0.0000, Time: 0.4150 sec/it, Seq len: 927.5, Slide ID: e8d2f499e64b8d562838572bee7ea53f
+Epoch: 45, Batch: 419, Loss: 0.0001, LR: 0.0000, Time: 0.4146 sec/it, Seq len: 926.8, Slide ID: 689100903a58c5d137f281c058b85856
+Epoch: 45, Batch: 439, Loss: 0.0001, LR: 0.0000, Time: 0.4142 sec/it, Seq len: 925.4, Slide ID: b269b43565372f474745f4d71dc2a5c3
+Epoch: 45, Batch: 459, Loss: 0.0001, LR: 0.0000, Time: 0.4135 sec/it, Seq len: 924.3, Slide ID: 1fb65315d7ded63d688194863a1b123e
+Epoch: 45, Loss: 0.0000
+Epoch: 45, Loss: 1.5409, AUROC: 0.9547, ACC: 0.8197, BACC: 0.7784, qwk: 0.9451
+Epoch: 46
+Epoch: 46, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4518 sec/it, Seq len: 945.1, Slide ID: a2f1af7bf2b86cdabfcffe65d8424a3a
+Epoch: 46, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4307 sec/it, Seq len: 930.4, Slide ID: b2b496615dbf9fb305bbc7ad5ac399c5
+Epoch: 46, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4343 sec/it, Seq len: 946.5, Slide ID: 415a318eda63d2293d526035108242dc
+Epoch: 46, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4283 sec/it, Seq len: 939.6, Slide ID: 3cf6ba5c92566d079b14948153e756da
+Epoch: 46, Batch: 99, Loss: 0.0001, LR: 0.0000, Time: 0.4227 sec/it, Seq len: 931.7, Slide ID: c1816758539877326f9021819c223f72
+Epoch: 46, Batch: 119, Loss: 0.0001, LR: 0.0000, Time: 0.4205 sec/it, Seq len: 930.3, Slide ID: 2edf6cc7696c91d86eb86413fa9c82d7
+Epoch: 46, Batch: 139, Loss: 0.0001, LR: 0.0000, Time: 0.4234 sec/it, Seq len: 939.1, Slide ID: 867bf41f609802d686b544b1f8afdcc2
+Epoch: 46, Batch: 159, Loss: 0.0001, LR: 0.0000, Time: 0.4243 sec/it, Seq len: 944.4, Slide ID: a2da57c1097f25266b22084b9b2362a4
+Epoch: 46, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4223 sec/it, Seq len: 941.2, Slide ID: e891d0d99672757464ee838a0794f424
+Epoch: 46, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4242 sec/it, Seq len: 944.5, Slide ID: 2d4909a3958f29872fe825878a8df373
+Epoch: 46, Batch: 219, Loss: 0.0003, LR: 0.0000, Time: 0.4250 sec/it, Seq len: 947.3, Slide ID: 513540cba1445676334e1a17a3d95ff0
+Epoch: 46, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4237 sec/it, Seq len: 942.7, Slide ID: 5eb0af050c28a438f143ddeed00aa8c1
+Epoch: 46, Batch: 259, Loss: 0.0003, LR: 0.0000, Time: 0.4246 sec/it, Seq len: 944.9, Slide ID: e2efdfdce6c126897cef60cde252def7
+Epoch: 46, Batch: 279, Loss: 0.0003, LR: 0.0000, Time: 0.4223 sec/it, Seq len: 940.5, Slide ID: 6c66783893eb733abc27157bfb0cce33
+Epoch: 46, Batch: 299, Loss: 0.0002, LR: 0.0000, Time: 0.4231 sec/it, Seq len: 942.2, Slide ID: 59949a9304b8d4678e55709ef9cf1d8a
+Epoch: 46, Batch: 319, Loss: 0.0002, LR: 0.0000, Time: 0.4224 sec/it, Seq len: 940.8, Slide ID: 022544d1446c2c44f8ca8ff53262dc5b
+Epoch: 46, Batch: 339, Loss: 0.0002, LR: 0.0000, Time: 0.4194 sec/it, Seq len: 935.5, Slide ID: a2fe40846d781b8b5e86e87da1955a8d
+Epoch: 46, Batch: 359, Loss: 0.0002, LR: 0.0000, Time: 0.4203 sec/it, Seq len: 936.5, Slide ID: 93b3300fd244ac326a9f11a6a47ed016
+Epoch: 46, Batch: 379, Loss: 0.0002, LR: 0.0000, Time: 0.4185 sec/it, Seq len: 933.1, Slide ID: 59afbd8eceb90a30ccfb99eb039fa5eb
+Epoch: 46, Batch: 399, Loss: 0.0002, LR: 0.0000, Time: 0.4194 sec/it, Seq len: 934.8, Slide ID: 62b633dfb302067fc326018482d36c89
+Epoch: 46, Batch: 419, Loss: 0.0002, LR: 0.0000, Time: 0.4191 sec/it, Seq len: 934.0, Slide ID: b3438f39bb7db17a8c77e5520613de21
+Epoch: 46, Batch: 439, Loss: 0.0002, LR: 0.0000, Time: 0.4171 sec/it, Seq len: 930.1, Slide ID: 7339b4fe01bff9be3c2326e47ede6ec7
+Epoch: 46, Batch: 459, Loss: 0.0002, LR: 0.0000, Time: 0.4151 sec/it, Seq len: 926.2, Slide ID: a7f00efad38057d7c04273206366b682
+Epoch: 46, Loss: 0.0000
+Epoch: 46, Loss: 1.5387, AUROC: 0.9553, ACC: 0.8134, BACC: 0.7701, qwk: 0.9429
+Epoch: 47
+Epoch: 47, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4298 sec/it, Seq len: 923.2, Slide ID: fdb9d38ce2b5a1d31bb030cd2d3a03b9
+Epoch: 47, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4224 sec/it, Seq len: 939.2, Slide ID: 42482ed25f9001ae44f6148432da91d7
+Epoch: 47, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4114 sec/it, Seq len: 924.8, Slide ID: c93d4db23236f4e9d44fb3e4966b0bd3
+Epoch: 47, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4026 sec/it, Seq len: 908.0, Slide ID: 8f1bb0798e87ca88ea912d942b0b32f8
+Epoch: 47, Batch: 99, Loss: 0.0001, LR: 0.0000, Time: 0.4029 sec/it, Seq len: 905.3, Slide ID: dbb61e609cd4e8bcd8d56db2c7cb5df0
+Epoch: 47, Batch: 119, Loss: 0.0001, LR: 0.0000, Time: 0.4053 sec/it, Seq len: 911.4, Slide ID: 8013d514fff8374e2f0435f808a57d8e
+Epoch: 47, Batch: 139, Loss: 0.0001, LR: 0.0000, Time: 0.4040 sec/it, Seq len: 910.6, Slide ID: 0a93d9a674e358ba32e4e2ec320aefc5
+Epoch: 47, Batch: 159, Loss: 0.0001, LR: 0.0000, Time: 0.3974 sec/it, Seq len: 896.4, Slide ID: 453dc2fc4fc4115d00bf6a44d4311952
+Epoch: 47, Batch: 179, Loss: 0.0001, LR: 0.0000, Time: 0.4046 sec/it, Seq len: 911.7, Slide ID: 3752b697cae9f81a9d5ffe44dac58e7a
+Epoch: 47, Batch: 199, Loss: 0.0001, LR: 0.0000, Time: 0.4076 sec/it, Seq len: 917.9, Slide ID: 4a4926a13345cbedb54d6762e4ab0132
+Epoch: 47, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4068 sec/it, Seq len: 913.4, Slide ID: 2201aa074bbae016bcf623ab6d0256f7
+Epoch: 47, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4093 sec/it, Seq len: 918.1, Slide ID: 0d9ebaacb0ccda0312b5fca401e699c1
+Epoch: 47, Batch: 259, Loss: 0.0001, LR: 0.0000, Time: 0.4091 sec/it, Seq len: 916.9, Slide ID: 477aa0ab713992935286655f2798c8c5
+Epoch: 47, Batch: 279, Loss: 0.0001, LR: 0.0000, Time: 0.4089 sec/it, Seq len: 916.7, Slide ID: b8d566345af6385e5176a774af8d457e
+Epoch: 47, Batch: 299, Loss: 0.0001, LR: 0.0000, Time: 0.4104 sec/it, Seq len: 919.3, Slide ID: 18533bc08197fa92ff063ad89ceddc89
+Epoch: 47, Batch: 319, Loss: 0.0001, LR: 0.0000, Time: 0.4097 sec/it, Seq len: 917.5, Slide ID: f020cc334d760c90c51064fbfcea2dfe
+Epoch: 47, Batch: 339, Loss: 0.0001, LR: 0.0000, Time: 0.4088 sec/it, Seq len: 916.5, Slide ID: f7d0df1726b8d909d107938d114294e1
+Epoch: 47, Batch: 359, Loss: 0.0001, LR: 0.0000, Time: 0.4108 sec/it, Seq len: 920.4, Slide ID: 87510693f49f12240fcbd3441a911c53
+Epoch: 47, Batch: 379, Loss: 0.0001, LR: 0.0000, Time: 0.4103 sec/it, Seq len: 920.4, Slide ID: b3c0102531dc15c340cec074c10bcf83
+Epoch: 47, Batch: 399, Loss: 0.0001, LR: 0.0000, Time: 0.4114 sec/it, Seq len: 922.1, Slide ID: bfc79c190fe22ab12658abc19d07593b
+Epoch: 47, Batch: 419, Loss: 0.0001, LR: 0.0000, Time: 0.4107 sec/it, Seq len: 920.8, Slide ID: aa5f6291ddf9631c11f89925308051ed
+Epoch: 47, Batch: 439, Loss: 0.0001, LR: 0.0000, Time: 0.4090 sec/it, Seq len: 917.5, Slide ID: ab953747c19632d5ff3078b84449596e
+Epoch: 47, Batch: 459, Loss: 0.0001, LR: 0.0000, Time: 0.4100 sec/it, Seq len: 918.8, Slide ID: a686274a69747305cbea99f22c4361d7
+Epoch: 47, Loss: 0.0000
+Epoch: 47, Loss: 1.5256, AUROC: 0.9548, ACC: 0.8187, BACC: 0.7769, qwk: 0.9439
+Epoch: 48
+Epoch: 48, Batch: 19, Loss: 0.0000, LR: 0.0000, Time: 0.4515 sec/it, Seq len: 940.2, Slide ID: 41cd8bc4e00e30e50dcf91c09bb5c32a
+Epoch: 48, Batch: 39, Loss: 0.0000, LR: 0.0000, Time: 0.4459 sec/it, Seq len: 960.9, Slide ID: 64486f84f721d5873cc034802f8c31bc
+Epoch: 48, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4390 sec/it, Seq len: 957.8, Slide ID: 5619df86f52fe4db0cb874f07166e2ea
+Epoch: 48, Batch: 79, Loss: 0.0002, LR: 0.0000, Time: 0.4341 sec/it, Seq len: 951.3, Slide ID: 09e8b4e9ce5253168cf18c88bdc8304c
+Epoch: 48, Batch: 99, Loss: 0.0002, LR: 0.0000, Time: 0.4275 sec/it, Seq len: 937.5, Slide ID: eee26d27dbba4e7dec07620c11328b62
+Epoch: 48, Batch: 119, Loss: 0.0002, LR: 0.0000, Time: 0.4349 sec/it, Seq len: 955.5, Slide ID: 76646d841dfa7b647f6034e73417c1ee
+Epoch: 48, Batch: 139, Loss: 0.0002, LR: 0.0000, Time: 0.4361 sec/it, Seq len: 959.3, Slide ID: 7bc0cca2cee2bf4522192fd5ba79347c
+Epoch: 48, Batch: 159, Loss: 0.0002, LR: 0.0000, Time: 0.4351 sec/it, Seq len: 958.2, Slide ID: f80f2d5a9a6f70990132b53d65c796c4
+Epoch: 48, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4335 sec/it, Seq len: 956.0, Slide ID: b3853701d3e05b29f0e2c2bc0f85bd21
+Epoch: 48, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4292 sec/it, Seq len: 947.8, Slide ID: cc1ff189efdd483f831fb118780026ec
+Epoch: 48, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4266 sec/it, Seq len: 943.0, Slide ID: 35a2ba270ef1fe91e4434cc83ccac50d
+Epoch: 48, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4263 sec/it, Seq len: 943.0, Slide ID: 37b0ce91b7bdaf3100aae1748009424e
+Epoch: 48, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4217 sec/it, Seq len: 933.8, Slide ID: 5033ea72b9d1901a6450bb7d21a1b062
+Epoch: 48, Batch: 279, Loss: 0.0002, LR: 0.0000, Time: 0.4196 sec/it, Seq len: 929.8, Slide ID: f6de38334730ae611fbf46dd649b1476
+Epoch: 48, Batch: 299, Loss: 0.0002, LR: 0.0000, Time: 0.4205 sec/it, Seq len: 932.8, Slide ID: bfed9b44a06d5de60336ec6fe0365361
+Epoch: 48, Batch: 319, Loss: 0.0004, LR: 0.0000, Time: 0.4212 sec/it, Seq len: 934.0, Slide ID: f87fba9107a002e96ae767d80378a5d1
+Epoch: 48, Batch: 339, Loss: 0.0003, LR: 0.0000, Time: 0.4195 sec/it, Seq len: 931.5, Slide ID: e162a1681d6e6ab5bf85a7eb71ef7f95
+Epoch: 48, Batch: 359, Loss: 0.0003, LR: 0.0000, Time: 0.4206 sec/it, Seq len: 934.5, Slide ID: 1df32b02eaa3cfad5d8c51a3e289cfc1
+Epoch: 48, Batch: 379, Loss: 0.0003, LR: 0.0000, Time: 0.4203 sec/it, Seq len: 933.9, Slide ID: 3155aef3abdeacd75a4758c212d93e42
+Epoch: 48, Batch: 399, Loss: 0.0003, LR: 0.0000, Time: 0.4216 sec/it, Seq len: 937.2, Slide ID: aeae0b9b833e7ee491d1e486bb7bbcf2
+Epoch: 48, Batch: 419, Loss: 0.0003, LR: 0.0000, Time: 0.4216 sec/it, Seq len: 938.0, Slide ID: 8a510d59fecf6f0f07ae5d6b5b83190a
+Epoch: 48, Batch: 439, Loss: 0.0003, LR: 0.0000, Time: 0.4211 sec/it, Seq len: 937.6, Slide ID: 320543392885dbaff272faaae7657749
+Epoch: 48, Batch: 459, Loss: 0.0003, LR: 0.0000, Time: 0.4211 sec/it, Seq len: 937.8, Slide ID: d691b50f9a08b2e6b9731add26f4e8a2
+Epoch: 48, Loss: 0.0000
+Epoch: 48, Loss: 1.5411, AUROC: 0.9552, ACC: 0.8166, BACC: 0.7738, qwk: 0.9433
+Epoch: 49
+Epoch: 49, Batch: 19, Loss: 0.0001, LR: 0.0000, Time: 0.4562 sec/it, Seq len: 966.5, Slide ID: f4cc3f49c4bd4fdc3422ed1b8c5c7676
+Epoch: 49, Batch: 39, Loss: 0.0001, LR: 0.0000, Time: 0.4214 sec/it, Seq len: 920.0, Slide ID: 537e2fe52437bd0b4f139d9397208c55
+Epoch: 49, Batch: 59, Loss: 0.0001, LR: 0.0000, Time: 0.4064 sec/it, Seq len: 903.4, Slide ID: 7584a04126c380a776b9a27c23ca2a1d
+Epoch: 49, Batch: 79, Loss: 0.0001, LR: 0.0000, Time: 0.4112 sec/it, Seq len: 914.9, Slide ID: df599862faf0cd78b880fa7f6644407e
+Epoch: 49, Batch: 99, Loss: 0.0001, LR: 0.0000, Time: 0.4223 sec/it, Seq len: 938.1, Slide ID: a1697f266e95a820c676d18f380c6ce8
+Epoch: 49, Batch: 119, Loss: 0.0003, LR: 0.0000, Time: 0.4207 sec/it, Seq len: 936.4, Slide ID: 9cc90be7db3d19f91f43a903142d5bfb
+Epoch: 49, Batch: 139, Loss: 0.0003, LR: 0.0000, Time: 0.4214 sec/it, Seq len: 938.5, Slide ID: 226301ee1193716a8079c58d8669b4f9
+Epoch: 49, Batch: 159, Loss: 0.0003, LR: 0.0000, Time: 0.4288 sec/it, Seq len: 950.4, Slide ID: 115bd4dfe4bfd01f17f11c13eb61a77c
+Epoch: 49, Batch: 179, Loss: 0.0002, LR: 0.0000, Time: 0.4286 sec/it, Seq len: 950.7, Slide ID: 623a22a6d357ae6cb2269fd6e6ffe457
+Epoch: 49, Batch: 199, Loss: 0.0002, LR: 0.0000, Time: 0.4232 sec/it, Seq len: 940.0, Slide ID: 9665b32251dfc1c438787d36e8b66dd0
+Epoch: 49, Batch: 219, Loss: 0.0002, LR: 0.0000, Time: 0.4219 sec/it, Seq len: 938.3, Slide ID: 8aeccaf12d3173a0c09f873be67be5a5
+Epoch: 49, Batch: 239, Loss: 0.0002, LR: 0.0000, Time: 0.4230 sec/it, Seq len: 939.8, Slide ID: 226b94e61f78ecb7be9f4301771ab7c6
+Epoch: 49, Batch: 259, Loss: 0.0002, LR: 0.0000, Time: 0.4222 sec/it, Seq len: 938.8, Slide ID: cd8d74b77f1fc44b5fb034049913af43
+Epoch: 49, Batch: 279, Loss: 0.0002, LR: 0.0000, Time: 0.4205 sec/it, Seq len: 935.9, Slide ID: 0c086008cc6c8c8da93106b67d336b8f
+Epoch: 49, Batch: 299, Loss: 0.0002, LR: 0.0000, Time: 0.4214 sec/it, Seq len: 937.9, Slide ID: 8948231e22708d60c8f855d7cbae5cf3
+Epoch: 49, Batch: 319, Loss: 0.0002, LR: 0.0000, Time: 0.4184 sec/it, Seq len: 931.8, Slide ID: 497b7731f13ad07c0afe2dd81c52e021
+Epoch: 49, Batch: 339, Loss: 0.0002, LR: 0.0000, Time: 0.4161 sec/it, Seq len: 928.3, Slide ID: 0d369ec1d013037dfa409901c96808b5
+Epoch: 49, Batch: 359, Loss: 0.0002, LR: 0.0000, Time: 0.4157 sec/it, Seq len: 927.2, Slide ID: be2a4f591ca984c0f621d49a0d4b281f
+Epoch: 49, Batch: 379, Loss: 0.0002, LR: 0.0000, Time: 0.4158 sec/it, Seq len: 927.4, Slide ID: 691b8d6d8606006ea205fd1189d017f7
+Epoch: 49, Batch: 399, Loss: 0.0002, LR: 0.0000, Time: 0.4155 sec/it, Seq len: 926.9, Slide ID: c5558a14e481d86827dc3703fe087f44
+Epoch: 49, Batch: 419, Loss: 0.0001, LR: 0.0000, Time: 0.4159 sec/it, Seq len: 928.4, Slide ID: 842ec03f75b9933c49274bae3e7cc5fc
+Epoch: 49, Batch: 439, Loss: 0.0002, LR: 0.0000, Time: 0.4159 sec/it, Seq len: 928.7, Slide ID: 62e36f7cc417a5e10b21466267b327ca
+Epoch: 49, Batch: 459, Loss: 0.0002, LR: 0.0000, Time: 0.4166 sec/it, Seq len: 930.8, Slide ID: ad6cd27268b3a281cf1da1b9cc750dfa
+Epoch: 49, Loss: 0.0000
+Epoch: 49, Loss: 1.5384, AUROC: 0.9555, ACC: 0.8145, BACC: 0.7717, qwk: 0.9437
+/data/shaohua/prov-gigapath/finetune/training.py:89: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(os.path.join(args.save_dir, 'fold_' + str(fold), "checkpoint.pt")))
+Epoch: 49, Loss: 1.1634, AUROC: 0.9675, ACC: 0.8438, BACC: 0.8060, qwk: 0.9504
+val_loss: 1.5384 +- 0.0000
+val_bacc: 0.7717 +- 0.0000
+val_acc: 0.8145 +- 0.0000
+val_macro_auroc: 0.9555 +- 0.0000
+val_macro_auprc: 0.7803 +- 0.0000
+val_qwk: 0.9437 +- 0.0000
+val_0_auroc: 0.9948 +- 0.0000
+val_1_auroc: 0.9699 +- 0.0000
+val_2_auroc: 0.9356 +- 0.0000
+val_3_auroc: 0.9091 +- 0.0000
+val_4_auroc: 0.9530 +- 0.0000
+val_5_auroc: 0.9708 +- 0.0000
+val_0_auprc: 0.9798 +- 0.0000
+val_1_auprc: 0.8863 +- 0.0000
+val_2_auprc: 0.5961 +- 0.0000
+val_3_auprc: 0.6373 +- 0.0000
+val_4_auprc: 0.7536 +- 0.0000
+val_5_auprc: 0.8289 +- 0.0000
+test_loss: 1.1634 +- 0.0000
+test_bacc: 0.8060 +- 0.0000
+test_acc: 0.8438 +- 0.0000
+test_macro_auroc: 0.9675 +- 0.0000
+test_macro_auprc: 0.8330 +- 0.0000
+test_qwk: 0.9504 +- 0.0000
+test_0_auroc: 0.9948 +- 0.0000
+test_1_auroc: 0.9807 +- 0.0000
+test_2_auroc: 0.9464 +- 0.0000
+test_3_auroc: 0.9383 +- 0.0000
+test_4_auroc: 0.9644 +- 0.0000
+test_5_auroc: 0.9802 +- 0.0000
+test_0_auprc: 0.9805 +- 0.0000
+test_1_auprc: 0.9225 +- 0.0000
+test_2_auprc: 0.7318 +- 0.0000
+test_3_auprc: 0.7312 +- 0.0000
+test_4_auprc: 0.7403 +- 0.0000
+test_5_auprc: 0.8914 +- 0.0000
+Results saved in: outputs/PANDA/panda/run_epoch-50_blr-0.002_wd-0.05_ld-0.95_feat-11/eval_pretrained_panda/summary.csv
+Done!

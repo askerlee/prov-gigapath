@@ -122,7 +122,7 @@ def train_one_epoch(train_loader, model, fp16_scaler, optimizer, loss_fn, epoch,
         # add the sequence length
         seq_len += images.shape[1]
 
-        with torch.cuda.amp.autocast(dtype=torch.float16 if args.fp16 else torch.float32):
+        with torch.amp.autocast(device_type='cuda', dtype=torch.float16 if args.fp16 else torch.float32):
 
             # get the logits
             logits = model(images, img_coords)
@@ -178,7 +178,8 @@ def evaluate(loader, model, fp16_scaler, loss_fn, epoch, args):
             img_coords = img_coords.to(args.device, non_blocking=True)
             label = label.to(args.device, non_blocking=True).long()
 
-            with torch.cuda.amp.autocast(fp16_scaler is not None, dtype=torch.float16):
+            with torch.amp.autocast(device_type='cuda', enabled=fp16_scaler is not None, 
+                                    dtype=torch.float16):
                 # get the logits
                 logits = model(images, img_coords)
                 # get the loss

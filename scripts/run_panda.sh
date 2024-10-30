@@ -2,20 +2,21 @@
 TASKCFG=finetune/task_configs/panda.yaml
 DATASETCSV=dataset_csv/PANDA/PANDA.csv
 PRESPLITDIR=dataset_csv/PANDA/ # Use the predefined split
-ROOTPATH=${1-:data/dinov2_features/h5_files}
+ROOTPATH=data/GigaPath_PANDA_embeddings/h5_files
 MAX_WSI_SIZE=250000  # Maximum WSI size in pixels for the longer side (width or height).
-TILE_SIZE=256
+TILE_SIZE=256        # Tile size in pixels
 # Model settings
-HFMODEL=hf_hub:prov-gigapath/prov-gigapath # Huggingface model name
+HFMODEL=hf_hub:prov-gigapath/prov-gigapath  # Huggingface model name
 MODELARCH=gigapath_slide_enc12l768d
-TILEEMBEDSIZE=1536
-LATENTDIM=768
+TILEEMBEDSIZE=1536                          # Dimension of input tile embeddings
+LATENTDIM=768                               # Hidden dimension of the slide encoder
 # Training settings
-EPOCH=5
-GC=32
-BLR=0.002
-WD=0.05
-LD=0.95
+EPOCH=50
+BS=16                                       # Batch size
+GC=8                                        # Gradient accumulation steps
+BLR=0.002                                   # Base learning rate
+WD=0.05                                     # Weight decay
+LD=0.95                                     # Layer decay
 FEATLAYER="11"
 DROPOUT=0.1
 # Output settings
@@ -29,6 +30,7 @@ python finetune/main.py --task_cfg_path ${TASKCFG} \
                --dataset_csv $DATASETCSV \
                --root_path $ROOTPATH \
                --model_arch $MODELARCH \
+               --batch_size $BS \
                --blr $BLR \
                --layer_decay $LD \
                --optim_wd $WD \
@@ -50,4 +52,5 @@ python finetune/main.py --task_cfg_path ${TASKCFG} \
                --pretrained $HFMODEL \
                --report_to tensorboard \
                --exp_name $EXPNAME \
-               --max_wsi_size $MAX_WSI_SIZE
+               --max_wsi_size $MAX_WSI_SIZE \
+               --tile_size $TILE_SIZE

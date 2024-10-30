@@ -1,4 +1,4 @@
-INPUTPATH=${1-:data/GigaPath_PCam_embeddings.zip}
+INPUTPATH=data/GigaPath_PCam_embeddings.zip
 DATASETCSV=dataset_csv/pcam/pcam.csv
 OUTPUT=outputs/pcam
 
