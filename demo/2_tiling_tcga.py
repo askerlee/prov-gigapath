@@ -47,18 +47,31 @@ for svs_filepath in svs_filepaths:
 print(f"Total size: {total_filesize_gb:.1f}GB")
 
 processed_filesize_gb = 0
+num_total_slides = 0
 num_total_tiles = 0
+skipped_svs_files = []
 
 for svs_filepath in tqdm.tqdm(svs_filepaths):
     # Get the file size of the slide
     file_size_bytes = os.path.getsize(svs_filepath)
     # Convert bytes to megabytes
     file_size_gb = file_size_bytes / (1024 * 1024 * 1024)
+    # Some slides are less than 10MB, which are basically empty. Skip them.
+    if file_size_gb < 0.01:
+        print(f"Skipping {svs_filepath} because it is too small")
+        skipped_svs_files.append(svs_filepath)
+        continue
+
     processed_filesize_gb += file_size_gb
     filesize_percent = processed_filesize_gb / total_filesize_gb * 10000
     print(f"{filesize_percent:.1f}%% {int(num_total_tiles/1000)}K tiles  {file_size_gb:.1f}/{processed_filesize_gb:.1f}/{total_filesize_gb:.1f}GB {svs_filepath}")
     num_tiles = tile_one_slide(svs_filepath, save_dir=output_dir, mpp=args.mpp, level=args.level)
+    num_total_slides += 1
     num_total_tiles += num_tiles
+
+print()
+print(f"Finished tiling {num_total_tiles} tiles from {num_total_slides} slides")
+print(f"Skipped {len(skipped_svs_files)} slides: {skipped_svs_files}")
 
 # NOTE: tiling dependency libraries can be tricky to set up. 
 # Please double check the generated tile images."

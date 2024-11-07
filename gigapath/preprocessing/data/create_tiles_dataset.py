@@ -285,7 +285,7 @@ def process_slide(sample: Dict["SlideKey", Any],
     output_tiles_dir = output_dir / rel_slide_dir
     logging.info(f">>> Slide dir {output_tiles_dir}")
 
-    if False: #is_already_processed(output_tiles_dir):
+    if is_already_processed(output_tiles_dir):
         logging.info(f">>> Skipping {output_tiles_dir} - already processed")
         return output_tiles_dir
 
