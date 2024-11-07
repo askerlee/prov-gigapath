@@ -52,7 +52,8 @@ class TileEncodingDataset(Dataset):
                 'coords': torch.from_numpy(np.array([x, y])).float()}
 
 
-def tile_one_slide(slide_file:str='', save_dir:str='', level:int=0, tile_size:int=256):
+def tile_one_slide(slide_file:str='', save_dir:str='', mpp:float=0.5,
+                   level:int=0, tile_size:int=256):
     """
     This function is used to tile a single slide and save the tiles to a directory.
     -------------------------------------------------------------------------------
@@ -79,10 +80,14 @@ def tile_one_slide(slide_file:str='', save_dir:str='', level:int=0, tile_size:in
     if save_dir.exists():
         print(f"Warning: Directory {save_dir} already exists. ")
 
-    print(f"Processing slide {slide_file} at level {level} with tile size {tile_size}. Saving to {save_dir}.")
+    if level == -1:
+        print(f"Processing slide {slide_file} at mpp {mpp} with tile size {tile_size}. Saving to {save_dir}.")
+    else:
+        print(f"Processing slide {slide_file} at level {level} with tile size {tile_size}. Saving to {save_dir}.")
 
     slide_dir = process_slide(
         slide_sample,
+        mpp=mpp,
         level=level,
         margin=0,
         tile_size=tile_size,

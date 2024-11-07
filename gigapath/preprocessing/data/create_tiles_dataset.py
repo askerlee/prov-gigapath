@@ -22,10 +22,20 @@ from monai.data import Dataset
 from monai.data.wsi_reader import WSIReader
 from openslide import OpenSlide
 from tqdm import tqdm
+import cv2
+import sys
 
 from gigapath.preprocessing.data import tiling
 from gigapath.preprocessing.data.foreground_segmentation import LoadROId, segment_foreground
 
+logging.basicConfig(level=logging.INFO, stream=sys.stdout, force=True)
+# Get the root logger
+logger = logging.getLogger()
+
+# Ensure that flush is called immediately on each log message (for console)
+for handler in logger.handlers:
+    if isinstance(handler, logging.StreamHandler):
+        handler.flush = sys.stdout.flush  # Forces flushing to console
 
 def select_tiles(foreground_mask: np.ndarray, occupancy_threshold: float) \
         -> Tuple[np.ndarray, np.ndarray]:
@@ -234,13 +244,14 @@ def is_already_processed(output_tiles_dir):
     return len(df) > 0
 
 
-def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_size: int,
-                  foreground_threshold: Optional[float], occupancy_threshold: float, output_dir: Path,
-                  thumbnail_dir: Path,
-                  tile_progress: bool = False) -> str:
+def process_slide(sample: Dict["SlideKey", Any], 
+                  mpp: float, level: int, margin: int, tile_size: int,
+                  foreground_threshold: Optional[float], occupancy_threshold: float, 
+                  output_dir: Path, thumbnail_dir: Path, tile_progress: bool = False) -> str:
     """Load and process a slide, saving tile images and information to a CSV file.
 
     :param sample: Slide information dictionary, returned by the input slide dataset.
+    :param mpp: Microns per pixel at which to process the slide.
     :param level: Magnification level at which to process the slide.
     :param margin: Margin around the foreground bounding box, in pixels at lowest resolution.
     :param tile_size: Lateral dimensions of each tile, in pixels.
@@ -251,6 +262,7 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
     saved inside `output_dir/slide_id/`.
     :param tile_progress: Whether to display a progress bar in the terminal.
     """
+
     output_dir.mkdir(parents=True, exist_ok=True)
     thumbnail_dir.mkdir(parents=True, exist_ok=True)
     slide_metadata: Dict[str, Any] = sample["metadata"]
@@ -263,7 +275,8 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
     rel_slide_dir = Path(slide_id)
     output_tiles_dir = output_dir / rel_slide_dir
     logging.info(f">>> Slide dir {output_tiles_dir}")
-    if is_already_processed(output_tiles_dir):
+
+    if False: #is_already_processed(output_tiles_dir):
         logging.info(f">>> Skipping {output_tiles_dir} - already processed")
         return output_tiles_dir
 
@@ -281,6 +294,7 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
         slide_image_path = Path(sample["image"])
         logging.info(f"Loading slide {slide_id} ...\nFile: {slide_image_path}")
 
+        '''
         # Somehow it's very slow on Datarbicks
         # hack: copy the slide file to a temporary directory
         tmp_dir = tempfile.TemporaryDirectory()
@@ -289,14 +303,70 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
         shutil.copy(slide_image_path, tmp_slide_image_path)
         sample["image"] = tmp_slide_image_path
         logging.info(f">>> Finished copying {slide_image_path} to {tmp_slide_image_path}")
+        '''
 
         # Save original slide thumbnail
         save_thumbnail(slide_image_path, thumbnail_dir / (slide_image_path.name + "_original.png"))
 
-        loader = LoadROId(WSIReader(backend="OpenSlide"), level=level, margin=margin,
+        if level == -1 and mpp > 0:
+            reader = WSIReader(backend="OpenSlide")
+            # slide: <class 'openslide.OpenSlide'>
+            slide = reader.read(slide_image_path)
+            mpp_x = slide.properties.get("openslide.mpp-x", None)
+            mpp_y = slide.properties.get("openslide.mpp-y", None)
+            if mpp_x is None or mpp_y is None:
+                breakpoint()
+
+            num_levels = reader.get_level_count(slide)
+            best_mpp_lvl    = 0
+            best_mpp_ratio  = 1
+
+            for lvl in range(num_levels):
+                downsample_ratio = reader.get_downsample_ratio(slide, lvl)
+                effective_mpp_x = float(mpp_x) * downsample_ratio
+                effective_mpp_y = float(mpp_y) * downsample_ratio
+                effective_mpp   = np.sqrt(effective_mpp_x * effective_mpp_y)
+                mpp_ratio       = effective_mpp / mpp
+                # The larger the level, the larger the mpp_ratio. 
+                # Therefore we choose the smallest mpp_ratio, 
+                # which at the next level is larger than 1.
+                if lvl == 0 or mpp_ratio <= 1:
+                    best_mpp_lvl   = lvl
+                    best_mpp_ratio = mpp_ratio
+                if mpp_ratio > 1:
+                    break
+        else:
+            best_mpp_lvl = level
+            best_mpp_ratio = 1
+
+        # rounding_points: [1.0, 0.5, 0.25, 0.125, 0.0625]
+        rounding_points = [ 1 / 2 ** i for i in range(5) ]
+        '''
+        rounding_neighbors = \
+            [(0.98, 1.02),
+             (0.49, 0.51),
+             (0.245, 0.255),
+             (0.1225, 0.1275),
+             (0.06125, 0.06375)]
+        '''
+        rounding_neighbors = [ (c * 0.98, c * 1.02, c) for c in rounding_points ]
+        
+        # Map the best_mpp_ratio to the closest value in rounding_neighbors, to try
+        # to scale the tiles (256*256) to a size without interpolation.
+        if best_mpp_ratio not in rounding_points:
+            for rounding_neighbor in rounding_neighbors:
+                if best_mpp_ratio > rounding_neighbor[0] and best_mpp_ratio < rounding_neighbor[1]:
+                    best_mpp_ratio = rounding_neighbor[2]
+                    break
+
+        # sample["image"] stores the path to the slide image file, but it will be replaced
+        # with the actual image data by the loader. This design is a bit confusing,
+        # but we'd keep it for now.
+        loader = LoadROId(WSIReader(backend="OpenSlide"), level=1, margin=margin,
                           foreground_threshold=foreground_threshold)
         sample = loader(sample)  # load 'image' from disk
 
+        '''
         # Save ROI thumbnail
         slide_image = sample["image"]
         plt.figure()
@@ -304,12 +374,29 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
         plt.savefig(thumbnail_dir / (slide_image_path.name + "_roi.png"))
         plt.close()
         logging.info(f"Saving thumbnail {thumbnail_dir / (slide_image_path.name + '_roi.png')}, shape {slide_image.shape}")
+        '''
 
         logging.info(f"Tiling slide {slide_id} ...")
+        # If best_mpp_ratio = 0.5, then the original tile_size is 256 / 0.5 = 512.
+        # After tiling the image, we scale down the tiles by the best_mpp_ratio to get (256, 256) tiles.
+        orig_tile_size = int(tile_size / best_mpp_ratio)
+        logging.info(f"tile_size: {tile_size} => orig_tile_size: {orig_tile_size}")
+
+        # image: (3, 8832, 67840). 
+        # If we load level 0, the image size is: (3, 17664, 135680), which is smaller than the 
+        # original image size (20736, 145920) shown by 
+        # `openslide-show-properties ~/.cache/sample_data/PROV-000-000001.ndpi`.
+        # Because there's a INFO:root:LoadROId: level0_bbox: Box(x=5888, y=3072, w=135680, h=17664)
+        # tile_size: 256. occupancy_threshold: 0.1
+        # Percentage tiles discarded: 88.49%.
+        # image_tiles: (1068, 3, 256, 256). occupancies: 1068 numbers between [0.1006, 0.9893].
+        # rel_tile_locations: 1068 pairs of (x, y) coordinates. 
+        # max: [67584,  8640]. min: [0, -64]. They are the coordinates of 
+        # the tiles in the original image.
         image_tiles, rel_tile_locations, occupancies, _ = \
-            generate_tiles(sample["image"], tile_size,
-                            sample["foreground_threshold"],
-                            occupancy_threshold)
+            generate_tiles(sample["image"], orig_tile_size,
+                           sample["foreground_threshold"],
+                           occupancy_threshold)
 
         # origin in level-0 coordinate
         # location in the current level coordiante
@@ -328,7 +415,18 @@ def process_slide(sample: Dict["SlideKey", Any], level: int, margin: int, tile_s
                 tile_info = get_tile_info(sample, occupancies[i], tile_locations[i], rel_slide_dir)
                 tile_info_list.append(tile_info)
 
-                save_image(image_tiles[i], output_dir / tile_info["image"])
+                # Scale the tile by the best_mpp_ratio
+                # tile_size = 256
+                # best_mpp_ratio = 0.5
+                # new_tile_size = 256 * 0.5 = 128
+                if best_mpp_ratio != 1:
+                    new_tile_size = int(tile_size * best_mpp_ratio)
+                    image_tile = cv2.resize(image_tiles[i], (new_tile_size, new_tile_size), 
+                                            interpolation=cv2.INTER_CUBIC)
+                else:
+                    image_tile = image_tiles[i]
+
+                save_image(image_tile, output_dir / tile_info["image"])
                 dataset_row = format_csv_row(tile_info, keys_to_save, metadata_keys)
                 dataset_csv_file.write(dataset_row + '\n')
             except Exception as e:

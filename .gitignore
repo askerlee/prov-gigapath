@@ -2,13 +2,15 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+/*.txt
 # C extensions
 *.so
+demo/*.svs
 
 test/
 outputs/
 cache/
+data/*.svs
 
 # Distribution / packaging
 .Python
