@@ -56,8 +56,8 @@ for svs_filepath in tqdm.tqdm(svs_filepaths):
     file_size_bytes = os.path.getsize(svs_filepath)
     # Convert bytes to megabytes
     file_size_gb = file_size_bytes / (1024 * 1024 * 1024)
-    # Some slides are less than 10MB, which are basically empty. Skip them.
-    if file_size_gb < 0.01:
+    # Some slides are less than 5MB, which are basically empty. Skip them.
+    if file_size_gb < 0.005:
         print(f"Skipping {svs_filepath} because it is too small")
         skipped_svs_files.append(svs_filepath)
         continue

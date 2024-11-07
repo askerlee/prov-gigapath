@@ -16,9 +16,13 @@ from typing import Any, Dict, Iterable, Optional, Sequence, Tuple, Union
 import numpy as np
 import pandas as pd
 import PIL
+import matplotlib
 from matplotlib import collections, patches, pyplot as plt
 from monai.data import Dataset
 from monai.data.wsi_reader import WSIReader
+
+# Prevent matplotlib from using the X server, thus causing exceptions in headless environments.
+matplotlib.use("Agg")
 
 USE_TIFFSLIDE = True
 if USE_TIFFSLIDE:

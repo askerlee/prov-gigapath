@@ -4,7 +4,6 @@
 import os
 import timm
 import torch
-import shutil
 import numpy as np
 import pandas as pd
 import gigapath.slide_encoder as slide_encoder
@@ -13,7 +12,7 @@ from tqdm import tqdm
 from PIL import Image
 from pathlib import Path
 from torchvision import transforms
-from typing import List, Tuple, Union
+from typing import List, Tuple
 from torch.utils.data import Dataset, DataLoader
 from gigapath.preprocessing.data.create_tiles_dataset import process_slide
 
