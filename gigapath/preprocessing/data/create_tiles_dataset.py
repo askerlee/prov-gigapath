@@ -8,7 +8,6 @@
 import functools
 import logging
 import shutil
-import tempfile
 import traceback
 import warnings
 from pathlib import Path
@@ -20,7 +19,13 @@ import PIL
 from matplotlib import collections, patches, pyplot as plt
 from monai.data import Dataset
 from monai.data.wsi_reader import WSIReader
-from openslide import OpenSlide
+
+USE_TIFFSLIDE = True
+if USE_TIFFSLIDE:
+    from tiffslide import TiffSlide as OpenSlide
+else:
+    from openslide import OpenSlide
+
 from tqdm import tqdm
 import cv2
 import sys
@@ -28,7 +33,11 @@ import sys
 from gigapath.preprocessing.data import tiling
 from gigapath.preprocessing.data.foreground_segmentation import LoadROId, segment_foreground
 
-logging.basicConfig(level=logging.INFO, stream=sys.stdout, force=True)
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s',  # Add time to log format
+                    datefmt='%Y-%m-%d %H:%M:%S',                         # Set date and time format                    
+                    stream=sys.stdout, force=True)
+
 # Get the root logger
 logger = logging.getLogger()
 
@@ -297,6 +306,7 @@ def process_slide(sample: Dict["SlideKey", Any],
         '''
         # Somehow it's very slow on Datarbicks
         # hack: copy the slide file to a temporary directory
+        import tempfile
         tmp_dir = tempfile.TemporaryDirectory()
         tmp_slide_image_path = Path(tmp_dir.name) / slide_image_path.name
         logging.info(f">>> Copying {slide_image_path} to {tmp_slide_image_path}")
@@ -312,8 +322,18 @@ def process_slide(sample: Dict["SlideKey", Any],
             reader = WSIReader(backend="OpenSlide")
             # slide: <class 'openslide.OpenSlide'>
             slide = reader.read(slide_image_path)
-            mpp_x = slide.properties.get("openslide.mpp-x", None)
-            mpp_y = slide.properties.get("openslide.mpp-y", None)
+            if USE_TIFFSLIDE:
+                mpp_x = slide.properties.get("tiffslide.mpp-x", None)
+                mpp_y = slide.properties.get("tiffslide.mpp-y", None)
+                # Fake openslide.mpp-x and openslide.mpp-y properties
+                slide.properties["openslide.mpp-x"] = mpp_x
+                slide.properties["openslide.mpp-y"] = mpp_y
+                slide.properties["openslide.objective-power"] = slide.properties["tiffslide.objective-power"]
+                slide._filename = slide_image_path
+            else:
+                mpp_x = slide.properties.get("openslide.mpp-x", None)
+                mpp_y = slide.properties.get("openslide.mpp-y", None)
+
             if mpp_x is None or mpp_y is None:
                 breakpoint()
 
@@ -359,10 +379,12 @@ def process_slide(sample: Dict["SlideKey", Any],
                     best_mpp_ratio = rounding_neighbor[2]
                     break
 
+        print(f"best_mpp_ratio: {best_mpp_ratio}, best_mpp_lvl: {best_mpp_lvl}")
+
         # sample["image"] stores the path to the slide image file, but it will be replaced
         # with the actual image data by the loader. This design is a bit confusing,
         # but we'd keep it for now.
-        loader = LoadROId(WSIReader(backend="OpenSlide"), level=1, margin=margin,
+        loader = LoadROId(WSIReader(backend="OpenSlide"), level=best_mpp_lvl, margin=margin,
                           foreground_threshold=foreground_threshold)
         sample = loader(sample)  # load 'image' from disk
 
@@ -410,6 +432,7 @@ def process_slide(sample: Dict["SlideKey", Any],
         tile_info_list = []
 
         logging.info(f"Saving tiles for slide {slide_id} ...")
+
         for i in tqdm(range(n_tiles), f"Tiles ({slide_id[:6]}…)", unit="img", disable=not tile_progress):
             try:
                 tile_info = get_tile_info(sample, occupancies[i], tile_locations[i], rel_slide_dir)
@@ -420,9 +443,13 @@ def process_slide(sample: Dict["SlideKey", Any],
                 # best_mpp_ratio = 0.5
                 # new_tile_size = 256 * 0.5 = 128
                 if best_mpp_ratio != 1:
-                    new_tile_size = int(tile_size * best_mpp_ratio)
-                    image_tile = cv2.resize(image_tiles[i], (new_tile_size, new_tile_size), 
+                    # [3, 512, 512] -> [512, 512, 3]
+                    image_tile = image_tiles[i].transpose(1, 2, 0)
+                    # [512, 512, 3] -> [256, 256, 3]
+                    image_tile = cv2.resize(image_tile, (tile_size, tile_size), 
                                             interpolation=cv2.INTER_CUBIC)
+                    # [256, 256, 3] -> [3, 256, 256]
+                    image_tile = image_tile.transpose(2, 0, 1)
                 else:
                     image_tile = image_tiles[i]
 

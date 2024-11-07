@@ -106,7 +106,7 @@ def tile_one_slide(slide_file:str='', save_dir:str='', mpp:float=0.5,
     assert len(failed_df) == 0
 
     print(f"Slide {slide_file} has been tiled. {len(dataset_df)} tiles saved to {slide_dir}.")
-
+    return len(dataset_df)
 
 def load_tile_encoder_transforms() -> transforms.Compose:
     """Load the transforms for the tile encoder"""

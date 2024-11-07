@@ -15,7 +15,12 @@ import skimage.filters
 from monai.config.type_definitions import KeysCollection
 from monai.data.wsi_reader import WSIReader
 from monai.transforms.transform import MapTransform
-from openslide import OpenSlide
+
+USE_TIFFSLIDE = True
+if USE_TIFFSLIDE:
+    from tiffslide import TiffSlide as OpenSlide
+else:
+    from openslide import OpenSlide
 
 from gigapath.preprocessing.data import box_utils
 
@@ -153,6 +158,8 @@ class LoadROId(MapTransform):
     def __call__(self, data: Dict) -> Dict:
         logging.info(f"LoadROId: read {data[self.image_key]}")
         image_obj: OpenSlide = self.image_reader.read(data[self.image_key])
+        if USE_TIFFSLIDE:
+            image_obj._filename = Path(data[self.image_key])
 
         logging.info("LoadROId: get bbox")
         level0_bbox, threshold = self._get_bounding_box(image_obj)
