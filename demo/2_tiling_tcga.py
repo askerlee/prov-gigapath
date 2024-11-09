@@ -50,6 +50,7 @@ processed_filesize_gb = 0
 num_total_slides = 0
 num_total_tiles = 0
 skipped_svs_files = []
+exception_svs_files = []
 
 for svs_filepath in tqdm.tqdm(svs_filepaths):
     # Get the file size of the slide
@@ -63,15 +64,21 @@ for svs_filepath in tqdm.tqdm(svs_filepaths):
         continue
 
     processed_filesize_gb += file_size_gb
-    filesize_percent = processed_filesize_gb / total_filesize_gb * 10000
-    print(f"{filesize_percent:.1f}%% {int(num_total_tiles/1000)}K tiles  {file_size_gb:.1f}/{processed_filesize_gb:.1f}/{total_filesize_gb:.1f}GB {svs_filepath}")
-    num_tiles = tile_one_slide(svs_filepath, save_dir=output_dir, mpp=args.mpp, level=args.level)
+    filesize_percent = processed_filesize_gb / total_filesize_gb * 100
+    print(f"{filesize_percent:.3f}% {int(num_total_tiles/1000)}K tiles  {file_size_gb:.1f}/{processed_filesize_gb:.1f}/{total_filesize_gb:.1f}GB {svs_filepath}")
+    try:
+        num_tiles = tile_one_slide(svs_filepath, save_dir=output_dir, mpp=args.mpp, level=args.level)
+    except Exception as e:
+        print(f"Error processing {svs_filepath}: {e}")
+        exception_svs_files.append(svs_filepath)
+
     num_total_slides += 1
     num_total_tiles += num_tiles
 
 print()
 print(f"Finished tiling {num_total_tiles} tiles from {num_total_slides} slides")
 print(f"Skipped {len(skipped_svs_files)} slides: {skipped_svs_files}")
+print(f"Exceptions {len(exception_svs_files)} slides: {exception_svs_files}")
 
 # NOTE: tiling dependency libraries can be tricky to set up. 
 # Please double check the generated tile images."
